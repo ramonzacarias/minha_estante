@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:minha_estante/commom/constants/app_colors.dart';
+import 'package:minha_estante/commom/constants/app_text_styles.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
@@ -8,25 +8,19 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        decoration: const BoxDecoration(
-            gradient:
-                LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFF63B5AF),
-                    Color(0xFF438883)
-                  ])),
-        child: const Text(
-          "Minha Estante", 
-          style: TextStyle(
-            fontSize: 40.0,
-            fontWeight: FontWeight.w700,
-            fontFamily: "Inter",
-            color:Color(0xFFFFFFFF))),
-      ),
-    );
+        body: Container(
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                  AppColors.greenLightOne,
+                  AppColors.greenLightTwo,
+                ])),
+            child: Text(
+              "Minha Estante",
+              style: AppTextStyles.bigText40.copyWith(color: AppColors.white),
+            )));
   }
 }
