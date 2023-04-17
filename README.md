@@ -22,13 +22,13 @@ Referência | Descrição
 
 Referência | Descrição
 -----------|-----------
-**RF001** - O sistema deve ser desenvolvido em linguagem Flutter
-**RF002** - O  aplicativo deve ser fácil de usar e intuitivo, para que os usuários possam navegar facilmente pelas funcionalidades.
-**RF003** - O aplicativo deve ser seguro e proteger os dados de autenticação cadastrados pelo usuário.
-**RF004** - O aplicativo deve ser rápido e responsivo para os usuários em todas as suas operações.
-**RF005** - O aplicativo deve ser atualizado regularmente para corrigir bugs e adicionar novas funcionalidades.leram.
-**RF006** - O aplicativo deve ser portátil e capaz de ser executado em diferentes sistemas operacionais, como Android e iOS.
-**RF007** - O aplicativo deve ser confiável e não falhar ou perder dados importantes do usuário.
+**RF001** | O sistema deve ser desenvolvido em linguagem Flutter
+**RF002** | O  aplicativo deve ser fácil de usar e intuitivo, para que os usuários possam navegar facilmente pelas funcionalidades.
+**RF003** | O aplicativo deve ser seguro e proteger os dados de autenticação cadastrados pelo usuário.
+**RF004** | O aplicativo deve ser rápido e responsivo para os usuários em todas as suas operações.
+**RF005** | O aplicativo deve ser atualizado regularmente para corrigir bugs e adicionar novas funcionalidades.leram.
+**RF006** | O aplicativo deve ser portátil e capaz de ser executado em diferentes sistemas operacionais, como Android e iOS.
+**RF007** | O aplicativo deve ser confiável e não falhar ou perder dados importantes do usuário.
 
 ## Diagrama de Entidade e Relacionamento(DER)
 
