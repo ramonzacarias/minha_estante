@@ -33,5 +33,3 @@ Referência | Descrição
 ## Diagrama de Entidade e Relacionamento(DER)
 
 ![MODELO LOGICO - MINHA ESTANTE](/.github/der.png)
-
-
