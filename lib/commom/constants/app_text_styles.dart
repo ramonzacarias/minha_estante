@@ -11,7 +11,7 @@ class AppTextStyles {
 
   static const TextStyle bigText = TextStyle(
     fontFamily: 'Inter',
-    fontSize: 30.0,
+    fontSize: 25.0,
     fontWeight: FontWeight.w800,
   );
 
