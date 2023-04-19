@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
 
+import '../../commom/widgets/multi_text_button.dart';
 import '../../commom/widgets/primary_button.dart';
 
 class OnboardingPage extends StatelessWidget {
@@ -34,26 +37,38 @@ class OnboardingPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 35.00,
-                vertical: 20.00,
+              padding: const EdgeInsets.only(
+                left: 32.0,
+                right: 32.0,
+                top: 24.0,
+                bottom: 4.0,
               ),
               child: PrimaryButton(
-                text: 'Vamos Começar!',
+                text: 'Fazer Login',
                 onPressed: () {},
-                ),
-            ),
-            Text(
-              'Já Tem Uma Conta? Fazer Login',
-              style: AppTextStyles.smallText.copyWith(
-                color: AppColors.grey,
               ),
             ),
-            const SizedBox(height: 30.0)
+            MultiTextButton(
+              onPressed: () => log('tap') ,
+              children: [
+                Text(
+                  'Não tem uma conta? ',
+                  style: AppTextStyles.smallText.copyWith(
+                    color: AppColors.grey,
+                  ),
+                ),
+                Text(
+                  'Criar Conta.',
+                  style: AppTextStyles.smallText.copyWith(
+                    color: AppColors.greenLightTwo,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 25.0)
           ],
         ),
       ),
     );
   }
 }
-
