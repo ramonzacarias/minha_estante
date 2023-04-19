@@ -23,13 +23,13 @@ class OnboardingPage extends StatelessWidget {
             ),
             Text(
               'Gerencie Sua Biblioteca',
-              style: AppTextStyles.mediumText.copyWith(
+              style: AppTextStyles.bigText.copyWith(
                 color: AppColors.greenLightTwo,
               ),
             ),
             Text(
               'De Leitura',
-              style: AppTextStyles.mediumText.copyWith(
+              style: AppTextStyles.bigText.copyWith(
                 color: AppColors.greenLightTwo,
               ),
             ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_text_styles.dart';
 
+//Criando um botão personalizado 
 class PrimaryButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final String text;
@@ -13,35 +14,31 @@ class PrimaryButton extends StatelessWidget {
     required this.text,
   }) : super(key: key);
 
+  final BorderRadius _borderRadius =
+      const BorderRadius.all(Radius.circular(27.0));
+
   @override
   Widget build(BuildContext context) {
-    return Material(
-      borderRadius: const BorderRadius.all(Radius.circular(38.0)),
-      child: Ink(
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(38.0)),
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: onPressed != null
-                ? AppColors.greenGradient
-                : AppColors.greyGradient,
-          ),
+    return Ink(
+      height: 54.0,
+      decoration: BoxDecoration(
+        borderRadius: _borderRadius,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: onPressed != null
+              ? AppColors.greenGradient
+              : AppColors.greyGradient,
         ),
-        child: InkWell(
-          borderRadius: const BorderRadius.all(Radius.circular(38.0)),
-          onTap: onPressed,
-          child: Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(38.0)),
-            ),
-            alignment: Alignment.center,
-            height: 60.0,
-            child: Text(
-              text,
-              style: AppTextStyles.mediumText18.copyWith(
-                color: AppColors.white,
-              ),
+      ),
+      child: InkWell(
+        borderRadius: _borderRadius,
+        onTap: onPressed,
+        child: Align(
+          child: Text(
+            text,
+            style: AppTextStyles.mediumText18.copyWith(
+              color: AppColors.white,
             ),
           ),
         ),
