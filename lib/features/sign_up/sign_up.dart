@@ -1,8 +1,11 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '../../commom/constants/app_colors.dart';
 import '../../commom/constants/app_text_styles.dart';
+import '../../commom/widgets/custom_text_form_field.dart';
 import '../../commom/widgets/multi_text_button.dart';
 import '../../commom/widgets/primary_button.dart';
 
@@ -18,6 +21,7 @@ class SignUpPage extends StatelessWidget {
           parent: AlwaysScrollableScrollPhysics(),
         ),
         children: [
+          const SizedBox(height: 25.0),
           Text(
             'Gerencie Sua Biblioteca',
             textAlign: TextAlign.center,
@@ -37,15 +41,13 @@ class SignUpPage extends StatelessWidget {
           ),
           Form(
             child: Column(
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: "NOME",
-                    border: OutlineInputBorder(),
-                  ),
-                )
+              children: const [
+                CustomTextFormField(
+                  labelText: "nome",
+                  hintText: "Digite Seu Nome Completo",
+                ),
               ],
-            )
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(
@@ -81,3 +83,4 @@ class SignUpPage extends StatelessWidget {
     );
   }
 }
+
