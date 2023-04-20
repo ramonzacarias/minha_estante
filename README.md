@@ -1,12 +1,12 @@
-# PROJETO PARA A DISCIPLINA DESENVOLVIMENTO MOBILE
+# 💻 PROJETO PARA A DISCIPLINA DESENVOLVIMENTO MOBILE
 
-## APP MINHA ESTANTE
+## 📱 APP MINHA ESTANTE
 
-## RESUMO
+## 💡 RESUMO
 
 O aplicativo **Minha Estante** é uma ferramenta para organizar e acompanhar o hábito de leitura. O aplicativo oferece diversas funções para ajudá-lo a controlar sua lista de livros para ler, seu registro de livros lidos, seu progresso de leitura e suas opções de classificação e avaliação de livros.
 
-## REQUISISTOS FUNCIONAIS
+## :memo: REQUISISTOS FUNCIONAIS
 
 Referência | Descrição
 -----------|-----------
@@ -18,7 +18,7 @@ Referência | Descrição
 **RF006** - Visualizar o histórico de leitura, como número de livros lidos | Os usuários devem poder ver seu histórico de leitura.
 **RF007** - Integração com uma API de livros para obter informações sobre os livros | O aplicativo deve integrar uma API de livros para obter informações precisas e atualizadas sobre os livros.
 
-## RESQUISISTOS NÃO FUNCIONAIS
+## :memo: RESQUISISTOS NÃO FUNCIONAIS
 
 Referência | Descrição
 -----------|-----------
@@ -30,6 +30,10 @@ Referência | Descrição
 **RF006** | O aplicativo deve ser portátil e capaz de ser executado em diferentes sistemas operacionais, como Android e iOS.
 **RF007** | O aplicativo deve ser confiável e não falhar ou perder dados importantes do usuário.
 
-## Diagrama de Entidade e Relacionamento(DER)
+## 📑 Diagrama de Entidade e Relacionamento(DER)
 
 ![MODELO LOGICO - MINHA ESTANTE](/.github/der.png)
+
+## 🔖 Layout
+
+Você pode visualizar o layout do projeto através [DESSE LINK](https://www.figma.com/file/DwrvGzWEUaiCfLbxVLlEgk/App---MinhaEstante?node-id=0%3A1&t=9vcg1WkDgnpiHiBE-1). É necessário ter conta no [Figma](https://figma.com) para acessá-lo.
