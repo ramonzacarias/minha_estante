@@ -37,3 +37,5 @@ Referência | Descrição
 ## 🔖 Layout
 
 Você pode visualizar o layout do projeto através [DESSE LINK](https://www.figma.com/file/DwrvGzWEUaiCfLbxVLlEgk/App---MinhaEstante?node-id=0%3A1&t=9vcg1WkDgnpiHiBE-1). É necessário ter conta no [Figma](https://figma.com) para acessá-lo.
+
+## Testando o pull Visual Studio Code
