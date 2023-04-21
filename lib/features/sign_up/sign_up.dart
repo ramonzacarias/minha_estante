@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:minha_estante/commom/widgets/password_form_field.dart';
 
 import '../../commom/constants/app_colors.dart';
 import '../../commom/constants/app_text_styles.dart';
@@ -45,6 +46,14 @@ class SignUpPage extends StatelessWidget {
                 CustomTextFormField(
                   labelText: "nome",
                   hintText: "Digite Seu Nome Completo",
+                ),
+                PasswordFormField(
+                  labelText: "senha",
+                  hintText: "********",
+                ),
+                PasswordFormField(
+                  labelText: "confirme sua senha",
+                  hintText: "********",
                 ),
               ],
             ),
