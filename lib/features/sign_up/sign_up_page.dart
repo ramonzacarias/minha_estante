@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/utils/uppercase_text_formatter.dart';
 import 'package:minha_estante/commom/utils/validator.dart';
 import 'package:minha_estante/commom/widgets/password_form_field.dart';
+import 'package:minha_estante/features/sign_up/sign_up_controller.dart';
+import 'package:minha_estante/features/sign_up/sign_up_state.dart';
 
 import '../../commom/constants/app_colors.dart';
 import '../../commom/constants/app_text_styles.dart';
@@ -22,6 +24,45 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   final _passwordControlled = TextEditingController();
+  final controller = SignUpController();
+
+  @override
+  void dispose() {
+    _passwordControlled.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(() {
+      // Recebe a informação da mudança de estado
+      // Exibe o estado atual
+      if (controller.state is SignUpLoadingState) {
+        // Exibe o estado de loading
+        showDialog(
+          context: context,
+          builder: (context) => const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }
+      // Exibe a tela de acesso ao sistema
+      if (controller.state is SignUpSuccessState) {
+        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Scaffold(
+              body: Center(
+                child: Text("Nova Tela"),
+              ),
+            ),
+          ),
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +113,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 PasswordFormField(
                   labelText: "confirme sua senha",
                   hintText: "********",
-                  validator: (value) => 
-                  Validator.validateConfirmPassword(value, _passwordControlled.text),
+                  validator: (value) => Validator.validateConfirmPassword(
+                      value, _passwordControlled.text),
                 ),
               ],
             ),
@@ -91,7 +132,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 final valid = _formKey.currentState != null &&
                     _formKey.currentState!.validate();
                 if (valid) {
-                  log("Continuar Lógica de Login");
+                  controller.doSignUp();
                 } else {
                   log("Erro ao logar");
                 }
