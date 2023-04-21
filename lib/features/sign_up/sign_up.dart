@@ -28,7 +28,7 @@ class SignUpPage extends StatelessWidget {
             'Crie Sua Conta',
             textAlign: TextAlign.center,
             style: AppTextStyles.bigText.copyWith(
-              color: AppColors.greenLightTwo,
+              color: AppColors.greenOne,
             ),
           ),
           const SizedBox(height: 12.0),
@@ -84,7 +84,7 @@ class SignUpPage extends StatelessWidget {
               Text(
                 'Fazer Login',
                 style: AppTextStyles.smallText.copyWith(
-                  color: AppColors.greenLightTwo,
+                  color: AppColors.greenOne,
                 ),
               ),
             ],

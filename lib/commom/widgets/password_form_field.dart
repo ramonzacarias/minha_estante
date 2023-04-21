@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:minha_estante/commom/constants/app_colors.dart';
 
 import 'package:minha_estante/commom/widgets/custom_text_form_field.dart';
 
@@ -43,7 +44,10 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
             isHidden = !isHidden; // Inverter o estado da varivél, assim alterando a visibilidade do texto
           });
         },
-        child: Icon(isHidden ? Icons.visibility : Icons.visibility_off), // Selecionando o icon com base no status da variavel
+        child: Icon(
+          isHidden ? Icons.visibility : Icons.visibility_off, // Selecionando o icon com base no status da variavel
+          color: AppColors.greenTwo,
+          ),
       ),
     );
   }

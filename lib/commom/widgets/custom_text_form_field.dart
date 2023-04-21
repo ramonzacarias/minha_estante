@@ -42,7 +42,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   final defaultBorder = const OutlineInputBorder(
     // criando um variavél para otimizar a chamada dentro do decoration
     borderSide: BorderSide(
-      color: AppColors.greenLightTwo,
+      color: AppColors.greenOne,
     ),
   );
 
@@ -55,6 +55,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             vertical: 12.0,
           ),
       child: TextFormField(
+        style: AppTextStyles.inputText.copyWith(color: AppColors.greenOne),
         inputFormatters: widget.inputFormatters,
         obscureText: widget.obscureText ?? false,
         textInputAction:
@@ -68,6 +69,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         decoration: InputDecoration(
           suffixIcon: widget.suffixIcon,
           hintText: widget.hintText,
+          hintStyle: 
+            AppTextStyles.inputText.copyWith(color: AppColors.greenTwo),
           floatingLabelBehavior: FloatingLabelBehavior
               .always, // Permite que o labelText sempre fique no top da borda
           labelText: widget.labelText?.toUpperCase(),
