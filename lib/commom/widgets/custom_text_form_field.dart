@@ -18,6 +18,7 @@ class CustomTextFormField extends StatefulWidget {
   final bool? obscureText;
   final List<TextInputFormatter>? inputFormatters;
   final FormFieldValidator<String>? validator;
+  final String? helpText;
 
   const CustomTextFormField({
     Key? key,
@@ -33,6 +34,7 @@ class CustomTextFormField extends StatefulWidget {
     this.obscureText,
     this.inputFormatters,
     this.validator,
+    this.helpText,
   }) : super(key: key);
 
   @override
@@ -48,6 +50,14 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     ),
   );
 
+  String? _helperText;
+
+  @override
+  void initState() {
+    super.initState();
+    _helperText = widget.helpText;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -57,6 +67,18 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             vertical: 12.0,
           ),
       child: TextFormField(
+        onChanged: (value) {
+          if (value.isNotEmpty) {
+            setState(() {
+              _helperText = null;
+            });
+          } else if (value.isEmpty) {
+            setState(() {
+              _helperText = widget.helpText;
+            });
+          }
+        },
+
         validator: widget.validator,
         style: AppTextStyles.inputText.copyWith(color: AppColors.greenOne),
         inputFormatters: widget.inputFormatters,
@@ -70,6 +92,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         textCapitalization: widget.textCapitalization ??
             TextCapitalization.none, // Torna a primeira letra maiscula
         decoration: InputDecoration(
+          helperText: _helperText,
+          helperMaxLines: 3,
           suffixIcon: widget.suffixIcon,
           hintText: widget.hintText,
           hintStyle:

@@ -66,6 +66,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 const PasswordFormField(
                   labelText: "senha",
                   hintText: "********",
+                  helpText: "Deve ter pelo menos 8 caracteres ",
                 ),
                 const PasswordFormField(
                   labelText: "confirme sua senha",

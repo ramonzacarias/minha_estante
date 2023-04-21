@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'dart:developer';
 
@@ -12,6 +13,7 @@ class PasswordFormField extends StatefulWidget {
   final String? hintText;
   final String? labelText;
   final FormFieldValidator<String>? validator;
+  final String? helpText;
 
   const PasswordFormField({
     Key? key,
@@ -20,6 +22,7 @@ class PasswordFormField extends StatefulWidget {
     this.hintText,
     this.labelText,
     this.validator,
+    this.helpText,
   }) : super(key: key);
 
   @override
@@ -33,6 +36,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
   @override
   Widget build(BuildContext context) {
     return CustomTextFormField(
+      helpText: widget.helpText,
       validator: widget.validator,
       obscureText: isHidden, // Oculta o  texto digitado na senha
       controller: widget.controller,
