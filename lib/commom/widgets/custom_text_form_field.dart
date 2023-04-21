@@ -17,6 +17,7 @@ class CustomTextFormField extends StatefulWidget {
   final Widget? suffixIcon;
   final bool? obscureText;
   final List<TextInputFormatter>? inputFormatters;
+  final FormFieldValidator<String>? validator;
 
   const CustomTextFormField({
     Key? key,
@@ -31,6 +32,7 @@ class CustomTextFormField extends StatefulWidget {
     this.suffixIcon,
     this.obscureText,
     this.inputFormatters,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -55,6 +57,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             vertical: 12.0,
           ),
       child: TextFormField(
+        validator: widget.validator,
         style: AppTextStyles.inputText.copyWith(color: AppColors.greenOne),
         inputFormatters: widget.inputFormatters,
         obscureText: widget.obscureText ?? false,
@@ -69,8 +72,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         decoration: InputDecoration(
           suffixIcon: widget.suffixIcon,
           hintText: widget.hintText,
-          hintStyle: 
-            AppTextStyles.inputText.copyWith(color: AppColors.greenTwo),
+          hintStyle:
+              AppTextStyles.inputText.copyWith(color: AppColors.greenTwo),
           floatingLabelBehavior: FloatingLabelBehavior
               .always, // Permite que o labelText sempre fique no top da borda
           labelText: widget.labelText?.toUpperCase(),

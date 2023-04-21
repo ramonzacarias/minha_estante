@@ -11,8 +11,15 @@ import '../../commom/widgets/custom_text_form_field.dart';
 import '../../commom/widgets/multi_text_button.dart';
 import '../../commom/widgets/primary_button.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
+
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +43,7 @@ class SignUpPage extends StatelessWidget {
             'assets/images/sign_up_image.png',
           ),
           Form(
+            key: _formKey,
             child: Column(
               children: [
                 CustomTextFormField(
@@ -44,6 +52,12 @@ class SignUpPage extends StatelessWidget {
                   inputFormatters: [
                     UpperCaseTextInputFormatter(),
                   ],
+                  validator: (value) {
+                    if (value != null && value.isEmpty) {
+                      return "Esse campo não pode ser vazio";
+                    }
+                    return null;
+                  },
                 ),
                 const CustomTextFormField(
                   labelText: "e-mail",
@@ -69,7 +83,15 @@ class SignUpPage extends StatelessWidget {
             ),
             child: PrimaryButton(
               text: 'Criar Conta',
-              onPressed: () => log('tap'),
+              onPressed: () {
+                final valid = _formKey.currentState != null &&
+                    _formKey.currentState!.validate();
+                if (valid) {
+                  log("Continuar Lógica de Login");
+                } else {
+                  log("Erro ao logar");
+                }
+              },
             ),
           ),
           MultiTextButton(
@@ -94,4 +116,3 @@ class SignUpPage extends StatelessWidget {
     );
   }
 }
-
