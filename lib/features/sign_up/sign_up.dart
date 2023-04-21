@@ -21,6 +21,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
+  final _passwordControlled = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -58,15 +59,21 @@ class _SignUpPageState extends State<SignUpPage> {
                 const CustomTextFormField(
                   labelText: "e-mail",
                   hintText: "seuemail@email.com",
+                  validator: Validator.validateEmail,
                 ),
-                const PasswordFormField(
+                PasswordFormField(
+                  controller: _passwordControlled,
                   labelText: "senha",
                   hintText: "********",
-                  helpText: "Deve ter pelo menos 8 caracteres ",
+                  validator: Validator.validatePassword,
+                  helpText:
+                      "Deve ter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula, um número e um caractere especial",
                 ),
-                const PasswordFormField(
+                PasswordFormField(
                   labelText: "confirme sua senha",
                   hintText: "********",
+                  validator: (value) => 
+                  Validator.validateConfirmPassword(value, _passwordControlled.text),
                 ),
               ],
             ),
