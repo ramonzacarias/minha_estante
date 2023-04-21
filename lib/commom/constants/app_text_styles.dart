@@ -42,7 +42,7 @@ class AppTextStyles {
 
  static const TextStyle inputHintText = TextStyle(
     fontFamily: 'Inter',
-    fontSize: 14.0,
+    fontSize: 12.0,
     fontWeight: FontWeight.w400,
   );
 }
