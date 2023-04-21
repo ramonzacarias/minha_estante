@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/utils/uppercase_text_formatter.dart';
+import 'package:minha_estante/commom/utils/validator.dart';
 import 'package:minha_estante/commom/widgets/password_form_field.dart';
 
 import '../../commom/constants/app_colors.dart';
@@ -52,12 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   inputFormatters: [
                     UpperCaseTextInputFormatter(),
                   ],
-                  validator: (value) {
-                    if (value != null && value.isEmpty) {
-                      return "Esse campo não pode ser vazio";
-                    }
-                    return null;
-                  },
+                  validator: Validator.validateName,
                 ),
                 const CustomTextFormField(
                   labelText: "e-mail",
