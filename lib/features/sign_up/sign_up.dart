@@ -47,6 +47,10 @@ class SignUpPage extends StatelessWidget {
                   labelText: "nome",
                   hintText: "Digite Seu Nome Completo",
                 ),
+                CustomTextFormField(
+                  labelText: "e-mail",
+                  hintText: "seuemail@email.com",
+                ),
                 PasswordFormField(
                   labelText: "senha",
                   hintText: "********",
