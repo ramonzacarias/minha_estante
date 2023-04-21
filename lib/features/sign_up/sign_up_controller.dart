@@ -1,9 +1,12 @@
-import 'dart:developer';
-
 import 'package:flutter/foundation.dart';
 import 'package:minha_estante/features/sign_up/sign_up_state.dart';
+import 'package:minha_estante/services/auth_service.dart';
 
 class SignUpController extends ChangeNotifier {
+  final AuthService _service;
+
+  SignUpController(this._service);
+
   SignUpState state = SignUpInitialState();
 
   void changeState(SignUpState newState) {
@@ -11,20 +14,23 @@ class SignUpController extends ChangeNotifier {
     notifyListeners(); // Notifica a modificação para a classe que está escutando
   }
 
-  Future<bool> doSignUp() async {
+  Future<void> signUp({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
     changeState(SignUpLoadingState());
 
     try {
-      await Future.delayed(const Duration(seconds: 2));
-      //throw Exception("Erro ao criar usuario");
-      log("Usuario criado com sucesso");
+      await _service.signUp(
+        name: name,
+        email: email,
+        password: password,
+      );
 
       changeState(SignUpSuccessState());
-
-      return true;
     } catch (e) {
-      changeState(SignUpErrorState());
-      return false;
+      changeState(SignUpErrorState(e.toString()));
     }
   }
 }
