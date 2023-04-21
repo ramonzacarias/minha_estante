@@ -64,7 +64,11 @@ class _SignUpPageState extends State<SignUpPage> {
       }
       if (controller.state is SignUpErrorState) {
         Navigator.pop(context);
-        customModalBottomSheet(context);
+        customModalBottomSheet(
+          context,
+          content: "Ops. Algo deu errado!",
+          buttonText: "Tente novamente",
+        );
       }
     });
   }

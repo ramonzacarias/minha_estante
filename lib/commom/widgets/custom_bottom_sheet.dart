@@ -4,7 +4,12 @@ import 'package:minha_estante/commom/widgets/primary_button.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_text_styles.dart';
 
-Future<void> customModalBottomSheet(BuildContext context) {
+Future<void> customModalBottomSheet(
+  BuildContext context, {
+  required String content,
+  required String buttonText,
+  VoidCallback? onPressed,
+}) {
   return showModalBottomSheet<void>(
     context: context,
     shape: const RoundedRectangleBorder(
@@ -28,20 +33,26 @@ Future<void> customModalBottomSheet(BuildContext context) {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text(
-                'Ops. Algo deu errado.',
-                style: AppTextStyles.mediumText20.copyWith(
-                  color: AppColors.greenOne,
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16.00,
+                  horizontal: 32.00,
+                ),
+                child: Text(
+                  'Ops. Algo deu errado.',
+                  style: AppTextStyles.mediumText20.copyWith(
+                    color: AppColors.greenOne,
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  vertical: 16.0,
+                  vertical: 8.0,
                   horizontal: 32.0,
                 ),
                 child: PrimaryButton(
-                  text: 'Tentar Novamente',
-                  onPressed: () => Navigator.pop(context),
+                  text: buttonText,
+                  onPressed: onPressed ?? () => Navigator.pop(context),
                 ),
               ),
             ],
