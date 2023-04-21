@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/utils/uppercase_text_formatter.dart';
 import 'package:minha_estante/commom/utils/validator.dart';
+import 'package:minha_estante/commom/widgets/custom_bottom_sheet.dart';
+import 'package:minha_estante/commom/widgets/custom_circular_progress_indicator.dart';
 import 'package:minha_estante/commom/widgets/password_form_field.dart';
 import 'package:minha_estante/features/sign_up/sign_up_controller.dart';
 import 'package:minha_estante/features/sign_up/sign_up_state.dart';
@@ -29,6 +31,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void dispose() {
     _passwordControlled.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -42,9 +45,7 @@ class _SignUpPageState extends State<SignUpPage> {
         // Exibe o estado de loading
         showDialog(
           context: context,
-          builder: (context) => const Center(
-            child: CircularProgressIndicator(),
-          ),
+          builder: (context) => const CustomCircularProgressIndicator(),
         );
       }
       // Exibe a tela de acesso ao sistema
@@ -60,6 +61,10 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
         );
+      }
+      if (controller.state is SignUpErrorState) {
+        Navigator.pop(context);
+        customModalBottomSheet(context);
       }
     });
   }
