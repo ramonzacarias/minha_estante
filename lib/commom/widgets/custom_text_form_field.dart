@@ -107,10 +107,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           errorBorder: defaultBorder.copyWith(
             borderSide: const BorderSide(color: AppColors.red),
           ),
-          focusedErrorBorder: defaultBorder
-            ..copyWith(
-              borderSide: const BorderSide(color: AppColors.red),
-            ),
+          focusedErrorBorder: defaultBorder.copyWith(
+            borderSide: const BorderSide(color: AppColors.red),
+          ),
           enabledBorder: defaultBorder,
           disabledBorder: defaultBorder,
         ),
