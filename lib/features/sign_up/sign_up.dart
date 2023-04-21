@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:minha_estante/commom/utils/uppercase_text_formatter.dart';
 import 'package:minha_estante/commom/widgets/password_form_field.dart';
 
 import '../../commom/constants/app_colors.dart';
@@ -24,38 +25,35 @@ class SignUpPage extends StatelessWidget {
         children: [
           const SizedBox(height: 25.0),
           Text(
-            'Gerencie Sua Biblioteca',
+            'Crie Sua Conta',
             textAlign: TextAlign.center,
             style: AppTextStyles.bigText.copyWith(
               color: AppColors.greenLightTwo,
             ),
           ),
-          Text(
-            'De Leitura',
-            textAlign: TextAlign.center,
-            style: AppTextStyles.bigText.copyWith(
-              color: AppColors.greenLightTwo,
-            ),
-          ),
+          const SizedBox(height: 12.0),
           Image.asset(
             'assets/images/sign_up_image.png',
           ),
           Form(
             child: Column(
-              children: const [
+              children: [
                 CustomTextFormField(
                   labelText: "nome",
                   hintText: "Digite Seu Nome Completo",
+                  inputFormatters: [
+                    UpperCaseTextInputFormatter(),
+                  ],
                 ),
-                CustomTextFormField(
+                const CustomTextFormField(
                   labelText: "e-mail",
                   hintText: "seuemail@email.com",
                 ),
-                PasswordFormField(
+                const PasswordFormField(
                   labelText: "senha",
                   hintText: "********",
                 ),
-                PasswordFormField(
+                const PasswordFormField(
                   labelText: "confirme sua senha",
                   hintText: "********",
                 ),
