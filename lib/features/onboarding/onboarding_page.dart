@@ -26,14 +26,14 @@ class OnboardingPage extends StatelessWidget {
             'Gerencie Sua Biblioteca',
             textAlign: TextAlign.center,
             style: AppTextStyles.bigText.copyWith(
-              color: AppColors.greenLightTwo,
+              color: AppColors.greenOne,
             ),
           ),
           Text(
             'De Leitura',
             textAlign: TextAlign.center,
             style: AppTextStyles.bigText.copyWith(
-              color: AppColors.greenLightTwo,
+              color: AppColors.greenOne,
             ),
           ),
           Padding(
@@ -60,7 +60,7 @@ class OnboardingPage extends StatelessWidget {
               Text(
                 'Criar Conta.',
                 style: AppTextStyles.smallText.copyWith(
-                  color: AppColors.greenLightTwo,
+                  color: AppColors.greenOne,
                 ),
               ),
             ],
