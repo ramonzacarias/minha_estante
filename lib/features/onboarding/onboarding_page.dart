@@ -1,8 +1,9 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/commom/constants/routes.dart';
+
 
 import '../../commom/widgets/multi_text_button.dart';
 import '../../commom/widgets/primary_button.dart';
@@ -45,11 +46,16 @@ class OnboardingPage extends StatelessWidget {
             ),
             child: PrimaryButton(
               text: 'Fazer Login',
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  NamedRoute.signIn,
+                );
+              },
             ),
           ),
           MultiTextButton(
-            onPressed: () => log('tap') ,
+            onPressed: () => Navigator.pushNamed(context, NamedRoute.signUp),
             children: [
               Text(
                 'Não tem uma conta? ',

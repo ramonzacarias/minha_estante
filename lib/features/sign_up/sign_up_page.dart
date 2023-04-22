@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:minha_estante/commom/constants/routes.dart';
 import 'package:minha_estante/commom/utils/uppercase_text_formatter.dart';
 import 'package:minha_estante/commom/utils/validator.dart';
 import 'package:minha_estante/commom/widgets/custom_bottom_sheet.dart';
@@ -116,7 +117,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 CustomTextFormField(
                   controller: _emailController,
                   labelText: "e-mail",
-                  hintText: "seuemail@email.com",
+                  hintText: "digiteseuemail@email.com",
                   validator: Validator.validateEmail,
                 ),
                 PasswordFormField(
@@ -161,7 +162,10 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           MultiTextButton(
-            onPressed: () => log('tap'),
+            onPressed: () => Navigator.popAndPushNamed(
+              context,
+              NamedRoute.signIn,
+            ),
             children: [
               Text(
                 'Já Tem Conta? ',
