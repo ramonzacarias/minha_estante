@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
@@ -50,13 +49,13 @@ class OnboardingPage extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(
                   context,
-                  NamedRoute.signUp,
+                  NamedRoute.signIn,
                 );
               },
             ),
           ),
           MultiTextButton(
-            onPressed: () => log('tap'),
+            onPressed: () => Navigator.pushNamed(context, NamedRoute.signUp),
             children: [
               Text(
                 'Não tem uma conta? ',
