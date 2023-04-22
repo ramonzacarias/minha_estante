@@ -22,7 +22,7 @@ class LoginPage extends StatelessWidget {
         Text('Bem-vindo!',
         textAlign: TextAlign.center,
         style: AppTextStyles.bigText40.copyWith(
-          color: AppColors.greenLightTwo
+          color: AppColors.greenOne
           ),
         ),
         const SizedBox(height: 52.0),
@@ -71,7 +71,7 @@ class LoginPage extends StatelessWidget {
               Text(
                 'Criar Conta.',
                 style: AppTextStyles.smallText.copyWith(
-                  color: AppColors.greenLightTwo,
+                  color: AppColors.greenOne,
                 ),
               ),
             ],

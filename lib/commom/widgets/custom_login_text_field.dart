@@ -19,7 +19,7 @@ class CustomTextField extends StatefulWidget {
 
 class _CustomTextFieldState extends State<CustomTextField> {
   final defaultBorder = OutlineInputBorder(
-    borderSide: const BorderSide(color: AppColors.greenLightTwo),
+    borderSide: const BorderSide(color: AppColors.greenOne),
     borderRadius: BorderRadius.circular(8.0)
   );
 
