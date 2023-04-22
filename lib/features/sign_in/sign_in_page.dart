@@ -80,23 +80,16 @@ class _SignInPageState extends State<SignInPage> {
     return Scaffold(
       body: ListView(
         children: [
-          const SizedBox(height: 20.0),
           Text(
-            'Bem-vindo!',
+            'Welcome Back!',
             textAlign: TextAlign.center,
-            style: AppTextStyles.bigText40.copyWith(
+            style: AppTextStyles.bigText.copyWith(
               color: AppColors.greenOne,
             ),
           ),
-          const SizedBox(height: 30.0),
-          Expanded(
-            child: Image.asset(
-              'assets/images/sign_in_image.png',
-              width: 264.0,
-              height: 180,
-            ),
+          Image.asset(
+            'assets/images/sign_in_image.png',
           ),
-          const SizedBox(height: 20.0),
           Form(
             key: _formKey,
             child: Column(
@@ -152,7 +145,7 @@ class _SignInPageState extends State<SignInPage> {
                 ),
               ),
               Text(
-                'Criar conta.',
+                'Criar conta',
                 style: AppTextStyles.smallText.copyWith(
                   color: AppColors.greenOne,
                 ),
