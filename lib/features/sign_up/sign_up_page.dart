@@ -97,9 +97,11 @@ class _SignUpPageState extends State<SignUpPage> {
               color: AppColors.greenOne,
             ),
           ),
-          const SizedBox(height: 12.0),
+          const SizedBox(height: 43.0),
           Image.asset(
             'assets/images/sign_up_image.png',
+            width: 264.0,
+            height: 180,
           ),
           Form(
             key: _formKey,
