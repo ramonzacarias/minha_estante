@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/commom/constants/routes.dart';
 import 'package:minha_estante/commom/widgets/custom_circular_progress_indicator.dart';
 import 'package:minha_estante/features/splash/splash_controller.dart';
 import 'package:minha_estante/features/splash/splash_state.dart';
@@ -24,13 +23,17 @@ class _SplashPageState extends State<SplashPage> {
     _splashController.isUserLogged();
     _splashController.addListener(() {
       if (_splashController.state is SplashStateSuccess) {
-        //TODO: call home
         //Navegar para home
-        log('Navegar para home');
+        Navigator.pushReplacementNamed(
+          context,
+          NamedRoute.home,
+        );
       } else {
-        //Todo: call onboarding
         // Navega para onboarding
-        log('Navega para onboarding');
+        Navigator.pushReplacementNamed(
+          context,
+          NamedRoute.initial,
+        );
       }
     });
   }

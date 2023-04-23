@@ -13,17 +13,20 @@ class SplashController extends ChangeNotifier {
   SplashState get state => _state;
 
   void _changeState(SplashState newState) {
-    _state = newState;
-    notifyListeners();
+    _state = newState; // Atualiza o estado
+    notifyListeners(); // Notifica a modificação para a classe que está escutando
   }
 
   // Faz a verificação se o usuário está logado
   void isUserLogged() async {
+    await Future.delayed(const Duration(seconds: 1));
     final result = await _service.readOne(key: "CURRENT_USER");
     if (result != null) {
-      _changeState(SplashStateSuccess()); // Caso o user esteja logado ir para a tela home
+      _changeState(
+          SplashStateSuccess()); // Caso o user esteja logado ir para a tela home
     } else {
-      _changeState(SplashStateError()); // Caso aconteça algum erro, ir para a tela de login
+      _changeState(
+          SplashStateError()); // Caso aconteça algum erro, ir para a tela de login
     }
   }
 }

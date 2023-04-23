@@ -57,15 +57,9 @@ class _SignUpPageState extends State<SignUpPage> {
       // Exibe a tela de acesso ao sistema
       if (controller.state is SignUpSuccessState) {
         Navigator.pop(context);
-        Navigator.push(
+        Navigator.pushReplacementNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) => const Scaffold(
-              body: Center(
-                child: Text("Nova Tela"),
-              ),
-            ),
-          ),
+          NamedRoute.home,
         );
       }
       if (controller.state is SignUpErrorState) {
