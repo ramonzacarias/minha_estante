@@ -83,12 +83,10 @@ class _SignInPageState extends State<SignInPage> {
             ),
           ),
           const SizedBox(height: 30.0),
-          Expanded(
-            child: Image.asset(
+          Image.asset(
               'assets/images/sign_in_image.png',
               width: 264.0,
               height: 180,
-            ),
           ),
           const SizedBox(height: 20.0),
           Form(
