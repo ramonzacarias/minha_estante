@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:minha_estante/features/sign_in/sign_in_state.dart';
 import 'package:minha_estante/services/auth_service.dart';
+import 'package:minha_estante/services/secure_storage.dart';
 
 class SignInController extends ChangeNotifier {
   final AuthService _service;
@@ -12,23 +13,30 @@ class SignInController extends ChangeNotifier {
   SignInState get state => _state;
 
   void _changeState(SignInState newState) {
-    _state = newState;
-    notifyListeners();
+    _state = newState; // Atualiza o estado
+    notifyListeners(); // Notifica a modificação para a classe que está escutando
   }
 
   Future<void> signIn({
     required String email,
     required String password,
   }) async {
+    const secureStorage = SecureStorage();
+
     _changeState(SignInStateLoading());
 
     try {
-      await _service.signIn(
+      final user = await _service.signIn(
         email: email,
         password: password,
       );
+      //Verifica se o usuário existe
+      if (user.id != null) {
+        await secureStorage.write(key: "CURRENT_USER", value: user.toJson());
+        _changeState(SignInStateSuccess());
+      } else {
 
-      _changeState(SignInStateSuccess());
+      }
     } catch (e) {
       _changeState(SignInStateError(e.toString()));
     }

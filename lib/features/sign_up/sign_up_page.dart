@@ -10,7 +10,7 @@ import 'package:minha_estante/commom/widgets/custom_circular_progress_indicator.
 import 'package:minha_estante/commom/widgets/password_form_field.dart';
 import 'package:minha_estante/features/sign_up/sign_up_controller.dart';
 import 'package:minha_estante/features/sign_up/sign_up_state.dart';
-import 'package:minha_estante/services/mock_auth_service.dart';
+import 'package:minha_estante/locator.dart';
 
 import '../../commom/constants/app_colors.dart';
 import '../../commom/constants/app_text_styles.dart';
@@ -30,7 +30,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordControlled = TextEditingController();
-  final controller = SignUpController(MockAuthService());
+  final controller = locator.get<SignUpController>();
 
   @override
   void dispose() {
@@ -57,15 +57,9 @@ class _SignUpPageState extends State<SignUpPage> {
       // Exibe a tela de acesso ao sistema
       if (controller.state is SignUpSuccessState) {
         Navigator.pop(context);
-        Navigator.push(
+        Navigator.pushReplacementNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) => const Scaffold(
-              body: Center(
-                child: Text("Nova Tela"),
-              ),
-            ),
-          ),
+          NamedRoute.home,
         );
       }
       if (controller.state is SignUpErrorState) {
