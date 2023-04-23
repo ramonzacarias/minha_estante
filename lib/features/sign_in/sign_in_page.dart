@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:minha_estante/features/sign_in/sign_in_contoller.dart';
 import 'package:minha_estante/features/sign_in/sign_in_state.dart';
+import 'package:minha_estante/locator.dart';
 
 import '../../commom/constants/app_colors.dart';
 import '../../commom/constants/app_text_styles.dart';
@@ -14,7 +15,6 @@ import '../../commom/widgets/custom_text_form_field.dart';
 import '../../commom/widgets/multi_text_button.dart';
 import '../../commom/widgets/password_form_field.dart';
 import '../../commom/widgets/primary_button.dart';
-import '../../services/mock_auth_service.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -27,7 +27,7 @@ class _SignInPageState extends State<SignInPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _controller = SignInController(MockAuthService());
+  final _controller = locator.get<SignInController>();
 
   @override
   void dispose() {

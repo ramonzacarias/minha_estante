@@ -10,7 +10,7 @@ import 'package:minha_estante/commom/widgets/custom_circular_progress_indicator.
 import 'package:minha_estante/commom/widgets/password_form_field.dart';
 import 'package:minha_estante/features/sign_up/sign_up_controller.dart';
 import 'package:minha_estante/features/sign_up/sign_up_state.dart';
-import 'package:minha_estante/services/mock_auth_service.dart';
+import 'package:minha_estante/locator.dart';
 
 import '../../commom/constants/app_colors.dart';
 import '../../commom/constants/app_text_styles.dart';
@@ -30,7 +30,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordControlled = TextEditingController();
-  final controller = SignUpController(MockAuthService());
+  final controller = locator.get<SignUpController>();
 
   @override
   void dispose() {
