@@ -15,12 +15,13 @@ class FirebaseAuthService implements AuthService {
         email: email,
         password: password,
       );
-      // Verifica se o úsuario é null para realizar o seu registro
+      // Verifica se o usuario é null para realizar o seu registro
       if (result.user != null) {
         return UserModel(
-          name: result.user!.displayName,
-          email: result.user!.email,
-          id: result.user!.uid,
+          // Faz a verificação do user no firebase
+          name: _auth.currentUser?.displayName,
+          email: _auth.currentUser?.email,
+          id: _auth.currentUser?.uid,
         );
       } else {
         throw Exception();
@@ -43,13 +44,14 @@ class FirebaseAuthService implements AuthService {
         email: email,
         password: password,
       );
-      // Verifica se o úsuario é null para realizar o seu registro
+      // Verifica se o úsuario é null para realizar o login
       if (result.user != null) {
         await result.user!.updateDisplayName(name);
         return UserModel(
-          name: result.user!.displayName,
-          email: result.user!.email,
-          id: result.user!.uid,
+          // Faz a verificação do user no firebase
+          name: _auth.currentUser?.displayName,
+          email: _auth.currentUser?.email,
+          id: _auth.currentUser?.uid,
         );
       } else {
         throw Exception();
