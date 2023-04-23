@@ -118,3 +118,31 @@ lib/generated_plugin_registrant.dart
 # Ignore all local history of files
 .history
 .ionide
+
+# Created by https://www.toptal.com/developers/gitignore/api/firebase
+# Edit at https://www.toptal.com/developers/gitignore?templates=firebase
+
+### Firebase ###
+.idea
+**/node_modules/*
+**/.firebaserc
+
+### Firebase Patch ###
+.runtimeconfig.json
+.firebase/
+
+#Firebase Admin
+functions
+.firebaserc
+firebase.json
+
+# End of https://www.toptal.com/developers/gitignore/api/firebase
+
+
+# Firebase files
+# Firebase config file
+google-services.json
+# iOS specific GoogleService-Info.plist
+ios/Runner/GoogleService-Info.plist
+# Android specific google-services.json
+android/app/google-services.json
