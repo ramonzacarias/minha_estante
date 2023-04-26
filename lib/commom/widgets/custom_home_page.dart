@@ -34,7 +34,8 @@ class _HomePageState extends State<HomePage> {
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: AppColors.greenTwo,
-        iconSize: 49.0,
+        unselectedItemColor: AppColors.graffite,
+        iconSize: 51.0,
         currentIndex: _currentIndex,
         onTap: onTabTapped,
         items: const [
