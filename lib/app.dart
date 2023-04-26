@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/routes.dart';
-import 'package:minha_estante/features/home/home_page.dart';
 import 'package:minha_estante/features/onboarding/onboarding_page.dart';
 import 'package:minha_estante/features/sign_in/sign_in_page.dart';
 import 'package:minha_estante/features/sign_up/sign_up_page.dart';
 import 'package:minha_estante/features/splash/splash_page.dart';
+
+import 'commom/widgets/custom_home_page.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
