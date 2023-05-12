@@ -1,4 +1,5 @@
 import 'package:flutter/painting.dart';
+import 'package:minha_estante/commom/constants/app_colors.dart';
 
 class AppTextStyles {
   AppTextStyles._(); // Chamando as propriedades dentro do construtor AppTextStyle()
@@ -48,5 +49,12 @@ class AppTextStyles {
     fontFamily: 'Inter',
     fontSize: 12.0,
     fontWeight: FontWeight.w400,
+  );
+
+  static const TextStyle categoriesText = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 16.0,
+    fontWeight: FontWeight.w800,
+    color: AppColors.otherGrey
   );
 }
