@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 
-class CategoryBar extends StatelessWidget {
-  final List<String> categories = ['Tecnologia', 'Contos', 'Ficção Científica', 'Terror/Horror', 'Drama', 'Educação'];
+class CategoryBar extends StatefulWidget {
+  final List<String> categories;
   final int selectCategoryIndex;
-  final void Function(int) categorySelected;
+  final ValueChanged<int> categorySelected;
 
   CategoryBar({
-    required this.categorySelected, required this.selectCategoryIndex
+    required this.categorySelected, required this.selectCategoryIndex, required this.categories
   });
 
+  @override
+  State<CategoryBar> createState() => _CategoryBarState();
+}
+
+class _CategoryBarState extends State<CategoryBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,20 +25,20 @@ class CategoryBar extends StatelessWidget {
       ),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: categories.length,
+        itemCount: widget.categories.length,
         itemBuilder: (context, index) {
-          final category = categories[index];
+          final category = widget.categories[index];
           return GestureDetector(
-            onTap: () => categorySelected(index),
+            onTap: () => widget.categorySelected(index),
             child: Container(
               decoration: BoxDecoration(
-                color: selectCategoryIndex == index ? AppColors.grey : Colors.transparent,
+                color: widget.selectCategoryIndex == index ? AppColors.otherGrey : Colors.transparent,
                 borderRadius: BorderRadius.circular(24.0)
               ),
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Center(
                 child: Text(category, style: TextStyle(
-                  color: selectCategoryIndex == index ? AppColors.white : AppColors.grey
+                  color: widget.selectCategoryIndex == index ? AppColors.white : AppColors.grey
                 ),),
               ),
             ),

@@ -34,18 +34,15 @@ class SearchBar extends StatelessWidget {
                           color: AppColors.graffite,
                         )
                       ),
+                      prefixIcon: GestureDetector(
+                        onTap: searchPressed,
+                        child: Icon(Icons.search),
+                      ),
                       hintText: 'Digite o título do livro',
                     ),
                     onChanged: onTextChanged,
                   ),
                 ),
-                InkWell(
-                  onTap: searchPressed,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(Icons.search),
-                  ),
-                )
               ],
             ),
     );
