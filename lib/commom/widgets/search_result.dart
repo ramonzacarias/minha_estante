@@ -15,8 +15,18 @@ class SearchResults extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final book = searchResult['items'][index];
                     return ListTile(
-                      leading: Image.network(
-                        book['volumeInfo']['imageLinks']['thumbnail'],
+                      leading: Container(
+                        width: 56.0,
+                        child: book['volumeInfo']['imageLinks'] != null &&
+                              book['volumeInfo']['imageLinks']['thumbnail'] !=
+                                  null
+                          ? Image.network(
+                              book['volumeInfo']['imageLinks']['thumbnail'],
+                            )
+                          : FadeInImage.assetNetwork(
+                              placeholder: 'https://www.pngplay.com/wp-content/uploads/4/Book-Transparent-Free-PNG.png',
+                              image: 'https://www.pngplay.com/wp-content/uploads/4/Book-Transparent-Free-PNG.png',
+                            ),
                       ),
                       title: Text(book['volumeInfo']['title']),
                       subtitle: Text(

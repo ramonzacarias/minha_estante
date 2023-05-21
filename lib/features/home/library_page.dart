@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../commom/constants/app_colors.dart';
 import '../../commom/constants/books_api.dart';
+import '../../commom/widgets/category_bar.dart';
 import '../../commom/widgets/search_bar.dart';
 import '../../commom/widgets/search_result.dart';
 
@@ -15,6 +16,7 @@ class _LibraryState extends State<Library> {
   String _searchQuery = '';
   dynamic _searchResult;
   TextEditingController _controllerSearch = TextEditingController();
+  int _selectCategoryIndex = -1;
 
   void _showSnackBarMessage() { //aparece uma barra de aviso para digitar algo a ser pesquisado
     final snackBar = SnackBar(
@@ -52,7 +54,18 @@ class _LibraryState extends State<Library> {
 
             searchPressed: _searchBooks,
           ),
-
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: CategoryBar(
+              categories: ['Lendo', 'Quero Ler', 'Lidos', 'Abandonei', 'Todos'],
+              selectCategoryIndex: _selectCategoryIndex,
+              categorySelected: (index) {
+                setState(() {
+                  _selectCategoryIndex = index;
+                });
+              },
+           )
+          ),
           //Lista os livros encontrados na busca via API
           SearchResults(searchResult: _searchResult)
         ]  
