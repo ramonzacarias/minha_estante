@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: AppColors.greenTwo,
         unselectedItemColor: AppColors.graffite,
-        iconSize: 51.0,
+        iconSize: 38.0,
         currentIndex: _currentIndex,
         onTap: onTabTapped,
         items: const [
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
             label: 'Início',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.my_library_books_outlined),
+            icon: Icon(Icons.my_library_books),
             label: 'Biblioteca',
           ),
           BottomNavigationBarItem(

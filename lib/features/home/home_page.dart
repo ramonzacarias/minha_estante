@@ -90,7 +90,7 @@ class _HomeState extends State<Home> {
             )
           ),
           Container(
-            height: 220,
+            height: 200,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: 5,
@@ -130,7 +130,7 @@ class _HomeState extends State<Home> {
             )
           ),
           Container(
-            height: 220,
+            height: 200,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: 5,
@@ -170,7 +170,7 @@ class _HomeState extends State<Home> {
             )
           ),
           Container(
-            height: 220,
+            height: 200,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: 5,
