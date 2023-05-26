@@ -1,15 +1,16 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:minha_estante/features/sign_in/sign_in_contoller.dart';
 import 'package:minha_estante/features/sign_in/sign_in_state.dart';
 import 'package:minha_estante/locator.dart';
+import 'package:minha_estante/services/firebase_auth_service.dart';
 
 import '../../commom/constants/app_colors.dart';
 import '../../commom/constants/app_text_styles.dart';
 import '../../commom/constants/routes.dart';
 import '../../commom/utils/validator.dart';
-import '../../commom/widgets/custom_bottom_sheet.dart';
 import '../../commom/widgets/custom_circular_progress_indicator.dart';
 import '../../commom/widgets/custom_text_form_field.dart';
 import '../../commom/widgets/multi_text_button.dart';
@@ -17,7 +18,7 @@ import '../../commom/widgets/password_form_field.dart';
 import '../../commom/widgets/primary_button.dart';
 
 class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+  const SignInPage({Key? key}) : super(key: key);
 
   @override
   State<SignInPage> createState() => _SignInPageState();
@@ -28,6 +29,8 @@ class _SignInPageState extends State<SignInPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _controller = locator.get<SignInController>();
+
+  final _recoverPwd = FirebaseAuthService();
 
   @override
   void dispose() {
@@ -59,12 +62,28 @@ class _SignInPageState extends State<SignInPage> {
         if (_controller.state is SignInStateError) {
           final error = _controller.state as SignInStateError;
           Navigator.pop(context);
-          customModalBottomSheet(
-            context,
-            content: error.message,
-            buttonText: "Tentar novamente",
-          );
+          _popUpRecoverPwd(context, 'Erro', error.message);
         }
+      },
+    );
+  }
+
+  void _popUpRecoverPwd(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
       },
     );
   }
@@ -84,9 +103,9 @@ class _SignInPageState extends State<SignInPage> {
           ),
           const SizedBox(height: 30.0),
           Image.asset(
-              'assets/images/sign_in_image.png',
-              width: 264.0,
-              height: 180,
+            'assets/images/sign_in_image.png',
+            width: 264.0,
+            height: 180,
           ),
           const SizedBox(height: 20.0),
           Form(
@@ -96,7 +115,7 @@ class _SignInPageState extends State<SignInPage> {
                 CustomTextFormField(
                   controller: _emailController,
                   labelText: "e-mail",
-                  hintText: "digiteseuemail@email.com",
+                  hintText: "Digite seu email",
                   validator: Validator.validateEmail,
                 ),
                 PasswordFormField(
@@ -109,10 +128,57 @@ class _SignInPageState extends State<SignInPage> {
             ),
           ),
           Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 25.0,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    final email = _emailController.text.trim();
+                    if (email.isEmpty) {
+                      _popUpRecoverPwd(context, 'Erro',
+                          'Por favor, informe um email para recuperar a senha');
+                      return;
+                    } else {
+                      try {
+                        await _recoverPwd.recoverPwd(email: email);
+                        _popUpRecoverPwd(context, 'Sucesso',
+                            'Email de recuperação de senha enviado com sucesso.');
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'user-not-found') {
+                          _popUpRecoverPwd(
+                              context, 'Erro', 'Email não cadastrado.');
+                        } else if (e.code == 'invalid-email') {
+                          _popUpRecoverPwd(context, 'Erro',
+                              'Por favor, informe um email válido para recuperar a senha.');
+                        } else {
+                          _popUpRecoverPwd(context, 'Erro',
+                              'Ocorreu um erro ao enviar o email de recuperação.');
+                        }
+                      } catch (e) {
+                        _popUpRecoverPwd(context, 'Erro',
+                            'Ocorreu um erro ao enviar o email de recuperação.');
+                      }
+                    }
+                  },
+                  child: Text(
+                    'Esqueceu sua senha?',
+                    style: AppTextStyles.inputHintText.copyWith(
+                      color: AppColors.grey,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 10),
+          Padding(
             padding: const EdgeInsets.only(
               left: 32.0,
               right: 32.0,
-              top: 16.0,
+              top: 25.0,
               bottom: 4.0,
             ),
             child: PrimaryButton(
@@ -126,7 +192,7 @@ class _SignInPageState extends State<SignInPage> {
                     password: _passwordController.text,
                   );
                 } else {
-                  log("erro ao logar");
+                  log("Erro ao logar");
                 }
               },
             ),
