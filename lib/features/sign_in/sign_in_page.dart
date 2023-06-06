@@ -61,7 +61,7 @@ class _SignInPageState extends State<SignInPage> {
           Navigator.pop(context);
           customModalBottomSheet(
             context,
-            content: error.message,
+            content: "Seu usuário ou senha estão incorretos!",
             buttonText: "Tentar novamente",
           );
         }
