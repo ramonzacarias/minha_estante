@@ -169,7 +169,7 @@ class ProfilePage extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 20.0),
                   child: InkWell(
                     onTap: () {
-                      // Nesse caso, diferente de excluir a conta, ele apenas deleta o acesso do usuário
+                      // Nesse caso, diferente de excluir a conta, ele deleta a 'sessão' de acesso do usuário
                       _secureStorage.deleteOne(key: "CURRENT_USER").then(
                             (_) => Navigator.popAndPushNamed(
                               context,
