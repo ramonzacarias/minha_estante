@@ -39,7 +39,8 @@ Future<void> customModalBottomSheet(
                   horizontal: 32.00,
                 ),
                 child: Text(
-                  'Ops. Algo deu errado.',
+                  content,
+                  textAlign: TextAlign.center,
                   style: AppTextStyles.mediumText20.copyWith(
                     color: AppColors.greenOne,
                   ),

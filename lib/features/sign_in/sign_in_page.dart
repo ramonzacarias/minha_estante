@@ -57,11 +57,10 @@ class _SignInPageState extends State<SignInPage> {
         }
 
         if (_controller.state is SignInStateError) {
-          final error = _controller.state as SignInStateError;
           Navigator.pop(context);
           customModalBottomSheet(
             context,
-            content: error.message,
+            content: "Seu usuário ou senha estão incorretos!",
             buttonText: "Tentar novamente",
           );
         }
