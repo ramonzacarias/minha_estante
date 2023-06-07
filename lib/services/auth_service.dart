@@ -15,4 +15,8 @@ abstract class AuthService {
   });
 
   Future<void> signOut();
+  
+  Future<void> recoverPwd({
+    required String email,
+  });
 }

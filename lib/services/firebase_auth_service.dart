@@ -71,4 +71,15 @@ class FirebaseAuthService implements AuthService {
       rethrow;
     }
   }
+
+  @override
+  Future<void> recoverPwd({
+    required String email,
+  }) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      throw e;
+    }
+  }
 }
