@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/commom/widgets/custom_bottom_sheet.dart';
 import 'package:minha_estante/services/secure_storage.dart';
 
 import '../../commom/constants/routes.dart';
@@ -66,7 +68,11 @@ class ProfilePage extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 20.0),
                   child: InkWell(
                     onTap: () {
-                      // Ação do botão "Teste"
+                      // Ação do botão
+                      Navigator.popAndPushNamed(
+                        // Vai para a página de Editar Perfil
+                        context, NamedRoute.profileEdit
+                      );
                     },
                     child: Row(
                       children: [
@@ -89,8 +95,9 @@ class ProfilePage extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 20.0),
                   child: InkWell(
                     onTap: () {
-                      // Ação do botão "Teste"
+                      // Ação do botão
                       Navigator.popAndPushNamed(
+                        // Vai para a página de Termos de Uso
                         context, NamedRoute.useTherms
                       );
                     },
@@ -115,7 +122,31 @@ class ProfilePage extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 20.0),
                   child: InkWell(
                     onTap: () {
-                      // Ação do botão "Teste"
+
+                      customModalBottomSheet(
+                        context, 
+                        content: "Clique em Apagar, se deseja realmente excluir sua conta!", 
+                        buttonText: 'Apagar.',
+                        onPressed:() {
+                          // Obtenha a instância do usuário atualmente autenticado
+                          User? user = FirebaseAuth.instance.currentUser;
+
+                          if (user != null) {
+                            // Exclua o usuário autenticado
+                            user.delete().then((_) {
+                              // O usuário foi excluído com sucesso, redireciona para a tela inicial
+                              Navigator.popAndPushNamed(
+                                context,
+                                NamedRoute.initial,
+                              );
+                            }).catchError((error) {
+                              // Erro ao excluir o usuário, exibe uma mensagem de erro
+                              print('Erro ao excluir o usuário: $error');
+                            });
+                          }
+                        },
+                      );
+
                     },
                     child: Row(
                       children: [
@@ -138,6 +169,7 @@ class ProfilePage extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 20.0),
                   child: InkWell(
                     onTap: () {
+                      // Nesse caso, diferente de excluir a conta, ele deleta a 'sessão' de acesso do usuário
                       _secureStorage.deleteOne(key: "CURRENT_USER").then(
                             (_) => Navigator.popAndPushNamed(
                               context,
