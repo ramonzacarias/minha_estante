@@ -5,7 +5,7 @@ import 'package:minha_estante/commom/constants/app_text_styles.dart';
 import 'package:minha_estante/commom/widgets/custom_bottom_sheet.dart';
 import 'package:minha_estante/services/secure_storage.dart';
 
-import '../../commom/constants/routes.dart';
+import 'package:minha_estante/commom/constants/routes.dart';
 
 class ProfilePage extends StatelessWidget {
   final _secureStorage = const SecureStorage();

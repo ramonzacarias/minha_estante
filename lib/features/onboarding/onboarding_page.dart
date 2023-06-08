@@ -5,8 +5,8 @@ import 'package:minha_estante/commom/constants/app_text_styles.dart';
 import 'package:minha_estante/commom/constants/routes.dart';
 
 
-import '../../commom/widgets/multi_text_button.dart';
-import '../../commom/widgets/primary_button.dart';
+import 'package:minha_estante/commom/widgets/multi_text_button.dart';
+import 'package:minha_estante/commom/widgets/primary_button.dart';
 
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../commom/constants/app_colors.dart';
-import '../../commom/constants/books_api.dart';
-import '../../commom/widgets/category_bar.dart';
-import '../../commom/widgets/search_bar.dart';
-import '../../commom/widgets/search_result.dart';
+import 'package:minha_estante/commom/constants/app_colors.dart';
+import 'package:minha_estante/commom/constants/books_api.dart';
+import 'package:minha_estante/commom/widgets/category_bar.dart';
+import 'package:minha_estante/commom/widgets/search_bar.dart';
+import 'package:minha_estante/commom/widgets/search_result.dart';
 
 class Library extends StatefulWidget {
   const Library({Key? key}) : super(key: key);

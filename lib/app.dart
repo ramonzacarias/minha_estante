@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/routes.dart';
-import 'package:minha_estante/features/home/profile_edit.dart';
-import 'package:minha_estante/features/home/use_therm.dart';
+import 'package:minha_estante/features/edit_profile/profile_edit.dart';
+import 'package:minha_estante/features/user_therm/use_therm.dart';
 import 'package:minha_estante/features/onboarding/onboarding_page.dart';
 import 'package:minha_estante/features/sign_in/sign_in_page.dart';
 import 'package:minha_estante/features/sign_up/sign_up_page.dart';

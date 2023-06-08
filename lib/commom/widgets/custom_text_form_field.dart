@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../constants/app_colors.dart';
-import '../constants/app_text_styles.dart';
+import 'package:minha_estante/commom/constants/app_colors.dart';
+import 'package:minha_estante/commom/constants/app_text_styles.dart';
 
 class CustomTextFormField extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
