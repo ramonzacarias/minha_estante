@@ -1,4 +1,4 @@
-import '../commom/models/user_model.dart';
+import 'package:minha_estante/commom/models/user_model.dart';
 
 // Interface para a autenticação do usuario
 

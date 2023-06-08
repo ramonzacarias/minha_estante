@@ -8,15 +8,15 @@ import 'package:minha_estante/features/sign_in/sign_in_state.dart';
 import 'package:minha_estante/locator.dart';
 import 'package:minha_estante/services/firebase_auth_service.dart';
 
-import '../../commom/constants/app_colors.dart';
-import '../../commom/constants/app_text_styles.dart';
-import '../../commom/constants/routes.dart';
-import '../../commom/utils/validator.dart';
-import '../../commom/widgets/custom_circular_progress_indicator.dart';
-import '../../commom/widgets/custom_text_form_field.dart';
-import '../../commom/widgets/multi_text_button.dart';
-import '../../commom/widgets/password_form_field.dart';
-import '../../commom/widgets/primary_button.dart';
+import 'package:minha_estante/commom/constants/app_colors.dart';
+import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/commom/constants/routes.dart';
+import 'package:minha_estante/commom/utils/validator.dart';
+import 'package:minha_estante/commom/widgets/custom_circular_progress_indicator.dart';
+import 'package:minha_estante/commom/widgets/custom_text_form_field.dart';
+import 'package:minha_estante/commom/widgets/multi_text_button.dart';
+import 'package:minha_estante/commom/widgets/password_form_field.dart';
+import 'package:minha_estante/commom/widgets/primary_button.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);

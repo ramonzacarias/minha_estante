@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/widgets/primary_button.dart';
 
-import '../constants/app_colors.dart';
-import '../constants/app_text_styles.dart';
+import 'package:minha_estante/commom/constants/app_colors.dart';
+import 'package:minha_estante/commom/constants/app_text_styles.dart';
 
 Future<void> customModalBottomSheet(
   BuildContext context, {

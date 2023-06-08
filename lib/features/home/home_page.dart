@@ -4,8 +4,8 @@ import 'package:minha_estante/commom/constants/app_text_styles.dart';
 import 'package:minha_estante/commom/widgets/search_bar.dart';
 import 'package:minha_estante/commom/widgets/search_result.dart';
 
-import '../../commom/constants/books_api.dart';
-import '../../commom/widgets/category_bar.dart';
+import 'package:minha_estante/commom/constants/books_api.dart';
+import 'package:minha_estante/commom/widgets/category_bar.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);

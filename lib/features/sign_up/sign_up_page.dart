@@ -12,11 +12,11 @@ import 'package:minha_estante/features/sign_up/sign_up_controller.dart';
 import 'package:minha_estante/features/sign_up/sign_up_state.dart';
 import 'package:minha_estante/locator.dart';
 
-import '../../commom/constants/app_colors.dart';
-import '../../commom/constants/app_text_styles.dart';
-import '../../commom/widgets/custom_text_form_field.dart';
-import '../../commom/widgets/multi_text_button.dart';
-import '../../commom/widgets/primary_button.dart';
+import 'package:minha_estante/commom/constants/app_colors.dart';
+import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/commom/widgets/custom_text_form_field.dart';
+import 'package:minha_estante/commom/widgets/multi_text_button.dart';
+import 'package:minha_estante/commom/widgets/primary_button.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
