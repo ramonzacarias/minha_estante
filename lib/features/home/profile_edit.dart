@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/commom/widgets/primary_button.dart';
 
 import '../../commom/constants/routes.dart';
+import '../../commom/utils/uppercase_text_formatter.dart';
 import '../../commom/utils/validator.dart';
 import '../../commom/widgets/custom_text_form_field.dart';
 import '../../commom/widgets/password_form_field.dart';
@@ -20,9 +23,28 @@ class _EditProfileState extends State<EditProfile> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _passwordController = TextEditingController();
-  //inal _controller = locator.get<SignInController>();
+  final _passwordConfirmController = TextEditingController();
+  final _controller = locator.get<SignInController>();
 
+  @override
+  void dispose(){
+    _nameController.dispose();
+    _passwordController.dispose();
+    _passwordConfirmController.dispose();
+    super.dispose();
+  }
   
+  // Método do Firebase para envio de e-mail de confirmação
+  Future<void> _sendPasswordResetEmail() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null){
+
+      await user.sendEmailVerification(); // Confirmação da alteração da senha
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,25 +96,78 @@ class _EditProfileState extends State<EditProfile> {
                   controller: _nameController,
                   labelText: "nome",
                   hintText: "Edite seu nome aqui...",
-                  //validator: Validator.validateName(),
+                  inputFormatters: [
+                    UpperCaseTextInputFormatter(),
+                  ],
+                  validator: Validator.validateName,
+                  
                 ),
-                PasswordFormField(
-                  controller: _passwordController,
-                  labelText: "senha atual",
-                  hintText: "*********",
-                  validator: Validator.validatePassword,
-                ),
+                
                 PasswordFormField(
                   controller: _passwordController,
                   labelText: "nova senha",
                   hintText: "*********",
+                  helpText:
+                      "Deve ter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula, um número e um caractere especial",
                   validator: Validator.validatePassword,
                 ),
                 PasswordFormField(
-                  controller: _passwordController,
+                  controller: _passwordConfirmController,
                   labelText: "confirmar senha",
                   hintText: "*********",
-                  validator: Validator.validatePassword,
+                  validator: (value) => Validator.validateConfirmPassword(
+                      value, _passwordController.text),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 32.0,
+                    right: 32.0,
+                    top: 24.0,
+                    bottom: 4.0,
+                  ),
+                  child: PrimaryButton(
+                    text: 'Salvar Alterações',
+                    onPressed: () async {
+
+                      if (_formKey.currentState!.validate()){ // Confere se as validações foram satisfeitas
+
+                        if (_nameController.text.isNotEmpty){ // Se a informação de nome não for vazia, atualize o Nome do Usuário
+
+                          await _controller.updateUserName("CURRENT_USER", _nameController.text);
+                          await _sendPasswordResetEmail();
+                        }
+                        
+                        if (_passwordController.text.isNotEmpty){ // Se a informação de senha não for vazia, atualize a Senha do Usuário
+
+                          await _controller.updatePassword(newPassword: _passwordController.text);
+                        }
+
+                        // Mensagem de sucesso para as atualizações salvas
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: AppColors.graffite,
+                            content: Text(
+                            'Alterações salvas com sucesso!',
+                            style: AppTextStyles.smallText
+                                .copyWith(color: AppColors.darkGrey),
+                          )),
+                        );
+                      }else {
+
+                        // Mensagem de insucesso caso haja algum problema
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: AppColors.graffite,  
+                            content: Text(
+                            'Alterações não foram salvas por conta de um erro!',
+                            style: AppTextStyles.smallText
+                                .copyWith(color: AppColors.red),
+                          )),
+                        );
+                      }
+
+                    },
+                  ),
                 ),
               ],
             ),

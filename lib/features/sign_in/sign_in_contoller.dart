@@ -1,10 +1,12 @@
-import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:minha_estante/features/sign_in/sign_in_state.dart';
 import 'package:minha_estante/services/auth_service.dart';
 import 'package:minha_estante/services/secure_storage.dart';
 
 class SignInController extends ChangeNotifier {
   final AuthService _service;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   SignInController(this._service);
 
@@ -41,4 +43,27 @@ class SignInController extends ChangeNotifier {
       _changeState(SignInStateError(e.toString()));
     }
   }
+
+  // Fazendo update de futuros usuários nesse método
+  Future<void> updateUserName(String name, String newValue) async {
+      const secureStorage = SecureStorage();
+
+      await secureStorage.update(key: name, newValue: newValue);
+  }
+
+  // Atualização de senha de futuros usuários utilizando o próprio Firebase
+  Future<void> updatePassword({required String newPassword}) async {
+    try {
+
+      await _auth.currentUser!.updatePassword(newPassword);
+      print('Senha atualizada com suceeso!');
+
+    } catch (e) {
+
+      print('Erro ao solicitar atualização da senha: $e');
+
+    }
+
+  }
+
 }
