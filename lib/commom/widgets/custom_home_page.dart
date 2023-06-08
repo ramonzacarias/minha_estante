@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 
-import '../../features/home/home_page.dart';
-import '../../features/home/library_page.dart';
-import '../../features/home/profile_page.dart';
+import 'package:minha_estante/features/home/home_page.dart';
+import 'package:minha_estante/features/library/library_page.dart';
+import 'package:minha_estante/features/profile/profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

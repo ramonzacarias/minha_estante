@@ -4,13 +4,13 @@ import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
 import 'package:minha_estante/commom/widgets/primary_button.dart';
 
-import '../../commom/constants/routes.dart';
-import '../../commom/utils/uppercase_text_formatter.dart';
-import '../../commom/utils/validator.dart';
-import '../../commom/widgets/custom_text_form_field.dart';
-import '../../commom/widgets/password_form_field.dart';
-import '../../locator.dart';
-import '../sign_in/sign_in_contoller.dart';
+import 'package:minha_estante/commom/constants/routes.dart';
+import 'package:minha_estante/commom/utils/uppercase_text_formatter.dart';
+import 'package:minha_estante/commom/utils/validator.dart';
+import 'package:minha_estante/commom/widgets/custom_text_form_field.dart';
+import 'package:minha_estante/commom/widgets/password_form_field.dart';
+import 'package:minha_estante/locator.dart';
+import 'package:minha_estante/features/sign_in/sign_in_contoller.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});

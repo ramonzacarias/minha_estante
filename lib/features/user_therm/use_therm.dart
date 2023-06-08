@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/routes.dart';
 
-import '../../commom/constants/app_colors.dart';
-import '../../commom/constants/app_text_styles.dart';
+import 'package:minha_estante/commom/constants/app_colors.dart';
+import 'package:minha_estante/commom/constants/app_text_styles.dart';
 
 class UseTherms extends StatelessWidget {
   const UseTherms({super.key});
