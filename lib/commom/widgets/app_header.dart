@@ -38,7 +38,7 @@ class _AppHeaderState extends State<AppHeader> {
           ),
         ),
         Positioned(
-          left: 15,
+          left: 20,
           right: 0,
           top: 70,
           child: Row(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/routes.dart';
 import 'package:minha_estante/features/edit_profile/profile_edit.dart';
+import 'package:minha_estante/features/profile/profile_page.dart';
 import 'package:minha_estante/features/user_therm/use_therm.dart';
 import 'package:minha_estante/features/onboarding/onboarding_page.dart';
 import 'package:minha_estante/features/sign_in/sign_in_page.dart';
@@ -25,6 +26,7 @@ class App extends StatelessWidget {
         NamedRoute.signIn: (context) => const SignInPage(),
         NamedRoute.useTherms: (context) => const UseTherms(),
         NamedRoute.profileEdit: (context) => const EditProfile(),
+        NamedRoute.profilePage: (context) => const ProfilePage(),
         NamedRoute.home: (context) => const HomePage(),
       },
     );
