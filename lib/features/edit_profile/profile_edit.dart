@@ -134,12 +134,12 @@ class _EditProfileState extends State<EditProfile> {
                         if (_nameController.text.isNotEmpty){ // Se a informação de nome não for vazia, atualize o Nome do Usuário
 
                           await _controller.updateUserName("CURRENT_USER", _nameController.text);
-                          await _sendPasswordResetEmail();
                         }
                         
                         if (_passwordController.text.isNotEmpty){ // Se a informação de senha não for vazia, atualize a Senha do Usuário
 
                           await _controller.updatePassword(newPassword: _passwordController.text);
+                          await _sendPasswordResetEmail();
                         }
 
                         // Mensagem de sucesso para as atualizações salvas
