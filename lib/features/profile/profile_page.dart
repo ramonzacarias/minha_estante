@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/commom/widgets/app_header.dart';
 import 'package:minha_estante/commom/widgets/custom_bottom_sheet.dart';
 import 'package:minha_estante/services/secure_storage.dart';
 
@@ -17,72 +18,41 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.center,
-                  end: Alignment.bottomCenter,
-                  colors: [AppColors.white, AppColors.iceWhite],
-                ),
-              ),
-            ),
-          ),
-          Positioned.fill(
-            left: 3,
-            right: 2,
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 150.0),
-                height: MediaQuery.of(context).size.height * 0.3,
-                decoration: BoxDecoration(
-                  color: AppColors.greenTwo,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(40.0),
-                    bottomRight: Radius.circular(40.0),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    SizedBox(height: 68.0),
-                    Text(
-                      'Perfil',
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.bigText40.copyWith(
-                        color: AppColors.iceWhite,
-                         
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Center(
+          const AppHeader(title: "Perfil",),
+          Positioned(
+            top: 300,
+            left: 0,
+            right: 0,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 68,),
+                SizedBox(
+                  height: 68,
+                ),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 20.0),
                   child: InkWell(
                     onTap: () {
                       // Ação do botão
                       Navigator.popAndPushNamed(
-                        // Vai para a página de Editar Perfil
-                        context, NamedRoute.profileEdit
-                      );
+                          // Vai para a página de Editar Perfil
+                          context,
+                          NamedRoute.profileEdit);
                     },
                     child: Row(
                       children: [
-                        Icon(Icons.edit_outlined, size: 30, color: AppColors.grey,),
+                        Icon(
+                          Icons.edit_outlined,
+                          size: 30,
+                          color: AppColors.grey,
+                        ),
                         SizedBox(
                           width: 12.0,
                         ),
                         Text(
                           'Editar Perfil',
-                          style: AppTextStyles.mediumText18.copyWith(color: AppColors.grey),
+                          style: AppTextStyles.mediumText18
+                              .copyWith(color: AppColors.grey),
                         )
                       ],
                     ),
@@ -95,21 +65,20 @@ class ProfilePage extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 20.0),
                   child: InkWell(
                     onTap: () {
-                      // Ação do botão
-                      Navigator.popAndPushNamed(
-                        // Vai para a página de Termos de Uso
-                        context, NamedRoute.useTherms
-                      );
+                      // Ação do botão "Teste"
+                      Navigator.popAndPushNamed(context, NamedRoute.useTherms);
                     },
                     child: Row(
                       children: [
-                        Icon(Icons.security_update_warning_outlined, size: 30, color: AppColors.grey),
+                        Icon(Icons.security_update_warning_outlined,
+                            size: 30, color: AppColors.grey),
                         SizedBox(
                           width: 12.0,
                         ),
                         Text(
                           'Termo de Uso',
-                          style: AppTextStyles.mediumText18.copyWith(color: AppColors.grey),
+                          style: AppTextStyles.mediumText18
+                              .copyWith(color: AppColors.grey),
                         )
                       ],
                     ),
@@ -122,12 +91,13 @@ class ProfilePage extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 20.0),
                   child: InkWell(
                     onTap: () {
-
+                      // Ação do botão "Excluir a minha conta"
                       customModalBottomSheet(
-                        context, 
-                        content: "Clique em Apagar, se deseja realmente excluir sua conta!", 
+                        context,
+                        content:
+                            "Clique em Apagar, se deseja realmente excluir sua conta!",
                         buttonText: 'Apagar.',
-                        onPressed:() {
+                        onPressed: () {
                           // Obtenha a instância do usuário atualmente autenticado
                           User? user = FirebaseAuth.instance.currentUser;
 
@@ -146,17 +116,18 @@ class ProfilePage extends StatelessWidget {
                           }
                         },
                       );
-
                     },
                     child: Row(
                       children: [
-                        Icon(Icons.delete_outline, size: 30, color: AppColors.grey),
+                        Icon(Icons.delete_outline,
+                            size: 30, color: AppColors.grey),
                         SizedBox(
                           width: 12.0,
                         ),
                         Text(
                           'Excluir a minha conta',
-                          style: AppTextStyles.mediumText18.copyWith(color: AppColors.grey),
+                          style: AppTextStyles.mediumText18
+                              .copyWith(color: AppColors.grey),
                         )
                       ],
                     ),
@@ -179,13 +150,15 @@ class ProfilePage extends StatelessWidget {
                     },
                     child: Row(
                       children: [
-                        Icon(Icons.exit_to_app_outlined, size: 30, color: AppColors.grey),
+                        Icon(Icons.exit_to_app_outlined,
+                            size: 30, color: AppColors.grey),
                         SizedBox(
                           width: 12.0,
                         ),
                         Text(
                           'Sair',
-                          style: AppTextStyles.mediumText18.copyWith(color: AppColors.grey),
+                          style: AppTextStyles.mediumText18
+                              .copyWith(color: AppColors.grey),
                         )
                       ],
                     ),
