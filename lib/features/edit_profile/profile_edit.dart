@@ -27,22 +27,20 @@ class _EditProfileState extends State<EditProfile> {
   final _controller = locator.get<SignInController>();
 
   @override
-  void dispose(){
+  void dispose() {
     _nameController.dispose();
     _passwordController.dispose();
     _passwordConfirmController.dispose();
     super.dispose();
   }
-  
+
   // Método do Firebase para envio de e-mail de confirmação
   Future<void> _sendPasswordResetEmail() async {
     User? user = FirebaseAuth.instance.currentUser;
 
-    if (user != null){
-
+    if (user != null) {
       await user.sendEmailVerification(); // Confirmação da alteração da senha
     }
-
   }
 
   @override
@@ -51,40 +49,44 @@ class _EditProfileState extends State<EditProfile> {
       body: ListView(
         children: [
           Padding(
-            padding: EdgeInsets.all(9.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                // Botão para voltar a página Home
-                InkWell(
+              padding: EdgeInsets.all(9.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Botão para voltar a página Home
+                  InkWell(
                     onTap: () {
-                      Navigator.popAndPushNamed(context, NamedRoute.splash);
+                      Navigator.popAndPushNamed(context, NamedRoute.profilePage);
                     },
                     child: Row(
                       children: [
                         Icon(
                           Icons.arrow_back_outlined,
-                          size: 30,
+                          size: 25,
                           color: AppColors.graffite,
+                        ),
+                        Expanded(
+                          child: Text(
+                            'Edite seu Perfil!',
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.bigText.copyWith(
+                              color: AppColors.greenOne,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 30.0,
                         ),
                       ],
                     ),
                   ),
-                  Text(
-                    'Edite seu Perfil!',
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.bigText40.copyWith(
-                      color: AppColors.greenOne,
-                    ),
-                  ),
-              ],
-            )
-          ),
+                ],
+              )),
           const SizedBox(height: 20.0),
           Image.asset(
-              'assets/images/livros.png',
-              width: 264.0,
-              height: 200.0,
+            'assets/images/livros.png',
+            width: 264.0,
+            height: 200.0,
           ),
           const SizedBox(height: 20.0),
           // Página que irá editar o perfil do usuário
@@ -100,9 +102,7 @@ class _EditProfileState extends State<EditProfile> {
                     UpperCaseTextInputFormatter(),
                   ],
                   validator: Validator.validateName,
-                  
                 ),
-                
                 PasswordFormField(
                   controller: _passwordController,
                   labelText: "nova senha",
@@ -128,44 +128,46 @@ class _EditProfileState extends State<EditProfile> {
                   child: PrimaryButton(
                     text: 'Salvar Alterações',
                     onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        // Confere se as validações foram satisfeitas
 
-                      if (_formKey.currentState!.validate()){ // Confere se as validações foram satisfeitas
+                        if (_nameController.text.isNotEmpty) {
+                          // Se a informação de nome não for vazia, atualize o Nome do Usuário
 
-                        if (_nameController.text.isNotEmpty){ // Se a informação de nome não for vazia, atualize o Nome do Usuário
-
-                          await _controller.updateUserName("CURRENT_USER", _nameController.text);
+                          await _controller.updateUserName(
+                              "CURRENT_USER", _nameController.text);
                           await _sendPasswordResetEmail();
                         }
-                        
-                        if (_passwordController.text.isNotEmpty){ // Se a informação de senha não for vazia, atualize a Senha do Usuário
 
-                          await _controller.updatePassword(newPassword: _passwordController.text);
+                        if (_passwordController.text.isNotEmpty) {
+                          // Se a informação de senha não for vazia, atualize a Senha do Usuário
+
+                          await _controller.updatePassword(
+                              newPassword: _passwordController.text);
                         }
 
                         // Mensagem de sucesso para as atualizações salvas
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            backgroundColor: AppColors.graffite,
-                            content: Text(
-                            'Alterações salvas com sucesso!',
-                            style: AppTextStyles.smallText
-                                .copyWith(color: AppColors.darkGrey),
-                          )),
+                              backgroundColor: AppColors.graffite,
+                              content: Text(
+                                'Alterações salvas com sucesso!',
+                                style: AppTextStyles.smallText
+                                    .copyWith(color: AppColors.darkGrey),
+                              )),
                         );
-                      }else {
-
+                      } else {
                         // Mensagem de insucesso caso haja algum problema
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            backgroundColor: AppColors.graffite,  
-                            content: Text(
-                            'Alterações não foram salvas por conta de um erro!',
-                            style: AppTextStyles.smallText
-                                .copyWith(color: AppColors.red),
-                          )),
+                              backgroundColor: AppColors.graffite,
+                              content: Text(
+                                'Alterações não foram salvas por conta de um erro!',
+                                style: AppTextStyles.smallText
+                                    .copyWith(color: AppColors.red),
+                              )),
                         );
                       }
-
                     },
                   ),
                 ),
@@ -174,6 +176,6 @@ class _EditProfileState extends State<EditProfile> {
           ),
         ],
       ),
-    );      
+    );
   }
 }
