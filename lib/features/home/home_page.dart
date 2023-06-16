@@ -3,7 +3,6 @@ import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
 import 'package:minha_estante/commom/widgets/search_bar.dart';
 import 'package:minha_estante/commom/widgets/search_result.dart';
-
 import 'package:minha_estante/commom/constants/books_api.dart';
 import 'package:minha_estante/commom/widgets/category_bar.dart';
 
@@ -20,7 +19,7 @@ class _HomeState extends State<Home> {
   TextEditingController _controllerSearch = TextEditingController();
   int _selectCategoryIndex = -1;
 
-  void _showSnackBarMessage() { //aparece uma barra de aviso para digitar algo a ser pesquisado
+  void _showSnackBarMessage() {
     final snackBar = SnackBar(
       content: Text('Digite algum título para que seja pesquisado'),
       backgroundColor: AppColors.graffite,
@@ -29,7 +28,7 @@ class _HomeState extends State<Home> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  Future<void> _searchBooks() async { //faz busca dos livros na API
+  Future<void> _searchBooks() async {
     if (_searchQuery.isEmpty) {
       _showSnackBarMessage();
       return null;
@@ -40,170 +39,266 @@ class _HomeState extends State<Home> {
     });
   }
 
+  Future<List<String>> _fetchBookImages(
+      String categoria, int quantidade) async {
+    try {
+      final bookImages =
+          await BooksApi().fetchBookImages(categoria, quantidade);
+      return bookImages;
+    } catch (e) {
+      print('Erro ao carregar as imagens dos livros: $e');
+      return [];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
-        children: [
-          const SizedBox(height: 34.0),
-          SearchBar(
-            controllerText: _controllerSearch,
-            onTextChanged: (value) {
-              setState(() {
-                _searchQuery = value;
-              });
-            },
-
-            searchPressed: _searchBooks,
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 20.0, top: 10.0, bottom: 10.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-                child: Text(
-                  'Categorias',
-                  style: AppTextStyles.categoriesText
-              ),
-            )
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: CategoryBar(
-              categories: ['Tecnologia', 'Contos', 'Ficção Científica', 'Terror/Horror', 'Drama', 'Educação'],
-              selectCategoryIndex: _selectCategoryIndex,
-              categorySelected: (index) {
+          children: [
+            const SizedBox(height: 34.0),
+            SearchBar(
+              controllerText: _controllerSearch,
+              onTextChanged: (value) {
                 setState(() {
-                  _selectCategoryIndex = index;
+                  _searchQuery = value;
                 });
               },
-           )
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 20.0, top: 5.0, bottom: 10.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
+              searchPressed: _searchBooks,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 20.0, top: 10.0, bottom: 10.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Categorias',
+                  style: AppTextStyles.categoriesText,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: CategoryBar(
+                categories: [
+                  'Tecnologia',
+                  'Contos',
+                  'Ficção Científica',
+                  'Terror/Horror',
+                  'Drama',
+                  'Educação'
+                ],
+                selectCategoryIndex: _selectCategoryIndex,
+                categorySelected: (index) {
+                  setState(() {
+                    _selectCategoryIndex = index;
+                  });
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 20.0, top: 5.0, bottom: 10.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
                 child: Text(
                   'Fantasias',
-                  style: AppTextStyles.categoriesText
+                  style: AppTextStyles.categoriesText,
+                ),
               ),
-            )
-          ),
-          Container(
-            height: 200,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                final booksResultsURL = [
-                  'http://books.google.com/books/content?id=SqjxBDkL0dEC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',
-                  'http://books.google.com/books/content?id=iQdcEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',
-                  'http://books.google.com/books/content?id=2VK3EAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',
-                  'http://books.google.com/books/content?id=naVIEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',
-                  'http://books.google.com/books/content?id=0dlUAQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api'
-                ];
-
-                return Padding(
-                  padding: EdgeInsets.only(left: 15.0, top: 15.0, bottom: 30.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: AspectRatio(
-                      aspectRatio: 0.8,
-                      child: Image.network(
-                        booksResultsURL[index],
-                        fit: BoxFit.cover,
-                      ),
+            ),
+            FutureBuilder<List<String>>(
+              future: _fetchBookImages('Fantasias',
+                  5), // Obtém uma lista com 5 imagens de livros de fantasia
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasData) {
+                  final bookImages = snapshot.data!;
+                  return Container(
+                    height: 200,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: bookImages.length,
+                      itemBuilder: (context, index) {
+                        final imageUrl = bookImages[index];
+                        return Padding(
+                          padding: EdgeInsets.only(
+                              left: 15.0, top: 15.0, bottom: 30.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: AspectRatio(
+                              aspectRatio: 0.8,
+                              child: Image.network(
+                                imageUrl,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  )
-                );
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Erro ao carregar as imagens dos livros');
+                } else {
+                  return CircularProgressIndicator();
+                }
               },
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 20.0, top: 5.0, bottom: 10.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
+            Padding(
+              padding: EdgeInsets.only(left: 20.0, top: 5.0, bottom: 10.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
                 child: Text(
                   'Terror',
-                  style: AppTextStyles.categoriesText
+                  style: AppTextStyles.categoriesText,
+                ),
               ),
-            )
-          ),
-          Container(
-            height: 200,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                final booksResultsURL = [
-                  'http://books.google.com/books/content?id=BJ-moBFnCKgC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',
-                  'http://books.google.com/books/content?id=0zykDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',
-                  'http://books.google.com/books/content?id=TKEwBQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',
-                  'http://books.google.com/books/content?id=sl5CDgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',
-                  'http://books.google.com/books/content?id=y1NYEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api'
-                ];
-
-                return Padding(
-                  padding: EdgeInsets.only(left: 15.0, top: 15.0, bottom: 30.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: AspectRatio(
-                      aspectRatio: 0.8,
-                      child: Image.network(
-                        booksResultsURL[index],
-                        fit: BoxFit.cover,
-                      ),
+            ),
+            // Adicione as outras categorias e trechos de código semelhantes aqui...
+            FutureBuilder<List<String>>(
+              future: _fetchBookImages('Terror',
+                  5), // Obtém uma lista com 5 imagens de livros de fantasia
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasData) {
+                  final bookImages = snapshot.data!;
+                  return Container(
+                    height: 200,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: bookImages.length,
+                      itemBuilder: (context, index) {
+                        final imageUrl = bookImages[index];
+                        return Padding(
+                          padding: EdgeInsets.only(
+                              left: 15.0, top: 15.0, bottom: 30.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: AspectRatio(
+                              aspectRatio: 0.8,
+                              child: Image.network(
+                                imageUrl,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  )
-                );
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Erro ao carregar as imagens dos livros');
+                } else {
+                  return CircularProgressIndicator();
+                }
               },
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 20.0, top: 5.0, bottom: 10.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
+            Padding(
+              padding: EdgeInsets.only(left: 20.0, top: 5.0, bottom: 10.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
                 child: Text(
                   'Contos',
-                  style: AppTextStyles.categoriesText
+                  style: AppTextStyles.categoriesText,
+                ),
               ),
-            )
-          ),
-          Container(
-            height: 200,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                final booksResultsURL = [
-                  'http://books.google.com/books/content?id=SO8jyAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api',
-                  'http://books.google.com/books/content?id=-KlvMBX0L-EC&printsec=frontcover&img=1&zoom=1&source=gbs_api',
-                  'http://books.google.com/books/content?id=hY2OF0Yj3cQC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',
-                  'http://books.google.com/books/content?id=mBHdAgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api',
-                  'http://books.google.com/books/content?id=t6QwCgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api'
-                ];
-
-                return Padding(
-                  padding: EdgeInsets.only(left: 15.0, top: 15.0, bottom: 30.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: AspectRatio(
-                      aspectRatio: 0.8,
-                      child: Image.network(
-                        booksResultsURL[index],
-                        fit: BoxFit.cover,
-                      ),
+            ),
+            // Adicione as outras categorias e trechos de código semelhantes aqui...
+            FutureBuilder<List<String>>(
+              future: _fetchBookImages('Contos',
+                  5), // Obtém uma lista com 5 imagens de livros de fantasia
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasData) {
+                  final bookImages = snapshot.data!;
+                  return Container(
+                    height: 200,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: bookImages.length,
+                      itemBuilder: (context, index) {
+                        final imageUrl = bookImages[index];
+                        return Padding(
+                          padding: EdgeInsets.only(
+                              left: 15.0, top: 15.0, bottom: 30.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: AspectRatio(
+                              aspectRatio: 0.8,
+                              child: Image.network(
+                                imageUrl,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  )
-                );
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Erro ao carregar as imagens dos livros');
+                } else {
+                  return CircularProgressIndicator();
+                }
               },
             ),
-          ),
-          //Lista os livros encontrados na busca via API
-          SearchResults(searchResult: _searchResult)
-        ],
+            Padding(
+              padding: EdgeInsets.only(left: 20.0, top: 5.0, bottom: 10.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Drama',
+                  style: AppTextStyles.categoriesText,
+                ),
+              ),
+            ),
+            // Adicione as outras categorias e trechos de código semelhantes aqui...
+            FutureBuilder<List<String>>(
+              future: _fetchBookImages('Drama',
+                  5), // Obtém uma lista com 5 imagens de livros de fantasia
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasData) {
+                  final bookImages = snapshot.data!;
+                  return Container(
+                    height: 200,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: bookImages.length,
+                      itemBuilder: (context, index) {
+                        final imageUrl = bookImages[index];
+                        return Padding(
+                          padding: EdgeInsets.only(
+                              left: 15.0, top: 15.0, bottom: 30.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: AspectRatio(
+                              aspectRatio: 0.8,
+                              child: Image.network(
+                                imageUrl,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Erro ao carregar as imagens dos livros');
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
+            SearchResults(searchResult: _searchResult),
+          ],
+        ),
       ),
-      ) 
     );
   }
 }
