@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:http/http.dart' as http;
+import 'package:minha_estante/commom/constants/api_key.dart';
 
 class BooksApi {
   //classe de conexão e comunicação com a API do Google Livros
 
   static const _baseUrl = 'https://www.googleapis.com/books/v1/volumes';
-  static const apiKey = 'AIzaSyA6X1mgYYAu_eTMegHgUX55E0Untsyqrao'; //
+  static const apiKey = ApiKeys.booksApiKey;
 
   static Future<dynamic> search(String query) async {
     final url = '$_baseUrl?q=$query&key=$apiKey';

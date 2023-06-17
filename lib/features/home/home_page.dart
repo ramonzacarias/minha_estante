@@ -108,7 +108,7 @@ class _HomeState extends State<Home> {
             ),
             FutureBuilder<List<String>>(
               future: _fetchBookImages('Fantasias',
-                  5), // Obtém uma lista com 5 imagens de livros de fantasia
+                  8), // Obtém uma lista com 5 imagens de livros de fantasia
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
@@ -158,7 +158,7 @@ class _HomeState extends State<Home> {
             // Adicione as outras categorias e trechos de código semelhantes aqui...
             FutureBuilder<List<String>>(
               future: _fetchBookImages('Terror',
-                  5), // Obtém uma lista com 5 imagens de livros de fantasia
+                  8), // Obtém uma lista com 5 imagens de livros de fantasia
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
@@ -208,7 +208,7 @@ class _HomeState extends State<Home> {
             // Adicione as outras categorias e trechos de código semelhantes aqui...
             FutureBuilder<List<String>>(
               future: _fetchBookImages('Contos',
-                  5), // Obtém uma lista com 5 imagens de livros de fantasia
+                  8), // Obtém uma lista com 5 imagens de livros de fantasia
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
@@ -258,7 +258,7 @@ class _HomeState extends State<Home> {
             // Adicione as outras categorias e trechos de código semelhantes aqui...
             FutureBuilder<List<String>>(
               future: _fetchBookImages('Drama',
-                  5), // Obtém uma lista com 5 imagens de livros de fantasia
+                  8), // Obtém uma lista com 5 imagens de livros de fantasia
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
