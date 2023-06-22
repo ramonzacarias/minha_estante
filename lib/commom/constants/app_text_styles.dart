@@ -33,6 +33,13 @@ class AppTextStyles {
     fontSize: 14.0,
     fontWeight: FontWeight.w500,
   );
+
+  static const TextStyle extraSmallText = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 12.0,
+    fontWeight: FontWeight.w400,
+  );
+
   static const TextStyle inputLabelText = TextStyle(
     fontFamily: 'Inter',
     fontSize: 14.0,
@@ -45,16 +52,16 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
   );
 
- static const TextStyle inputHintText = TextStyle(
+  static const TextStyle inputHintText = TextStyle(
     fontFamily: 'Inter',
     fontSize: 12.0,
     fontWeight: FontWeight.w400,
   );
 
   static const TextStyle categoriesText = TextStyle(
-    fontFamily: 'Inter',
-    fontSize: 16.0,
-    fontWeight: FontWeight.w800,
-    color: AppColors.otherGrey
-  );
+      fontFamily: 'Inter',
+      fontSize: 16.0,
+      fontWeight: FontWeight.w800,
+      color: AppColors.otherGrey
+    );
 }
