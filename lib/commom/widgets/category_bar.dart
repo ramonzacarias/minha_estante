@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
+import 'package:minha_estante/commom/constants/app_text_styles.dart';
 
 class CategoryBar extends StatefulWidget {
   final List<String> categories;
@@ -7,7 +8,9 @@ class CategoryBar extends StatefulWidget {
   final ValueChanged<int> categorySelected;
 
   CategoryBar({
-    required this.categorySelected, required this.selectCategoryIndex, required this.categories
+    required this.categorySelected,
+    required this.selectCategoryIndex,
+    required this.categories,
   });
 
   @override
@@ -15,35 +18,51 @@ class CategoryBar extends StatefulWidget {
 }
 
 class _CategoryBarState extends State<CategoryBar> {
+  int selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 48.0,
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.graffite),
-        borderRadius: BorderRadius.circular(24.0)
-      ),
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: widget.categories.length,
-        itemBuilder: (context, index) {
-          final category = widget.categories[index];
-          return GestureDetector(
-            onTap: () => widget.categorySelected(index),
-            child: Container(
-              decoration: BoxDecoration(
-                color: widget.selectCategoryIndex == index ? AppColors.otherGrey : Colors.transparent,
-                borderRadius: BorderRadius.circular(24.0)
+    return Padding(
+      padding: EdgeInsets.only(bottom: 15),
+      child: SizedBox(
+        height: 35,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: widget.categories.length,
+          itemBuilder: (BuildContext context, int index) {
+            final category = widget.categories[index];
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  this.selectedIndex = index;
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: AppColors.greenTwo,
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 20 * 1.0),
+                  //margin: EdgeInsets.only(right: 20 * 0.5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        category,
+                        style: AppTextStyles.inputHintText
+                            .copyWith(color: AppColors.white),
+                      )
+                    ],
+                  ),
+                ),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Center(
-                child: Text(category, style: TextStyle(
-                  color: widget.selectCategoryIndex == index ? AppColors.white : AppColors.grey
-                ),),
-              ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
