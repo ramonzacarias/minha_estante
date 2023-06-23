@@ -19,6 +19,7 @@ class BookModel {
     required this.anoPublicacao,
   });
 
+  // Converte o objeto BookModel em um mapa
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -31,6 +32,7 @@ class BookModel {
     };
   }
 
+  // Constrói um objeto BookModel a partir de um mapa
   factory BookModel.fromMap(Map<String, dynamic> map) {
     return BookModel(
       id: map['id'],
@@ -43,8 +45,10 @@ class BookModel {
     );
   }
 
+  // Converte o objeto BookModel em uma string JSON
   String toJson() => json.encode(toMap());
 
+  // Constrói um objeto BookModel a partir de uma string JSON
   factory BookModel.fromJson(String source) =>
       BookModel.fromMap(json.decode(source));
 }

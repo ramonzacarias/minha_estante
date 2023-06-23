@@ -14,7 +14,7 @@ class UserModel {
     this.password,
   });
 
-  // Pega o objeto da classe e transforma em topMap
+  // Converte o objeto BookModel em um mapa
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
@@ -24,6 +24,7 @@ class UserModel {
     };
   }
 
+  // Constrói um objeto UserModel a partir de um mapa
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
       id: map['id'] != null ? map['id'] as String : null,
@@ -33,8 +34,8 @@ class UserModel {
     );
   }
 
-  // Retorna uma string, apartir do metodo que transforma um toMap em uma string
+  // Converte o objeto userModel em uma string JSON
   String toJson() => json.encode(toMap());
-
+  // Constrói um objeto UserModel a partir de uma string JSON
   factory UserModel.fromJson(String source) => UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }
