@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 
-class SearchBar extends StatelessWidget {
+class MySearchBar extends StatelessWidget {
   final TextEditingController controllerText;
   final Function(String) onTextChanged;
   final VoidCallback searchPressed;
 
-  SearchBar({
+  MySearchBar({
     required this.controllerText,
     required this.onTextChanged,
     required this.searchPressed

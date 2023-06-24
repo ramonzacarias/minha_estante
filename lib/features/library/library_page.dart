@@ -44,7 +44,7 @@ class _LibraryState extends State<Library> {
       body: Column(
         children: [
           const SizedBox(height: 34.0),
-          SearchBar(
+          MySearchBar(
             controllerText: _controllerSearch,
             onTextChanged: (value) {
               setState(() {

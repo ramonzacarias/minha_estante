@@ -148,4 +148,3 @@ ios/Runner/GoogleService-Info.plist
 android/app/google-services.json
 # Classe api do dart
 lib/commom/constants/api_key.dart
-lib/commom/constants/api_key.dart
