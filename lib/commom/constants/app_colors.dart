@@ -22,5 +22,6 @@ class AppColors {
   static const Color graffite = Color(0xFFAAAAAA);
   static const Color red = Color(0xFFF44336);
   static const Color otherGrey = Color(0xFF9D9D9D);
+  static const Color otherGreylight = Color(0xFFE0E0E0);
   
 }

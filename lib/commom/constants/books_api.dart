@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'package:minha_estante/commom/constants/api_key.dart';
 
@@ -22,6 +23,19 @@ class BooksApi {
     final encodedCategoria = Uri.encodeQueryComponent(categoria);
     final url =
         'https://www.googleapis.com/books/v1/volumes?q=$encodedCategoria&key=$apiKey';
+
+    // Verificar se os dados estão em cache
+    final snapshot = await FirebaseFirestore.instance
+        .collection('bookCache')
+        .doc(categoria)
+        .get();
+    if (snapshot.exists) {
+      final data = snapshot.data() as Map<String, dynamic>;
+      final cachedImages = List<String>.from(data['images']);
+      if (cachedImages.length >= quantidade) {
+        return cachedImages.sublist(0, quantidade);
+      }
+    }
 
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
@@ -63,6 +77,13 @@ class BooksApi {
             selectedIndices.clear();
           }
         }
+
+        // Salvar os dados em cache no Firestore
+        await FirebaseFirestore.instance
+            .collection('bookCache')
+            .doc(categoria)
+            .set({'images': bookImages});
+
         return bookImages;
       } else {
         throw Exception('Nenhum livro encontrado');
