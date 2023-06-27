@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/books_api.dart';
+import 'package:minha_estante/commom/constants/routes.dart';
 import 'package:minha_estante/commom/widgets/custom_search_bar.dart';
 import 'package:minha_estante/commom/widgets/favorite_bar.dart';
 import 'package:minha_estante/commom/widgets/search_result.dart';
@@ -39,8 +40,12 @@ class _LibraryState extends State<Library> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => WillPopScope(
+    onWillPop: () async {
+      Navigator.popAndPushNamed(context, NamedRoute.splash);
+      return false;
+    },
+    child: Scaffold(
       body: Column(children: [
         const SizedBox(height: 34.0),
         CustomSearchBar(
@@ -53,24 +58,9 @@ class _LibraryState extends State<Library> {
           searchPressed: _searchBooks,
         ),
         FavoriteBar(),
-        /*
->>>>>>> 1a4cc81ee4ba512cb909645ee5fe9fab03c981c3
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: CategoryBar(
-              categories: ['Lendo', 'Quero Ler', 'Lidos', 'Abandonei', 'Todos'],
-              selectCategoryIndex: _selectCategoryIndex,
-              categorySelected: (index) {
-                setState(() {
-                  _selectCategoryIndex = index;
-                });
-              },
-           )
-          ),
-          */
         //Lista os livros encontrados na busca via API
         SearchResults(searchResult: _searchResult)
       ]),
-    );
-  }
+    ),
+  );
 }

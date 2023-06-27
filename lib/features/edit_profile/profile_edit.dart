@@ -44,8 +44,12 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => WillPopScope(
+    onWillPop: () async {
+      Navigator.popAndPushNamed(context, NamedRoute.splash);
+      return false;
+    },
+    child: Scaffold(
       body: ListView(
         children: [
           Padding(
@@ -173,6 +177,6 @@ class _EditProfileState extends State<EditProfile> {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
 }

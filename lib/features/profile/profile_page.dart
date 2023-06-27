@@ -14,8 +14,12 @@ class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => WillPopScope (
+    onWillPop: () async {
+      Navigator.popAndPushNamed(context, NamedRoute.splash);
+      return false;
+    },
+    child: Scaffold(
       body: Stack(
         children: [
           const AppHeader(title: "Perfil",),
@@ -169,6 +173,6 @@ class ProfilePage extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
+    )
+  );
 }

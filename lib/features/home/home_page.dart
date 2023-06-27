@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/commom/constants/routes.dart';
 import 'package:minha_estante/commom/widgets/custom_search_bar.dart';
 import 'package:minha_estante/commom/widgets/search_result.dart';
 import 'package:minha_estante/commom/constants/books_api.dart';
@@ -51,6 +52,12 @@ class _HomeState extends State<Home> {
       print('Erro ao carregar as imagens dos livros: $e');
       return [];
     }
+  }
+
+  // Função para tratar o botão nativo do aparelho, volta para a página Splash
+  Future<bool> _onWillPop () async {
+    Navigator.popAndPushNamed(context, NamedRoute.splash);
+    return false;
   }
 
   // Constrói a seção de categorias com base em uma determinada categoria
@@ -137,7 +144,9 @@ class _HomeState extends State<Home> {
       'Sci-fi'
     ];
 
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: _onWillPop,
+        child: Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -180,6 +189,6 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-    );
+    ));
   }
 }
