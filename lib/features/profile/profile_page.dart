@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
 import 'package:minha_estante/commom/widgets/app_header.dart';
-import 'package:minha_estante/commom/widgets/custom_bottom_sheet.dart';
 import 'package:minha_estante/services/secure_storage.dart';
 
 import 'package:minha_estante/commom/constants/routes.dart';
@@ -18,7 +17,9 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          const AppHeader(title: "Perfil",),
+          const AppHeader(
+            title: "Perfil",
+          ),
           Positioned(
             top: 300,
             left: 0,
@@ -91,29 +92,45 @@ class ProfilePage extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 20.0),
                   child: InkWell(
                     onTap: () {
-                      // Ação do botão "Excluir a minha conta"
-                      customModalBottomSheet(
-                        context,
-                        content:
-                            "Clique em Apagar, se deseja realmente excluir sua conta!",
-                        buttonText: 'Apagar.',
-                        onPressed: () {
-                          // Obtenha a instância do usuário atualmente autenticado
-                          User? user = FirebaseAuth.instance.currentUser;
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Excluir conta'),
+                            content: Text(
+                                'Clique em "Apagar" para confirmar a exclusão da sua conta.'),
+                            actions: [
+                              TextButton(
+                                child: Text('Cancelar'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              TextButton(
+                                child: Text('Apagar'),
+                                onPressed: () {
+                                  // Obtenha a instância do usuário atualmente autenticado
+                                  User? user =
+                                      FirebaseAuth.instance.currentUser;
 
-                          if (user != null) {
-                            // Exclua o usuário autenticado
-                            user.delete().then((_) {
-                              // O usuário foi excluído com sucesso, redireciona para a tela inicial
-                              Navigator.popAndPushNamed(
-                                context,
-                                NamedRoute.initial,
-                              );
-                            }).catchError((error) {
-                              // Erro ao excluir o usuário, exibe uma mensagem de erro
-                              print('Erro ao excluir o usuário: $error');
-                            });
-                          }
+                                  if (user != null) {
+                                    // Exclua o usuário autenticado
+                                    user.delete().then((_) {
+                                      // O usuário foi excluído com sucesso, redireciona para a tela inicial
+                                      Navigator.popAndPushNamed(
+                                        context,
+                                        NamedRoute.initial,
+                                      );
+                                    }).catchError((error) {
+                                      // Erro ao excluir o usuário, exibe uma mensagem de erro
+                                      print(
+                                          'Erro ao excluir o usuário: $error');
+                                    });
+                                  }
+                                },
+                              ),
+                            ],
+                          );
                         },
                       );
                     },
