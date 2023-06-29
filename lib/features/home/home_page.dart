@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/commom/constants/routes.dart';
 import 'package:minha_estante/commom/widgets/custom_search_bar.dart';
 import 'package:minha_estante/commom/widgets/search_result.dart';
 import 'package:minha_estante/commom/constants/books_api.dart';
@@ -89,16 +90,22 @@ class _HomeState extends State<Home> {
                   itemCount: bookImages.length,
                   itemBuilder: (context, index) {
                     final imageUrl = bookImages[index];
-                    return Padding(
-                      padding:
-                          EdgeInsets.only(left: 15.0, top: 15.0, bottom: 30.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: AspectRatio(
-                          aspectRatio: 0.8,
-                          child: Image.network(
-                            imageUrl,
-                            fit: BoxFit.cover,
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.popAndPushNamed(
+                            context, NamedRoute.bookDetail);
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            left: 15.0, top: 15.0, bottom: 30.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: AspectRatio(
+                            aspectRatio: 0.8,
+                            child: Image.network(
+                              imageUrl,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
