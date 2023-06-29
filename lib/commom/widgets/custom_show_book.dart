@@ -201,7 +201,7 @@ class _CustomShowBookState extends State<CustomShowBook> {
             ),
           ),
           Positioned(
-            top: 460.0, // Ajuste essa altura para alinhar corretamente
+            top: 450.0, // Ajuste essa altura para alinhar corretamente
             left: 20.0, // Ajuste a posição horizontal conforme necessário
             child: Container(
               width: MediaQuery.of(context).size.width -
@@ -222,7 +222,7 @@ class _CustomShowBookState extends State<CustomShowBook> {
             ),
           ),
           Positioned(
-            top: 500.0, // Ajuste essa altura para alinhar corretamente
+            top: 480.0, // Ajuste essa altura para alinhar corretamente
             left: 20.0, // Ajuste a posição horizontal conforme necessário
             child: Container(
               width: MediaQuery.of(context).size.width -
@@ -231,7 +231,7 @@ class _CustomShowBookState extends State<CustomShowBook> {
                 children: [
                   Text(
                     '"Grandes Contos de H.P. Lovecraft" é uma coletânea que reúne alguns dos mais icônicos contos do famoso escritor de terror cósmico. O livro apresenta histórias que exploram o desconhecido, o inexplicável e o sobrenatural, criando um universo sombrio e inquietante que envolve o leitor em uma atmosfera de horror e mistério. Entre os contos selecionados estão "O Chamado de Cthulhu", "Nas Montanhas da Loucura", "A Sombra Vinda do Tempo" e outros clássicos que consolidaram H.P. Lovecraft como um dos maiores nomes da literatura de horror. Com sua escrita envolvente e perturbadora, Lovecraft é capaz de transportar o leitor para um mundo onde as fronteiras da razão são constantemente desafiadas, deixando-o cativado até a última página.',
-                    style: AppTextStyles.smallText
+                    style: AppTextStyles.extraSmallText
                         .copyWith(color: AppColors.black),
                     textAlign: TextAlign.justify,
                   ),
