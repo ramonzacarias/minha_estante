@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
-
 
 enum FavoriteStatus { reading, wantToRead, read, abandoned, all }
 
@@ -17,6 +17,32 @@ class _FavoriteBarState extends State<FavoriteBar> {
   @override
   Widget build(BuildContext context) {
     return SegmentedButton<FavoriteStatus>(
+      showSelectedIcon: false,
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.resolveWith<Color>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.selected)) {
+              return AppColors.greenTwo;
+            }
+            return Colors.transparent;
+          },
+        ),
+        foregroundColor: MaterialStateProperty.resolveWith<Color>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.selected)) {
+              return Colors.white;
+            }
+            return AppColors
+                .greenTwo; // Defina a cor desejada para o texto não selecionado
+          },
+        ),
+        side: MaterialStateProperty.all<BorderSide>(
+          BorderSide(
+            color: AppColors.greenTwo, // Defina a cor desejada para as bordas
+            width: 1.0, // Defina a largura das bordas
+          ),
+        ),
+      ),
       segments: const <ButtonSegment<FavoriteStatus>>[
         ButtonSegment<FavoriteStatus>(
           value: FavoriteStatus.reading,
@@ -63,47 +89,3 @@ class _FavoriteBarState extends State<FavoriteBar> {
     );
   }
 }
-
-/*
-enum Color { lendo, queroLer, lidos, abandonei, todos }
-
-class FavoriteBar extends StatefulWidget {
-  const FavoriteBar({super.key});
-
-  @override
-  State<FavoriteBar> createState() => _FavoriteBarState();
-}
-
-class _FavoriteBarState extends State<FavoriteBar> {
-  Color selectedColor = Color.lidos;
-
-  @override
-  Widget build(BuildContext context) {
-    return SegmentedButton<Color>(
-      segments: const <ButtonSegment<Color>>[
-        ButtonSegment<Color>(
-          value: Color.lendo,
-          label: Text('Lendo'),
-        ),
-        ButtonSegment<Color>(
-          value: Color.queroLer,
-          label: Text('Quero Ler'),
-        ),
-        ButtonSegment<Color>(
-          value: Color.lidos,
-          label: Text('Lidos'),
-        ),
-        ButtonSegment<Color>(
-          value: Color.abandonei,
-          label: Text('Abandonei'),
-        ),
-        ButtonSegment<Color>(
-          value: Color.todos,
-          label: Text('Todos'),
-        ),
-      ],
-      selected: <Color>{selectedColor},
-    );
-  }
-}
-*/

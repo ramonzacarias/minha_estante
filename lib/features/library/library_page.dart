@@ -57,6 +57,7 @@ class _LibraryState extends State<Library> {
           },
           searchPressed: _searchBooks,
         ),
+        const SizedBox(height: 20.0),
         FavoriteBar(),
         //Lista os livros encontrados na busca via API
         SearchResults(searchResult: _searchResult)
