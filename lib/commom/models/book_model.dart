@@ -1,26 +1,26 @@
 import 'dart:convert';
 
+import 'package:html/parser.dart' as htmlParser;
+
 class BookModel {
   final String id; // ID único do livro
   final String titulo; // Título do livro
-  String autor; // Autor do livro
+  final String autor; // Autor do livro
   final int qtdPaginas; // Número de páginas do livro
   final String descricao; // Descrição do livro
   final String imageUrl; // URL da imagem do livro
-  //final int anoPublicacao; // Ano de publicação do livro
   final String textSnippet;
-  String categoria;
+  final String categoria;
 
   BookModel({
     required this.id,
     required this.titulo,
-    required this.autor,
+    this.autor = AppError.unknownAuthor,
     required this.qtdPaginas,
     required this.descricao,
     required this.imageUrl,
-    required this.textSnippet,
-    required this.categoria
-    //required this.anoPublicacao,
+    this.textSnippet = AppError.unavailableSnippet,
+    this.categoria = AppError.unknownCategory,
   });
 
   // Converte o objeto BookModel em um mapa
@@ -33,23 +33,41 @@ class BookModel {
       'descricao': descricao,
       'imageUrl': imageUrl,
       'textSnippet': textSnippet,
-      'categoria': categoria
-      //'anoPublicacao': anoPublicacao,
+      'categoria': categoria,
     };
   }
 
   // Constrói um objeto BookModel a partir de um mapa
   factory BookModel.fromMap(Map<String, dynamic> map) {
+    final volumeInfo = map['volumeInfo'];
+    final searchInfo = map['searchInfo'];
+
+    // Função auxiliar para obter o primeiro valor de uma lista, retornando um valor padrão se a lista for nula ou vazia
+    String getFirstListValue(List<dynamic>? list, String defaultValue) {
+      if (list != null && list.isNotEmpty) {
+        return list[0].toString();
+      } else {
+        return defaultValue;
+      }
+    }
+
+    final description = volumeInfo['description']; // Obtém a descrição do livro
+    // Analisa a descrição como HTML, extrai o texto removendo as tags HTML, e atribui o resultado à variável 'sanitizedDescription'.
+    final sanitizedDescription =
+        htmlParser.parse(description).body?.text ?? description;
+
     return BookModel(
       id: map['id'],
-      titulo: map['titulo'],
-      autor: map['autor'],
-      qtdPaginas: map['qtdPaginas'],
-      descricao: map['descricao'],
-      imageUrl: map['imageUrl'],
-      textSnippet: map['searchInfo']['textSnippet'],
-      categoria: map['categoria']
-      //anoPublicacao: map['anoPublicacao'],
+      titulo: volumeInfo['title'],
+      autor: getFirstListValue(volumeInfo['authors'], AppError.unknownAuthor),
+      qtdPaginas: volumeInfo['pageCount'],
+      descricao: sanitizedDescription,
+      imageUrl: volumeInfo['imageLinks']?['thumbnail'],
+      textSnippet: searchInfo != null
+          ? searchInfo['textSnippet']
+          : AppError.unavailableSnippet,
+      categoria:
+          getFirstListValue(volumeInfo['categories'], AppError.unknownCategory),
     );
   }
 
@@ -59,4 +77,13 @@ class BookModel {
   // Constrói um objeto BookModel a partir de uma string JSON
   factory BookModel.fromJson(String source) =>
       BookModel.fromMap(json.decode(source));
+}
+
+class AppError {
+  static const String unknownTitle = 'Título desconhecido';
+  static const String unknownAuthor = 'Autor desconhecido';
+  static const String unknownCategory = 'Categoria desconhecida';
+  static const String unavailableDescription = 'Descrição indisponível';
+  static const String unavailableSnippet = 'Trecho indisponível';
+  static const String unavailableImageUrl = 'URL da imagem indisponível';
 }

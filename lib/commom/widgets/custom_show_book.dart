@@ -21,7 +21,7 @@ final BookModel book;
               decoration: const BoxDecoration(
                 color: AppColors.green,
               ),
-              height: MediaQuery.of(context).size.height * 0.5,
+              height: 410,
               padding: const EdgeInsets.only(left: 15.0),
               child: Stack(
                 children: [
@@ -47,7 +47,7 @@ final BookModel book;
                         style: AppTextStyles.mediumText16.copyWith(
                           color: AppColors.white,
                         ),
-                        textAlign: TextAlign.justify,
+                        //textAlign: TextAlign.justify,
                       ),
                     ),
                   ),
@@ -215,7 +215,7 @@ final BookModel book;
             ),
           ),
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.52,
+            top: 430,
             left: 20.0,
             child: Container(
               width: MediaQuery.of(context).size.width - 40.0,
@@ -236,7 +236,7 @@ final BookModel book;
             ),
           ),
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.56,
+            top: 460,
             left: 20.0,
             child: Container(
               width: MediaQuery.of(context).size.width - 40.0,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
-import 'package:minha_estante/commom/models/book_model.dart';
 import 'package:minha_estante/commom/widgets/custom_search_bar.dart';
 import 'package:minha_estante/commom/widgets/search_result.dart';
 import 'package:minha_estante/commom/widgets/category_bar.dart';
@@ -89,7 +88,6 @@ class _HomeState extends State<Home> {
               final bookDataList = snapshot.data!;
               final bookImages = bookDataList.map((bookData) {
                 final imageUrl = bookData['thumbnailUrl'] as String;
-                final bookId = bookData['id'] as String;
                 // Faça o que for necessário com o bookId
                 return imageUrl;
               }).toList();
