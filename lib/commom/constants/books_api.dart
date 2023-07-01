@@ -1,15 +1,13 @@
-import 'dart:convert';
-import 'dart:math';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:http/http.dart' as http;
 import 'package:minha_estante/commom/constants/api_key.dart';
+import 'package:minha_estante/commom/constants/books_api_error.dart';
+import 'package:minha_estante/commom/models/book_model.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class BooksApi {
-  //classe de conexão e comunicação com a API do Google Livros
-
-  static const _baseUrl = 'https://www.googleapis.com/books/v1/volumes';
-  static const apiKey = ApiKeys.booksApiKey;
+  static const String _baseUrl = 'https://www.googleapis.com/books/v1/volumes';
+  static const String apiKey = ApiKeys.booksApiKey;
 
   static Future<dynamic> search(String query) async {
     final url = '$_baseUrl?q=$query&key=$apiKey';
@@ -19,77 +17,96 @@ class BooksApi {
     return body;
   }
 
-  Future<List<String>> fetchBookImages(String categoria, int quantidade) async {
+  // Função responsável por buscar as imagens dos livros com base na categoria e na quantidade especificada.
+  static Future<List<Map<String, dynamic>>> fetchBookImages(
+      String categoria, int quantidade) async {
     final encodedCategoria = Uri.encodeQueryComponent(categoria);
     final url =
-        'https://www.googleapis.com/books/v1/volumes?q=$encodedCategoria&key=$apiKey';
-
-    // Verificar se os dados estão em cache
-    final snapshot = await FirebaseFirestore.instance
-        .collection('bookCache')
-        .doc(categoria)
-        .get();
-    if (snapshot.exists) {
-      final data = snapshot.data() as Map<String, dynamic>;
-      final cachedImages = List<String>.from(data['images']);
-      if (cachedImages.length >= quantidade) {
-        return cachedImages.sublist(0, quantidade);
-      }
-    }
+        '$_baseUrl?q=$encodedCategoria&key=$apiKey&orderBy=newest&maxResults=$quantidade';
 
     final response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      final body = jsonDecode(response.body);
-      final items = body['items'];
-      if (items != null && items.isNotEmpty) {
-        final random = Random();
-        final bookImages = <String>[];
-        final selectedIndices =
-            Set<int>(); // Usamos um conjunto para garantir valores únicos
-        int totalItems = items.length;
+    _handleError(response);
 
-        // Verificar se há mais itens disponíveis do que a quantidade solicitada
-        if (quantidade > totalItems) {
-          throw Exception(
-              'Quantidade solicitada maior do que a quantidade de itens disponíveis');
+    final body = jsonDecode(response.body);
+    final items = body['items'];
+
+    // Verifica se há itens na resposta e se não estão vazios
+    if (items != null && items.isNotEmpty) {
+      final List<Map<String, dynamic>> bookImages = [];
+      final Set<String> selectedIds = {};
+
+      items.forEach((item) {
+        final volumeInfo = item['volumeInfo'];
+        final id = item['id']; // Obtém o ID do livro
+
+        // Verifica se o ID do livro já foi selecionado, ignorando livros duplicados
+        if (selectedIds.contains(id)) {
+          return; // Ignora livros já selecionados
         }
 
-        while (bookImages.length < quantidade) {
-          int index;
-          do {
-            index = random.nextInt(totalItems); // Gerar um novo índice
-          } while (selectedIndices
-              .contains(index)); // Verificar se o índice já foi selecionado
+        final imageLinks = volumeInfo['imageLinks'];
 
-          selectedIndices
-              .add(index); // Adicionar o índice ao conjunto de selecionados
+        // Verifica se o livro possui uma miniatura disponível
+        if (imageLinks != null && imageLinks.containsKey('smallThumbnail')) {
+          final thumbnailUrl = imageLinks['smallThumbnail'];
 
-          final item = items[index];
-          final volumeInfo = item['volumeInfo'];
-          final imageLinks = volumeInfo['imageLinks'];
-          if (imageLinks != null && imageLinks.containsKey('thumbnail')) {
-            final thumbnailUrl = imageLinks['thumbnail'];
-            bookImages.add(thumbnailUrl);
-          }
+          // Cria um mapa com a URL da miniatura e o ID do livro
+          final bookData = {
+            'thumbnailUrl': thumbnailUrl,
+            'id': id,
+          };
 
-          // Se não há mais itens únicos suficientes, reiniciar o conjunto de selecionados
-          if (selectedIndices.length == totalItems) {
-            selectedIndices.clear();
-          }
+          // Adiciona o mapa à lista de imagens de livros
+          bookImages.add(bookData);
+
+          // Adiciona o ID do livro aos IDs selecionados
+          selectedIds.add(id);
         }
 
-        // Salvar os dados em cache no Firestore
-        await FirebaseFirestore.instance
-            .collection('bookCache')
-            .doc(categoria)
-            .set({'images': bookImages});
+        // Interrompe o loop quando a quantidade desejada de imagens de livros é atingida
+        if (bookImages.length == quantidade) {
+          return;
+        }
+      });
 
-        return bookImages;
-      } else {
-        throw Exception('Nenhum livro encontrado');
+      // Verifica se não foram encontrados livros correspondentes à categoria
+      if (bookImages.isEmpty) {
+        throw Exception(BooksApiError.noBooksFound);
       }
+
+      return bookImages;
     } else {
-      throw Exception('Falha ao carregar as imagens dos livros');
+      // Lança uma exceção caso não sejam encontrados itens na resposta
+      throw Exception(BooksApiError.noBooksFound);
+    }
+  }
+
+  static Future<BookModel> fetchBookDetails(String bookId) async {
+    final url = '$_baseUrl/$bookId?key=$apiKey';
+    final response = await http.get(Uri.parse(url));
+    _handleError(response);
+
+    final body = jsonDecode(response.body);
+
+    // Cria um objeto BookModel a partir do mapa retornado na resposta
+    return BookModel.fromMap(body);
+  }
+
+  static void _handleError(http.Response response) {
+    if (response.statusCode == 200) {
+      return;
+    }
+
+    // Verifica o código de status da resposta
+    if (response.statusCode == 404) {
+      // Lança uma exceção caso nenhum livro seja encontrado
+      throw Exception(BooksApiError.noBooksFound);
+    } else if (response.statusCode == 500) {
+      // Lança uma exceção caso haja falha ao carregar as imagens dos livros
+      throw Exception(BooksApiError.failedToLoadImages);
+    } else {
+      // Lança uma exceção com uma mensagem de erro desconhecido
+      throw Exception('${BooksApiError.unknownError}: ${response.statusCode}');
     }
   }
 }
