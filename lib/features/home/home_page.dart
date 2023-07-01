@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
-import 'package:minha_estante/commom/constants/routes.dart';
+import 'package:minha_estante/commom/models/book_model.dart';
 import 'package:minha_estante/commom/widgets/custom_search_bar.dart';
 import 'package:minha_estante/commom/widgets/search_result.dart';
-import 'package:minha_estante/commom/constants/books_api.dart';
 import 'package:minha_estante/commom/widgets/category_bar.dart';
+import 'package:minha_estante/commom/constants/books_api.dart';
+import 'package:minha_estante/features/book_detail/book_detail.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -21,46 +21,52 @@ class _HomeState extends State<Home> {
   TextEditingController _controllerSearch = TextEditingController();
   int _selectCategoryIndex = -1;
 
-  // Exibe uma mensagem em forma de SnackBar
   void _showSnackBarMessage() {
     final snackBar = SnackBar(
-      content: Text('Digite algum título para que seja pesquisado'),
+      content: Text('Digite algum título para ser pesquisado'),
       backgroundColor: AppColors.graffite,
-      duration: Duration(seconds: 3),
+      duration: const Duration(seconds: 3),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  // Realiza a busca de livros com base na consulta de pesquisa
-  Future<void> _searchBooks() async {
-    if (_searchQuery.isEmpty) {
+  Future<void> _searchBooks(String bookId) async {
+    if (bookId.isEmpty) {
       _showSnackBarMessage();
       return null;
     }
-    final result = await BooksApi.search(_searchQuery);
+    final result = await BooksApi.fetchBookDetails(bookId);
     setState(() {
       _searchResult = result;
     });
   }
 
-  // Obtém as imagens dos livros para uma determinada categoria
-  Future<List<String>> _fetchBookImages(String category, int quantity) async {
+  Future<List<Map<String, dynamic>>> _fetchBookImages(
+      String category, int quantity) async {
     try {
-      final bookImages = await BooksApi().fetchBookImages(category, quantity);
-      return bookImages;
+      final bookDataList = await BooksApi.fetchBookImages(category, quantity);
+      return bookDataList;
     } catch (e) {
       print('Erro ao carregar as imagens dos livros: $e');
       return [];
     }
   }
 
-  // Constrói a seção de categorias com base em uma determinada categoria
+  void _navigateToBookDetail(String bookId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BookDetail(bookId: bookId),
+      ),
+    );
+  }
+
   Widget buildCategorySection(String category) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(left: 20.0, top: 5.0, bottom: 10.0),
+          padding: const EdgeInsets.only(left: 20.0, top: 5.0, bottom: 10.0),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -69,20 +75,24 @@ class _HomeState extends State<Home> {
             ),
           ),
         ),
-        FutureBuilder<List<String>>(
+        FutureBuilder<List<Map<String, dynamic>>>(
           future: _fetchBookImages(category, 8),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              // Exibe um indicador de loading enquanto as imagens são carregadas
               return Container(
                 height: 200,
-                child: Center(
+                child: const Center(
                   child: CircularProgressIndicator(),
                 ),
               );
             } else if (snapshot.hasData) {
-              final bookImages = snapshot.data!;
-              // Exibe uma lista horizontal de imagens dos livros
+              final bookDataList = snapshot.data!;
+              final bookImages = bookDataList.map((bookData) {
+                final imageUrl = bookData['thumbnailUrl'] as String;
+                final bookId = bookData['id'] as String;
+                // Faça o que for necessário com o bookId
+                return imageUrl;
+              }).toList();
               return Container(
                 height: 200,
                 child: ListView.builder(
@@ -90,14 +100,18 @@ class _HomeState extends State<Home> {
                   itemCount: bookImages.length,
                   itemBuilder: (context, index) {
                     final imageUrl = bookImages[index];
+                    final bookData = bookDataList[index];
+                    final bookId = bookData['id'] as String;
                     return GestureDetector(
                       onTap: () {
-                        Navigator.popAndPushNamed(
-                            context, NamedRoute.bookDetail);
+                        _navigateToBookDetail(bookId);
                       },
                       child: Padding(
-                        padding: EdgeInsets.only(
-                            left: 15.0, top: 15.0, bottom: 30.0),
+                        padding: const EdgeInsets.only(
+                          left: 15.0,
+                          top: 15.0,
+                          bottom: 30.0,
+                        ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
                           child: AspectRatio(
@@ -114,13 +128,11 @@ class _HomeState extends State<Home> {
                 ),
               );
             } else if (snapshot.hasError) {
-              // Exibe uma mensagem de erro caso ocorra um erro ao carregar as imagens
-              return Text('Erro ao carregar as imagens dos livros');
+              return const Text('Erro ao carregar as imagens dos livros');
             } else {
-              // Exibe um indicador de progresso caso nenhuma imagem seja encontrada
               return Container(
                 height: 200,
-                child: Center(
+                child: const Center(
                   child: CircularProgressIndicator(),
                 ),
               );
@@ -131,7 +143,6 @@ class _HomeState extends State<Home> {
     );
   }
 
-  // Lista de categorias para a tela de home
   @override
   Widget build(BuildContext context) {
     final categories = [
@@ -156,10 +167,13 @@ class _HomeState extends State<Home> {
                   _searchQuery = value;
                 });
               },
-              searchPressed: _searchBooks,
+              searchPressed: () {
+                _searchBooks(_searchQuery);
+              },
             ),
             Padding(
-              padding: EdgeInsets.only(left: 20.0, top: 10.0, bottom: 10.0),
+              padding:
+                  const EdgeInsets.only(left: 20.0, top: 10.0, bottom: 10.0),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -169,7 +183,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: CategoryBar(
                 categories: categories,
                 selectCategoryIndex: _selectCategoryIndex,
@@ -180,9 +194,7 @@ class _HomeState extends State<Home> {
                 },
               ),
             ),
-            // Mapeia as categorias para a construção das seções de categorias
             ...categories.map(buildCategorySection).toList(),
-            // Exibe os resultados da pesquisa
             SearchResults(searchResult: _searchResult),
           ],
         ),

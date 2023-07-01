@@ -1,13 +1,15 @@
 import 'dart:convert';
 
 class BookModel {
-  final String? id; // ID único do livro
-  final String? titulo; // Título do livro
-  final String? autor; // Autor do livro
-  final int? qtdPaginas; // Número de páginas do livro
-  final String? descricao; // Descrição do livro
-  final String? imageUrl; // URL da imagem do livro
-  final int? anoPublicacao; // Ano de publicação do livro
+  final String id; // ID único do livro
+  final String titulo; // Título do livro
+  String autor; // Autor do livro
+  final int qtdPaginas; // Número de páginas do livro
+  final String descricao; // Descrição do livro
+  final String imageUrl; // URL da imagem do livro
+  //final int anoPublicacao; // Ano de publicação do livro
+  final String textSnippet;
+  String categoria;
 
   BookModel({
     required this.id,
@@ -16,7 +18,9 @@ class BookModel {
     required this.qtdPaginas,
     required this.descricao,
     required this.imageUrl,
-    required this.anoPublicacao,
+    required this.textSnippet,
+    required this.categoria
+    //required this.anoPublicacao,
   });
 
   // Converte o objeto BookModel em um mapa
@@ -28,7 +32,9 @@ class BookModel {
       'qtdPaginas': qtdPaginas,
       'descricao': descricao,
       'imageUrl': imageUrl,
-      'anoPublicacao': anoPublicacao,
+      'textSnippet': textSnippet,
+      'categoria': categoria
+      //'anoPublicacao': anoPublicacao,
     };
   }
 
@@ -41,7 +47,9 @@ class BookModel {
       qtdPaginas: map['qtdPaginas'],
       descricao: map['descricao'],
       imageUrl: map['imageUrl'],
-      anoPublicacao: map['anoPublicacao'],
+      textSnippet: map['searchInfo']['textSnippet'],
+      categoria: map['categoria']
+      //anoPublicacao: map['anoPublicacao'],
     );
   }
 

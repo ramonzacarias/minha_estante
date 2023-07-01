@@ -1,13 +1,10 @@
 import 'dart:convert';
-import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'package:minha_estante/commom/constants/api_key.dart';
+import 'package:minha_estante/commom/models/book_model.dart';
 
 class BooksApi {
-  //classe de conexão e comunicação com a API do Google Livros
-
   static const _baseUrl = 'https://www.googleapis.com/books/v1/volumes';
   static const apiKey = ApiKeys.booksApiKey;
 
@@ -19,70 +16,48 @@ class BooksApi {
     return body;
   }
 
-  Future<List<String>> fetchBookImages(String categoria, int quantidade) async {
+  static Future<List<Map<String, dynamic>>> fetchBookImages(
+      String categoria, int quantidade) async {
     final encodedCategoria = Uri.encodeQueryComponent(categoria);
     final url =
-        'https://www.googleapis.com/books/v1/volumes?q=$encodedCategoria&key=$apiKey';
-
-    // Verificar se os dados estão em cache
-    final snapshot = await FirebaseFirestore.instance
-        .collection('bookCache')
-        .doc(categoria)
-        .get();
-    if (snapshot.exists) {
-      final data = snapshot.data() as Map<String, dynamic>;
-      final cachedImages = List<String>.from(data['images']);
-      if (cachedImages.length >= quantidade) {
-        return cachedImages.sublist(0, quantidade);
-      }
-    }
+        '$_baseUrl?q=$encodedCategoria&key=$apiKey&orderBy=newest&maxResults=$quantidade';
 
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
       final items = body['items'];
       if (items != null && items.isNotEmpty) {
-        final random = Random();
-        final bookImages = <String>[];
-        final selectedIndices =
-            Set<int>(); // Usamos um conjunto para garantir valores únicos
-        int totalItems = items.length;
+        final bookImages = <Map<String, dynamic>>[];
+        final selectedIds = <String>{};
 
-        // Verificar se há mais itens disponíveis do que a quantidade solicitada
-        if (quantidade > totalItems) {
-          throw Exception(
-              'Quantidade solicitada maior do que a quantidade de itens disponíveis');
-        }
-
-        while (bookImages.length < quantidade) {
-          int index;
-          do {
-            index = random.nextInt(totalItems); // Gerar um novo índice
-          } while (selectedIndices
-              .contains(index)); // Verificar se o índice já foi selecionado
-
-          selectedIndices
-              .add(index); // Adicionar o índice ao conjunto de selecionados
-
-          final item = items[index];
+        for (int i = 0; i < items.length; i++) {
+          final item = items[i];
           final volumeInfo = item['volumeInfo'];
-          final imageLinks = volumeInfo['imageLinks'];
-          if (imageLinks != null && imageLinks.containsKey('thumbnail')) {
-            final thumbnailUrl = imageLinks['thumbnail'];
-            bookImages.add(thumbnailUrl);
+          final id = item['id']; // Obtém o ID do livro
+
+          if (selectedIds.contains(id)) {
+            continue; // Ignora livros já selecionados
           }
 
-          // Se não há mais itens únicos suficientes, reiniciar o conjunto de selecionados
-          if (selectedIndices.length == totalItems) {
-            selectedIndices.clear();
+          final imageLinks = volumeInfo['imageLinks'];
+          if (imageLinks != null && imageLinks.containsKey('smallThumbnail')) {
+            final thumbnailUrl = imageLinks['smallThumbnail'];
+            final bookData = {
+              'thumbnailUrl': thumbnailUrl,
+              'id': id,
+            };
+            bookImages.add(bookData);
+            selectedIds.add(id);
+          }
+
+          if (bookImages.length == quantidade) {
+            break; // Interrompe o loop quando a quantidade desejada é atingida
           }
         }
 
-        // Salvar os dados em cache no Firestore
-        await FirebaseFirestore.instance
-            .collection('bookCache')
-            .doc(categoria)
-            .set({'images': bookImages});
+        if (bookImages.isEmpty) {
+          throw Exception('Nenhum livro encontrado');
+        }
 
         return bookImages;
       } else {
@@ -90,6 +65,38 @@ class BooksApi {
       }
     } else {
       throw Exception('Falha ao carregar as imagens dos livros');
+    }
+  }
+
+  static Future<BookModel> fetchBookDetails(String bookId) async {
+    final url = '$_baseUrl/$bookId?key=$apiKey';
+    final response = await http.get(Uri.parse(url));
+    final body = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      final volumeInfo = body['volumeInfo'];
+      final searchInfo = body['searchInfo'];
+
+      final book = BookModel(
+        id: bookId,
+        titulo: volumeInfo['title'] ?? 'Título desconhecido',
+        autor: volumeInfo['authors'] != null
+            ? volumeInfo['authors'][0]
+            : 'Autor desconhecido',
+        qtdPaginas: volumeInfo['pageCount'],
+        descricao: volumeInfo['description'] ?? 'Descrição indisponível',
+        textSnippet: searchInfo != null
+            ? searchInfo['textSnippet'] ?? 'Trecho indisponível'
+            : 'Trecho indisponível',
+        imageUrl: volumeInfo['imageLinks']?['thumbnail'] ??
+            'URL da imagem indisponível',
+        categoria: volumeInfo['categories'] != null
+            ? volumeInfo['categories'][0] ?? 'Categoria desconhecida'
+            : 'Categoria desconhecida',
+      );
+      return book;
+    } else {
+      throw Exception('Falha ao carregar os detalhes do livro');
     }
   }
 }
