@@ -11,7 +11,12 @@ final BookModel book;
   const CustomShowBook({Key? key, required this.book}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.popAndPushNamed(context, NamedRoute.splash);
+        return false;
+      },
+    child: Scaffold(
       body: Stack(
         children: [
           Positioned(
@@ -61,7 +66,7 @@ final BookModel book;
                           style: DefaultTextStyle.of(context).style,
                           children: <TextSpan>[
                             TextSpan(
-                              text: "Auto: ",
+                              text: "Autor: ",
                               style: AppTextStyles.boldText.copyWith(
                                 color: AppColors.black,
                               ),
@@ -256,6 +261,7 @@ final BookModel book;
         ],
       ),
       floatingActionButton: buttomAddBook(),
+    ),
     );
   }
 }
