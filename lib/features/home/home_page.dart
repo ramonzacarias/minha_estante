@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/commom/constants/routes.dart';
 import 'package:minha_estante/commom/widgets/custom_search_bar.dart';
 import 'package:minha_estante/commom/widgets/search_result.dart';
 import 'package:minha_estante/commom/widgets/category_bar.dart';
@@ -59,7 +60,13 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-  
+
+  // Função para tratar o botão nativo do aparelho, volta para a página Splash
+  Future<bool> _onWillPop() async {
+    Navigator.popAndPushNamed(context, NamedRoute.splash);
+    return false;
+  }
+
   Widget buildCategorySection(String category) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,51 +161,51 @@ class _HomeState extends State<Home> {
     ];
 
     return WillPopScope(
-      onWillPop: _onWillPop,
+        onWillPop: _onWillPop,
         child: Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 34.0),
-            CustomSearchBar(
-              controllerText: _controllerSearch,
-              onTextChanged: (value) {
-                setState(() {
-                  _searchQuery = value;
-                });
-              },
-              searchPressed: () {
-                _searchBooks(_searchQuery);
-              },
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.only(left: 20.0, top: 10.0, bottom: 10.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Categorias',
-                  style: AppTextStyles.categoriesText,
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 34.0),
+                CustomSearchBar(
+                  controllerText: _controllerSearch,
+                  onTextChanged: (value) {
+                    setState(() {
+                      _searchQuery = value;
+                    });
+                  },
+                  searchPressed: () {
+                    _searchBooks(_searchQuery);
+                  },
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 20.0, top: 10.0, bottom: 10.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Categorias',
+                      style: AppTextStyles.categoriesText,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CategoryBar(
+                    categories: categories,
+                    selectCategoryIndex: _selectCategoryIndex,
+                    categorySelected: (index) {
+                      setState(() {
+                        _selectCategoryIndex = index;
+                      });
+                    },
+                  ),
+                ),
+                ...categories.map(buildCategorySection).toList(),
+                SearchResults(searchResult: _searchResult),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CategoryBar(
-                categories: categories,
-                selectCategoryIndex: _selectCategoryIndex,
-                categorySelected: (index) {
-                  setState(() {
-                    _selectCategoryIndex = index;
-                  });
-                },
-              ),
-            ),
-            ...categories.map(buildCategorySection).toList(),
-            SearchResults(searchResult: _searchResult),
-          ],
-        ),
-      ),
-    ));
+          ),
+        ));
   }
 }
