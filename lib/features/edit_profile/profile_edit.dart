@@ -44,8 +44,12 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => WillPopScope(
+    onWillPop: () async {
+      Navigator.popAndPushNamed(context, NamedRoute.splash);
+      return false;
+    },
+    child: Scaffold(
       body: ListView(
         children: [
           Padding(
@@ -131,19 +135,16 @@ class _EditProfileState extends State<EditProfile> {
                       if (_formKey.currentState!.validate()) {
                         // Confere se as validações foram satisfeitas
 
-                        if (_nameController.text.isNotEmpty) {
-                          // Se a informação de nome não for vazia, atualize o Nome do Usuário
+                        if (_nameController.text.isNotEmpty){ // Se a informação de nome não for vazia, atualize o Nome do Usuário
 
-                          await _controller.updateUserName(
-                              "CURRENT_USER", _nameController.text);
-                          await _sendPasswordResetEmail();
+                          await _controller.updateUserName("CURRENT_USER", _nameController.text);
                         }
 
                         if (_passwordController.text.isNotEmpty) {
                           // Se a informação de senha não for vazia, atualize a Senha do Usuário
 
-                          await _controller.updatePassword(
-                              newPassword: _passwordController.text);
+                          await _controller.updatePassword(newPassword: _passwordController.text);
+                          await _sendPasswordResetEmail();
                         }
 
                         // Mensagem de sucesso para as atualizações salvas
@@ -176,6 +177,6 @@ class _EditProfileState extends State<EditProfile> {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
 }

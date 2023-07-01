@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/commom/constants/routes.dart';
 import 'package:minha_estante/commom/widgets/app_header.dart';
 import 'package:minha_estante/commom/widgets/base_page.dart';
 
@@ -7,8 +8,12 @@ class UseTherms extends StatelessWidget {
   const UseTherms({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => WillPopScope(
+    onWillPop: () async {
+      Navigator.popAndPushNamed(context, NamedRoute.splash);
+      return false;
+    },
+    child: Scaffold(
       body: Stack(
         children: [
           const AppHeader(
@@ -53,6 +58,6 @@ class UseTherms extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
+    )
+  );
 }

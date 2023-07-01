@@ -39,8 +39,12 @@ class _LibraryState extends State<Library> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => WillPopScope(
+    onWillPop: () async {
+      Navigator.popAndPushNamed(context, NamedRoute.splash);
+      return false;
+    },
+    child: Scaffold(
       body: Column(children: [
         const SizedBox(height: 34.0),
         CustomSearchBar(
@@ -57,6 +61,6 @@ class _LibraryState extends State<Library> {
         //Lista os livros encontrados na busca via API
         SearchResults(searchResult: _searchResult)
       ]),
-    );
-  }
+    ),
+  );
 }

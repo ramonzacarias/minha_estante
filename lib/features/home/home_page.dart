@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-
+  
   Widget buildCategorySection(String category) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,7 +153,9 @@ class _HomeState extends State<Home> {
       'Sci-fi'
     ];
 
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: _onWillPop,
+        child: Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -197,6 +199,6 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-    );
+    ));
   }
 }
