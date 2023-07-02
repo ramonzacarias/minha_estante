@@ -42,6 +42,7 @@ class FirebaseAuthService implements AuthService {
     required String password,
   }) async {
     try {
+      // Cria o usuário no Firebase Authentication
       final result = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -50,12 +51,22 @@ class FirebaseAuthService implements AuthService {
       if (result.user != null) {
         await result.user!.updateDisplayName(name);
 
+        // Obtém o ID do usuário criado
         String userID = result.user!.uid;
 
+        // Cria a coleção "users" e define os dados do usuário
         await _firestore.collection('users').doc(userID).set({
           'nome': name,
           'email': email,
         });
+
+        // Cria a coleção "biblioteca" para o usuário
+        await _firestore
+            .collection('users')
+            .doc(userID)
+            .collection('biblioteca')
+            .doc('livros')
+            .set({});
 
         return UserModel(
           // Faz a verificação do user no firebase
