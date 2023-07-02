@@ -10,7 +10,7 @@ class BookModel {
   final String descricao; // Descrição do livro
   final String imageUrl; // URL da imagem do livro
   final String textSnippet;
-  final String categoria;
+  final String genero;
 
   BookModel({
     required this.id,
@@ -20,7 +20,7 @@ class BookModel {
     required this.descricao,
     required this.imageUrl,
     this.textSnippet = AppError.unavailableSnippet,
-    this.categoria = AppError.unknownCategory,
+    this.genero = AppError.unknownCategory,
   });
 
   // Converte o objeto BookModel em um mapa
@@ -33,7 +33,7 @@ class BookModel {
       'descricao': descricao,
       'imageUrl': imageUrl,
       'textSnippet': textSnippet,
-      'categoria': categoria,
+      'genero': genero,
     };
   }
 
@@ -66,7 +66,7 @@ class BookModel {
       textSnippet: searchInfo != null
           ? searchInfo['textSnippet']
           : AppError.unavailableSnippet,
-      categoria:
+      genero:
           getFirstListValue(volumeInfo['categories'], AppError.unknownCategory),
     );
   }
