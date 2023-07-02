@@ -1,9 +1,10 @@
 import 'package:minha_estante/commom/constants/api_key.dart';
 import 'package:minha_estante/commom/constants/books_api_error.dart';
 import 'package:minha_estante/commom/models/book_model.dart';
-
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 class BooksApi {
   static const String _baseUrl = 'https://www.googleapis.com/books/v1/volumes';
@@ -24,6 +25,31 @@ class BooksApi {
     final url =
         '$_baseUrl?q=$encodedCategoria&key=$apiKey&orderBy=newest&maxResults=$quantidade';
 
+    final String cacheKey =
+        'book_images_$categoria'; // Define a chave de cache única para as imagens dos livros da categoria
+
+    // Obter o diretório de armazenamento temporário para o cache
+    final String cacheDirectory = (await getTemporaryDirectory()).path;
+
+    // Construir o caminho do arquivo de cache usando o cacheKey
+    final cacheFilePath = '$cacheDirectory/$cacheKey.json';
+
+    // Criar um objeto File com o caminho do arquivo de cache
+    final File cacheFile = File(cacheFilePath);
+
+    // Verifica se o arquivo de cache existe
+    if (cacheFile.existsSync()) {
+      // Se o arquivo existir, lê os dados em cache
+      final String cachedData = await cacheFile.readAsString();
+
+      // Decodifica os dados JSON em uma lista de mapas
+      final List<Map<String, dynamic>> cachedImages =
+          List<Map<String, dynamic>>.from(jsonDecode(cachedData));
+
+      // Retorna os dados em cache
+      return cachedImages;
+    }
+
     final response = await http.get(Uri.parse(url));
     _handleError(response);
 
@@ -37,7 +63,7 @@ class BooksApi {
 
       items.forEach((item) {
         final volumeInfo = item['volumeInfo'];
-        final id = item['id']; // Obtém o ID do livro
+        final id = item['id'];
 
         // Verifica se o ID do livro já foi selecionado, ignorando livros duplicados
         if (selectedIds.contains(id)) {
@@ -74,6 +100,10 @@ class BooksApi {
         throw Exception(BooksApiError.noBooksFound);
       }
 
+      // Salva os dados em cache
+      cacheFile.writeAsString(jsonEncode(bookImages));
+
+      // Retorna os dados buscados na API
       return bookImages;
     } else {
       // Lança uma exceção caso não sejam encontrados itens na resposta
