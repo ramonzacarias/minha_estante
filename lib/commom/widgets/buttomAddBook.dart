@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/commom/widgets/widgetsDialog/already_dialog.dart';
+import 'package:minha_estante/commom/widgets/widgetsDialog/anbandoned_dialog.dart';
+import 'package:minha_estante/commom/widgets/widgetsDialog/future_page_dialog.dart';
+import 'package:minha_estante/commom/widgets/widgetsDialog/page_number_dialog.dart';
 
 class buttomAddBook extends StatelessWidget {
   const buttomAddBook({
@@ -46,7 +50,12 @@ void _addBookToList(context) {
                             .copyWith(color: AppColors.green),
                         textAlign: TextAlign.center,
                       ),
-                      onTap: () => {},
+                      onTap: () => {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => buildPageNumberDialog(context)
+                        )
+                      },
                     ),
                   ),
                   Container(
@@ -65,7 +74,12 @@ void _addBookToList(context) {
                             .copyWith(color: AppColors.green),
                         textAlign: TextAlign.center,
                       ),
-                      onTap: () => {},
+                      onTap: () => {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => futurePageDialog(context)
+                        )
+                      },
                     ),
                   ),
                   Container(
@@ -84,7 +98,12 @@ void _addBookToList(context) {
                             .copyWith(color: AppColors.green),
                         textAlign: TextAlign.center,
                       ),
-                      onTap: () => {},
+                      onTap: () => {
+                        showDialog(
+                          context: context, 
+                          builder: (BuildContext context) => alreadyReadPageDialog(context)
+                        )
+                      },
                     ),
                   ),
                   Container(
@@ -103,7 +122,12 @@ void _addBookToList(context) {
                             .copyWith(color: AppColors.green),
                         textAlign: TextAlign.center,
                       ),
-                      onTap: () => {},
+                      onTap: () => {
+                        showDialog(
+                          context: context, 
+                          builder: (BuildContext context) => abandonedPageDialog(context)
+                        )
+                      },
                     ),
                   ),
                 ],

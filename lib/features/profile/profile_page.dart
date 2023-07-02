@@ -70,7 +70,7 @@ class ProfilePage extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 20.0),
                   child: InkWell(
                     onTap: () {
-                      // Ação do botão "Teste"
+                      // Vai para tela de Termos de Uso
                       Navigator.popAndPushNamed(context, NamedRoute.useTherms);
                     },
                     child: Row(
