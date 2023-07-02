@@ -123,7 +123,9 @@ class _HomeState extends State<Home> {
                             aspectRatio: 0.8,
                             child: Image.network(
                               imageUrl,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.fill,
+                              width: 128.0,
+                              height: 204.0,
                             ),
                           ),
                         ),
