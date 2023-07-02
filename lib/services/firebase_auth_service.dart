@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:minha_estante/commom/models/user_model.dart';
 import 'package:minha_estante/services/auth_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseAuthService implements AuthService {
   final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
 
   @override
   Future<UserModel> signIn({
@@ -15,7 +17,7 @@ class FirebaseAuthService implements AuthService {
         email: email,
         password: password,
       );
-      // Verifica se o usuario é null para realizar o seu registro
+      // Verifica se o usuário é null para realizar o seu registro
       if (result.user != null) {
         return UserModel(
           // Faz a verificação do user no firebase
@@ -47,6 +49,14 @@ class FirebaseAuthService implements AuthService {
       // Verifica se o úsuario é null para realizar o login
       if (result.user != null) {
         await result.user!.updateDisplayName(name);
+
+        String userID = result.user!.uid;
+
+        await _firestore.collection('users').doc(userID).set({
+          'nome': name,
+          'email': email,
+        });
+
         return UserModel(
           // Faz a verificação do user no firebase
           name: _auth.currentUser?.displayName,
