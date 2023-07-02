@@ -1,5 +1,5 @@
 class ApiKeys {
   ApiKeys._();
 
-  static const String booksApiKey = 'AIzaSyCiZqHcNYG8__bg4qHrZp6bIo4ifm8IxPY';
+  static const String booksApiKey = 'SUA_CHAVE_API';
 }
