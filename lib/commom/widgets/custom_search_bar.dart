@@ -18,9 +18,9 @@ class CustomSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        left: 19.0,
-        right: 19.0,
-        top: 28.0,
+        left: 10.0,
+        right: 10.0,
+        top: 25.0,
         bottom: 4.0,
       ),
       child: Row(
