@@ -1,29 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/commom/models/book_model.dart';
 import 'package:minha_estante/commom/widgets/widgetsDialog/already_dialog.dart';
 import 'package:minha_estante/commom/widgets/widgetsDialog/anbandoned_dialog.dart';
 import 'package:minha_estante/commom/widgets/widgetsDialog/future_page_dialog.dart';
 import 'package:minha_estante/commom/widgets/widgetsDialog/page_number_dialog.dart';
 
 class buttomAddBook extends StatelessWidget {
+  final BookModel book; // Adicione essa linha para declarar a variável book
+
   const buttomAddBook({
-    super.key,
-  });
+    Key? key, // Corrija o nome do parâmetro key para Key
+    required this.book, // Adicione esse parâmetro e marque-o como required
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
       backgroundColor: AppColors.green,
       onPressed: () {
-        _addBookToList(context);
+        _addBookToList(context, book);
       },
       child: const Icon(Icons.menu_book),
     );
   }
 }
 
-void _addBookToList(context) {
+void _addBookToList(context, BookModel book) {
   showModalBottomSheet(
     context: context,
     builder: (BuildContext bc) {
@@ -52,9 +56,9 @@ void _addBookToList(context) {
                       ),
                       onTap: () => {
                         showDialog(
-                          context: context,
-                          builder: (BuildContext context) => buildPageNumberDialog(context)
-                        )
+                            context: context,
+                            builder: (BuildContext context) =>
+                                buildPageNumberDialog(context))
                       },
                     ),
                   ),
@@ -74,12 +78,11 @@ void _addBookToList(context) {
                             .copyWith(color: AppColors.green),
                         textAlign: TextAlign.center,
                       ),
-                      onTap: () => {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => futurePageDialog(context)
-                        )
-                      },
+                      onTap: () => showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            futurePageDialog(context, book, 'Quero Ler'),
+                      ),
                     ),
                   ),
                   Container(
@@ -100,9 +103,9 @@ void _addBookToList(context) {
                       ),
                       onTap: () => {
                         showDialog(
-                          context: context, 
-                          builder: (BuildContext context) => alreadyReadPageDialog(context)
-                        )
+                            context: context,
+                            builder: (BuildContext context) =>
+                                alreadyReadPageDialog(context))
                       },
                     ),
                   ),
@@ -124,9 +127,9 @@ void _addBookToList(context) {
                       ),
                       onTap: () => {
                         showDialog(
-                          context: context, 
-                          builder: (BuildContext context) => abandonedPageDialog(context)
-                        )
+                            context: context,
+                            builder: (BuildContext context) =>
+                                abandonedPageDialog(context))
                       },
                     ),
                   ),

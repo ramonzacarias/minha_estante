@@ -11,6 +11,8 @@ import 'package:minha_estante/features/book_detail/book_detail.dart';
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
+  
+
   @override
   State<Home> createState() => _HomeState();
 }
@@ -72,7 +74,7 @@ class _HomeState extends State<Home> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 20.0, top: 5.0, bottom: 10.0),
+          padding: const EdgeInsets.only(left: 10.0, top: 5.0, bottom: 10.0),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -82,7 +84,7 @@ class _HomeState extends State<Home> {
           ),
         ),
         FutureBuilder<List<Map<String, dynamic>>>(
-          future: _fetchBookImages(category, 8),
+          future: _fetchBookImages(category, 15),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Container(
@@ -113,9 +115,9 @@ class _HomeState extends State<Home> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(
-                          left: 15.0,
-                          top: 15.0,
-                          bottom: 30.0,
+                          left: 10.0,
+                          top: 10.0,
+                          bottom: 20.0,
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
@@ -182,7 +184,7 @@ class _HomeState extends State<Home> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
-                      left: 20.0, top: 10.0, bottom: 10.0),
+                      left: 10.0, top: 10.0, bottom: 10.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
