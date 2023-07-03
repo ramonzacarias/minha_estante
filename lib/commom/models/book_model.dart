@@ -9,8 +9,12 @@ class BookModel {
   final int qtdPaginas; // Número de páginas do livro
   final String descricao; // Descrição do livro
   final String imageUrl; // URL da imagem do livro
-  final String textSnippet;
+  final String textSnippet; //
   final String genero;
+  final DateTime dataLeitura; // Data de leitura do livro
+  final String statusLeitura; // Status de leitura do livro
+  final int pgLidas;
+  final int nota;
 
   BookModel({
     required this.id,
@@ -21,6 +25,10 @@ class BookModel {
     required this.imageUrl,
     this.textSnippet = AppError.unavailableSnippet,
     this.genero = AppError.unknownCategory,
+    required this.dataLeitura,
+    required this.statusLeitura,
+    required this.pgLidas,
+    required this.nota,
   });
 
   // Converte o objeto BookModel em um mapa
@@ -34,6 +42,10 @@ class BookModel {
       'imageUrl': imageUrl,
       'textSnippet': textSnippet,
       'genero': genero,
+      'dataLeitura': dataLeitura.toIso8601String(),
+      'statusLeitura': statusLeitura,
+      'pgLidas': pgLidas,
+      'nota': nota,
     };
   }
 
@@ -68,6 +80,10 @@ class BookModel {
           : AppError.unavailableSnippet,
       genero:
           getFirstListValue(volumeInfo['categories'], AppError.unknownCategory),
+      dataLeitura: DateTime.now(), // Defina a data de leitura do livro aqui
+      statusLeitura: 'Não Lido', // Defina o status de leitura do livro aqui
+      pgLidas: 0,
+      nota: 0,
     );
   }
 

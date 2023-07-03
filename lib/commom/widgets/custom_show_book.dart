@@ -97,7 +97,7 @@ class CustomShowBook extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: TruncateText.truncateText(book.genero, 25),
+                              text: TruncateText.truncateText(book.genero, 22),
                               style: AppTextStyles.boldText.copyWith(
                                 color: AppColors.white,
                               ),
@@ -142,7 +142,7 @@ class CustomShowBook extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: "Não lido",
+                              text: book.statusLeitura,
                               style: AppTextStyles.boldText.copyWith(
                                 color: AppColors.white,
                               ),
@@ -165,7 +165,9 @@ class CustomShowBook extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: "--/ " + book.qtdPaginas.toString(),
+                              text: book.pgLidas.toString() +
+                                  " / " +
+                                  book.qtdPaginas.toString(),
                               style: AppTextStyles.boldText.copyWith(
                                 color: AppColors.white,
                               ),
@@ -261,7 +263,9 @@ class CustomShowBook extends StatelessWidget {
             ),
           ],
         ),
-        floatingActionButton: buttomAddBook(),
+        floatingActionButton: buttomAddBook(
+          book: book,
+        ),
       ),
     );
   }
