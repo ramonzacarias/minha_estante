@@ -38,11 +38,11 @@ class _CategoryBarState extends State<CategoryBar> {
                 });
               },
               child: Padding(
-                padding: const EdgeInsets.only(left: 15.0),
+                padding: const EdgeInsets.only(left: 10.0),
                 child: Container(
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(15),
                     color: AppColors.greenTwo,
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 20 * 1.0),
