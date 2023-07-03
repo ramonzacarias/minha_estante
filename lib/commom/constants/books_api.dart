@@ -23,7 +23,7 @@ class BooksApi {
       String categoria, int quantidade) async {
     final encodedCategoria = Uri.encodeQueryComponent(categoria);
     final url =
-        '$_baseUrl?q=$encodedCategoria&key=$apiKey&orderBy=newest&maxResults=$quantidade';
+        '$_baseUrl?q=$encodedCategoria&key=$apiKey&printType=books&orderBy=newest&maxResults=$quantidade';
 
     final String cacheKey =
         'book_images_$categoria'; // Define a chave de cache única para as imagens dos livros da categoria
