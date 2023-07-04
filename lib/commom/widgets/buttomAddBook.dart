@@ -59,7 +59,7 @@ void _addBookToList(context, BookModel book) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                buildPageNumberDialog(context))
+                                buildPageNumberDialog(context, book, BookReadingStatus.lendo))
                       },
                     ),
                   ),
@@ -106,7 +106,7 @@ void _addBookToList(context, BookModel book) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                alreadyReadPageDialog(context))
+                                alreadyReadPageDialog(context, book, BookReadingStatus.lido))
                       },
                     ),
                   ),
@@ -130,7 +130,7 @@ void _addBookToList(context, BookModel book) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                abandonedPageDialog(context))
+                                abandonedPageDialog(context, book, BookReadingStatus.abandonei))
                       },
                     ),
                   ),

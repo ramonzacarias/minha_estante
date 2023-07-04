@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:minha_estante/commom/constants/app_colors.dart';
+import 'package:minha_estante/commom/models/book_model.dart';
+import 'package:minha_estante/services/user_library_service.dart';
 
-import '../../constants/app_colors.dart';
-
-Widget alreadyReadPageDialog(BuildContext context) {
-  double _rating = 0.0;
+Widget alreadyReadPageDialog(BuildContext context, BookModel book, String statusLeitura) {
+  int _rating = 0;
+  final UserLibraryService userLibraryService = UserLibraryService();
+  final String userId = userLibraryService.getUserId();
 
   return AlertDialog(
     title: Text(
@@ -17,10 +20,10 @@ Widget alreadyReadPageDialog(BuildContext context) {
     content: TextField(
       keyboardType: TextInputType.numberWithOptions(decimal: true),
       onChanged: (value) {
-        _rating = double.tryParse(value) ?? 0.0;
+        _rating = int.tryParse(value) ?? 0;
       },
       decoration: InputDecoration(
-        hintText: 'Nota de 1 a 5',
+        hintText: 'Nota de 1 a 10',
       ),
     ),
     actions: <Widget>[
@@ -40,6 +43,8 @@ Widget alreadyReadPageDialog(BuildContext context) {
         ),
         onPressed: () {
           print('Nota: $_rating');
+          userLibraryService.updateRating(
+              userId, book, statusLeitura, book.qtdPaginas, _rating);
           Navigator.of(context).pop(); // Fecha o diálogo
         },
       ),
