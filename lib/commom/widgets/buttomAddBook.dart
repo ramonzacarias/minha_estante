@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/commom/constants/book_reading_status.dart';
 import 'package:minha_estante/commom/models/book_model.dart';
 import 'package:minha_estante/commom/widgets/widgetsDialog/already_dialog.dart';
 import 'package:minha_estante/commom/widgets/widgetsDialog/anbandoned_dialog.dart';
@@ -49,7 +50,7 @@ void _addBookToList(context, BookModel book) {
                     ),
                     child: ListTile(
                       title: new Text(
-                        'Lendo',
+                        BookReadingStatus.lendo,
                         style: AppTextStyles.mediumText18
                             .copyWith(color: AppColors.green),
                         textAlign: TextAlign.center,
@@ -73,7 +74,7 @@ void _addBookToList(context, BookModel book) {
                     ),
                     child: ListTile(
                       title: new Text(
-                        'Quero Ler',
+                        BookReadingStatus.queroLer,
                         style: AppTextStyles.mediumText18
                             .copyWith(color: AppColors.green),
                         textAlign: TextAlign.center,
@@ -81,7 +82,7 @@ void _addBookToList(context, BookModel book) {
                       onTap: () => showDialog(
                         context: context,
                         builder: (BuildContext context) =>
-                            futurePageDialog(context, book, 'Quero Ler'),
+                            futurePageDialog(context, book, BookReadingStatus.queroLer),
                       ),
                     ),
                   ),
@@ -96,7 +97,7 @@ void _addBookToList(context, BookModel book) {
                     ),
                     child: ListTile(
                       title: new Text(
-                        'Já li',
+                        BookReadingStatus.lido,
                         style: AppTextStyles.mediumText18
                             .copyWith(color: AppColors.green),
                         textAlign: TextAlign.center,
@@ -120,7 +121,7 @@ void _addBookToList(context, BookModel book) {
                     ),
                     child: ListTile(
                       title: new Text(
-                        'Abandonei',
+                        BookReadingStatus.abandonei,
                         style: AppTextStyles.mediumText18
                             .copyWith(color: AppColors.green),
                         textAlign: TextAlign.center,
