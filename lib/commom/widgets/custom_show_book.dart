@@ -5,11 +5,54 @@ import 'package:minha_estante/commom/constants/routes.dart';
 import 'package:minha_estante/commom/models/book_model.dart';
 import 'package:minha_estante/commom/utils/truncate_text.dart';
 import 'package:minha_estante/commom/widgets/buttomAddBook.dart';
+import 'package:minha_estante/services/user_library_service.dart';
 
-class CustomShowBook extends StatelessWidget {
+class CustomShowBook extends StatefulWidget {
   final BookModel book;
 
-  const CustomShowBook({Key? key, required this.book}) : super(key: key);
+  CustomShowBook({Key? key, required this.book}) : super(key: key);
+
+  @override
+  _CustomShowBookState createState() => _CustomShowBookState();
+}
+
+class _CustomShowBookState extends State<CustomShowBook> {
+  String _statusBook = "";
+  int _pgLidas = -1;
+  int _nota = -1;
+
+  @override
+  void initState() {
+    super.initState();
+    getBookStatus();
+    getReadingPg();
+    getNota();
+  }
+
+  void getBookStatus() async {
+    UserLibraryService libraryService = UserLibraryService();
+    String status = await libraryService.getBookStatus(widget.book);
+    setState(() {
+      _statusBook = status;
+    });
+  }
+
+  void getReadingPg() async {
+    UserLibraryService libraryService = UserLibraryService();
+    int pgLidas = await libraryService.getReadingPg(widget.book);
+    setState(() {
+      _pgLidas = pgLidas;
+    });
+  }
+
+  void getNota() async {
+    UserLibraryService libraryService = UserLibraryService();
+    int nota = await libraryService.getNota(widget.book);
+    setState(() {
+      _nota = nota;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -36,7 +79,7 @@ class CustomShowBook extends StatelessWidget {
                       child: ClipRRect(
                         //borderRadius: BorderRadius.circular(8.0),
                         child: Image.network(
-                          book.imageUrl,
+                          widget.book.imageUrl,
                           fit: BoxFit.cover,
                           width: 128.0,
                           height: 200.0,
@@ -49,7 +92,7 @@ class CustomShowBook extends StatelessWidget {
                       child: Container(
                         width: MediaQuery.of(context).size.width - 180.0,
                         child: Text(
-                          book.titulo,
+                          widget.book.titulo,
                           style: AppTextStyles.mediumText16.copyWith(
                             color: AppColors.white,
                           ),
@@ -73,7 +116,7 @@ class CustomShowBook extends StatelessWidget {
                                 ),
                               ),
                               TextSpan(
-                                text: book.autor,
+                                text: widget.book.autor,
                                 style: AppTextStyles.boldText.copyWith(
                                   color: AppColors.white,
                                 ),
@@ -97,7 +140,8 @@ class CustomShowBook extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: TruncateText.truncateText(book.genero, 22),
+                              text: TruncateText.truncateText(
+                                  widget.book.genero, 22),
                               style: AppTextStyles.boldText.copyWith(
                                 color: AppColors.white,
                               ),
@@ -120,7 +164,7 @@ class CustomShowBook extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: book.qtdPaginas.toString(),
+                              text: widget.book.qtdPaginas.toString(),
                               style: AppTextStyles.boldText.copyWith(
                                 color: AppColors.white,
                               ),
@@ -142,7 +186,7 @@ class CustomShowBook extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: book.statusLeitura,
+                              text: _statusBook,
                               style: AppTextStyles.boldText.copyWith(
                                 color: AppColors.white,
                               ),
@@ -165,9 +209,13 @@ class CustomShowBook extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: book.pgLidas.toString() +
-                                  " / " +
-                                  book.qtdPaginas.toString(),
+                              text: _pgLidas < 0
+                                  ? " --" +
+                                      " / " +
+                                      widget.book.qtdPaginas.toString()
+                                  : _pgLidas.toString() +
+                                      " / " +
+                                      widget.book.qtdPaginas.toString(),
                               style: AppTextStyles.boldText.copyWith(
                                 color: AppColors.white,
                               ),
@@ -189,7 +237,9 @@ class CustomShowBook extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: "5",
+                              text: _nota < 0
+                                  ? " --"
+                                  : _nota.toString(),
                               style: AppTextStyles.boldText.copyWith(
                                 color: AppColors.white,
                               ),
@@ -251,7 +301,7 @@ class CustomShowBook extends StatelessWidget {
                 child: Wrap(
                   children: [
                     Text(
-                      TruncateText.truncateText(book.descricao, 700),
+                      TruncateText.truncateText(widget.book.descricao, 700),
                       style: AppTextStyles.extraSmallText.copyWith(
                         color: AppColors.black,
                       ),
@@ -264,7 +314,7 @@ class CustomShowBook extends StatelessWidget {
           ],
         ),
         floatingActionButton: buttomAddBook(
-          book: book,
+          book: widget.book,
         ),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/commom/constants/book_reading_status.dart';
 
 enum FavoriteStatus { reading, wantToRead, read, abandoned, all }
 
@@ -47,35 +48,35 @@ class _FavoriteBarState extends State<FavoriteBar> {
         ButtonSegment<FavoriteStatus>(
           value: FavoriteStatus.reading,
           label: Text(
-            'Lendo',
+            BookReadingStatus.lendo,
             style: AppTextStyles.extraSmallText,
           ),
         ),
         ButtonSegment<FavoriteStatus>(
           value: FavoriteStatus.wantToRead,
           label: Text(
-            'Quero Ler',
+            BookReadingStatus.queroLer,
             style: AppTextStyles.extraSmallText,
           ),
         ),
         ButtonSegment<FavoriteStatus>(
           value: FavoriteStatus.read,
           label: Text(
-            'Lidos',
+            BookReadingStatus.lido,
             style: AppTextStyles.extraSmallText,
           ),
         ),
         ButtonSegment<FavoriteStatus>(
           value: FavoriteStatus.abandoned,
           label: Text(
-            'Abandonei',
+            BookReadingStatus.abandonei,
             style: AppTextStyles.extraSmallText,
           ),
         ),
         ButtonSegment<FavoriteStatus>(
           value: FavoriteStatus.all,
           label: Text(
-            'Todos',
+            BookReadingStatus.todos,
             style: AppTextStyles.extraSmallText,
           ),
         ),

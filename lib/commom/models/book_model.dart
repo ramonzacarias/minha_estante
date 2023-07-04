@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:html/parser.dart' as htmlParser;
+import 'package:minha_estante/commom/constants/book_reading_status.dart';
 
 class BookModel {
   final String id; // ID único do livro
@@ -81,9 +82,9 @@ class BookModel {
       genero:
           getFirstListValue(volumeInfo['categories'], AppError.unknownCategory),
       dataLeitura: DateTime.now(), // Defina a data de leitura do livro aqui
-      statusLeitura: 'Não Lido', // Defina o status de leitura do livro aqui
-      pgLidas: 0,
-      nota: 0,
+      statusLeitura: BookReadingStatus.naoLido, // Defina o status de leitura do livro aqui
+      pgLidas: BookReadingStatus.pgLidas,
+      nota: BookReadingStatus.nota,
     );
   }
 

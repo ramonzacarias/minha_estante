@@ -12,7 +12,8 @@ class UserLibraryService {
     return userId;
   }
 
-  Future<void> addBookToLibrary(String userID, BookModel book) async {
+  Future<void> addBookToLibrary(
+      String userID, BookModel book, String statusLeitura) async {
     try {
       await _firestore
           .collection('users')
@@ -30,7 +31,9 @@ class UserLibraryService {
         'imageUrl': book.imageUrl,
         'textSnippet': book.textSnippet,
         'genero': book.genero,
-        'statusLeitura': book.statusLeitura, // Exemplo de atributo específico
+        'statusLeitura': statusLeitura,
+        'pgLidas': book.pgLidas,
+        'nota': book.nota,
       });
     } catch (e) {
       throw e;
@@ -59,7 +62,8 @@ class UserLibraryService {
     }
   }
 
-  Future<void> updateBookInLibrary(String userID, BookModel book) async {
+  Future<void> updateReading(
+      String userID, BookModel book, String statusLeitura, int pgLidas) async {
     try {
       await _firestore
           .collection('users')
@@ -68,7 +72,8 @@ class UserLibraryService {
           .doc('livros')
           .collection('livros')
           .doc(book.id)
-          .update({
+          .set({
+        'id': book.id,
         'titulo': book.titulo,
         'autor': book.autor,
         'qtdpaginas': book.qtdPaginas,
@@ -76,7 +81,63 @@ class UserLibraryService {
         'imageUrl': book.imageUrl,
         'textSnippet': book.textSnippet,
         'genero': book.genero,
-        'statusLeitura': book.statusLeitura,
+        'statusLeitura': statusLeitura,
+        'pgLidas': pgLidas,
+      });
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> updateRating(String userID, BookModel book, String statusLeitura,
+      int pgLidas, int nota) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(userID)
+          .collection('biblioteca')
+          .doc('livros')
+          .collection('livros')
+          .doc(book.id)
+          .set({
+        'id': book.id,
+        'titulo': book.titulo,
+        'autor': book.autor,
+        'qtdpaginas': book.qtdPaginas,
+        'descricao': book.descricao,
+        'imageUrl': book.imageUrl,
+        'textSnippet': book.textSnippet,
+        'genero': book.genero,
+        'statusLeitura': statusLeitura,
+        'pgLidas': pgLidas,
+        'nota': nota,
+      });
+    } catch (e) {
+      throw e;
+    }
+  }
+
+    Future<void> updateBookStatus(String userID, BookModel book, String statusLeitura, int nota) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(userID)
+          .collection('biblioteca')
+          .doc('livros')
+          .collection('livros')
+          .doc(book.id)
+          .set({
+        'id': book.id,
+        'titulo': book.titulo,
+        'autor': book.autor,
+        'qtdpaginas': book.qtdPaginas,
+        'descricao': book.descricao,
+        'imageUrl': book.imageUrl,
+        'textSnippet': book.textSnippet,
+        'genero': book.genero,
+        'statusLeitura': statusLeitura,
+        'pgLidas': book.pgLidas,
+        'nota': nota,
       });
     } catch (e) {
       throw e;
@@ -98,60 +159,70 @@ class UserLibraryService {
     }
   }
 
-  Future<void> updateBookStatus(
-      String userID, String bookID, String status) async {
-    try {
-      await _firestore
-          .collection('users')
-          .doc(userID)
-          .collection('biblioteca')
-          .doc('livros')
-          .collection('livros')
-          .doc(bookID)
-          .update({
-        'statusLeitura': status,
-      });
-    } catch (e) {
-      throw e;
-    }
-  }
 
-  Future<bool> checkBookExists(String userId, String bookId) async {
-    try {
-      final DocumentSnapshot snapshot = await _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('biblioteca')
-          .doc('livros')
-          .collection('livros')
-          .doc(bookId)
-          .get();
-
-      return snapshot.exists;
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  Future<String> getBookStatus(String userID, String bookID) async {
+  Future<String> getBookStatus(BookModel book) async {
     try {
       final DocumentSnapshot doc = await _firestore
           .collection('users')
-          .doc(userID)
+          .doc(getUserId())
           .collection('biblioteca')
           .doc('livros')
           .collection('livros')
-          .doc(bookID)
+          .doc(book.id)
           .get();
-    
+
       if (doc.exists) {
         final data = doc.data() as Map<String, dynamic>;
-        return data['statusLeitura'] ?? 'Não Lido';
+        return data['statusLeitura'];
       } else {
-        throw Exception('Livro não encontrado na biblioteca do usuário.');
+        return book.statusLeitura;
       }
     } catch (e) {
-      throw 'teste';
+      throw e;
+    }
+  }
+
+  Future<int> getReadingPg(BookModel book) async {
+    try {
+      final DocumentSnapshot doc = await _firestore
+          .collection('users')
+          .doc(getUserId())
+          .collection('biblioteca')
+          .doc('livros')
+          .collection('livros')
+          .doc(book.id)
+          .get();
+
+      if (doc.exists) {
+        final data = doc.data() as Map<String, dynamic>;
+        return data['pgLidas'];
+      } else {
+        return book.pgLidas;
+      }
+    } catch (e) {
+      return book.nota;
+    }
+  }
+
+  Future<int> getNota(BookModel book) async {
+    try {
+      final DocumentSnapshot doc = await _firestore
+          .collection('users')
+          .doc(getUserId())
+          .collection('biblioteca')
+          .doc('livros')
+          .collection('livros')
+          .doc(book.id)
+          .get();
+
+      if (doc.exists) {
+        final data = doc.data() as Map<String, dynamic>;
+        return data['nota'];
+      } else {
+        return book.nota;
+      }
+    } catch (e) {
+      return book.nota;
     }
   }
 }
