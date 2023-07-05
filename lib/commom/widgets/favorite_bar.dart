@@ -85,6 +85,8 @@ class _FavoriteBarState extends State<FavoriteBar> {
       onSelectionChanged: (Set<FavoriteStatus> newSelection) {
         setState(() {
           selectedFavorite = newSelection.first;
+          // Exibir no console qual classe selecionada para auxiliar na construção do widget da lista de livros
+          print(selectedFavorite);
         });
       },
     );

@@ -39,7 +39,7 @@ class _CustomShowBookState extends State<CustomShowBook> {
 
   void getReadingPg() async {
     UserLibraryService libraryService = UserLibraryService();
-    int pgLidas = await libraryService.getReadingPg(widget.book);
+    int pgLidas = await libraryService.getReadingPages(widget.book);
     setState(() {
       _pgLidas = pgLidas;
     });
@@ -47,7 +47,7 @@ class _CustomShowBookState extends State<CustomShowBook> {
 
   void getNota() async {
     UserLibraryService libraryService = UserLibraryService();
-    int nota = await libraryService.getNota(widget.book);
+    int nota = await libraryService.getRating(widget.book);
     setState(() {
       _nota = nota;
     });
@@ -274,9 +274,9 @@ class _CustomShowBookState extends State<CustomShowBook> {
             ),
             Positioned(
               top: 430,
-              left: 20.0,
+              left: 15.0,
               child: Container(
-                width: MediaQuery.of(context).size.width - 40.0,
+                width: MediaQuery.of(context).size.width - 30.0,
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
