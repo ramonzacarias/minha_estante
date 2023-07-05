@@ -1,4 +1,6 @@
 class BookReadingStatus {
+  BookReadingStatus._(); // Chamando as propriedades dentro do construtor BookReadingStatus()
+
   static const String lendo = 'Lendo';
   static const String queroLer = 'Quero Ler';
   static const String lido = 'Lido';
