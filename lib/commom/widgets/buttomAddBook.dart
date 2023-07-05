@@ -3,17 +3,18 @@ import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
 import 'package:minha_estante/commom/constants/book_reading_status.dart';
 import 'package:minha_estante/commom/models/book_model.dart';
+
 import 'package:minha_estante/commom/widgets/widgetsDialog/already_dialog.dart';
 import 'package:minha_estante/commom/widgets/widgetsDialog/anbandoned_dialog.dart';
 import 'package:minha_estante/commom/widgets/widgetsDialog/future_page_dialog.dart';
 import 'package:minha_estante/commom/widgets/widgetsDialog/page_number_dialog.dart';
 
 class buttomAddBook extends StatelessWidget {
-  final BookModel book; // Adicione essa linha para declarar a variável book
+  final BookModel book; // Declara a variável book
 
   const buttomAddBook({
-    Key? key, // Corrija o nome do parâmetro key para Key
-    required this.book, // Adicione esse parâmetro e marque-o como required
+    Key? key,
+    required this.book,
   }) : super(key: key);
 
   @override
@@ -59,7 +60,8 @@ void _addBookToList(context, BookModel book) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                buildPageNumberDialog(context, book, BookReadingStatus.lendo))
+                                buildPageNumberDialog(
+                                    context, book, BookReadingStatus.lendo))
                       },
                     ),
                   ),
@@ -81,8 +83,8 @@ void _addBookToList(context, BookModel book) {
                       ),
                       onTap: () => showDialog(
                         context: context,
-                        builder: (BuildContext context) =>
-                            futurePageDialog(context, book, BookReadingStatus.queroLer),
+                        builder: (BuildContext context) => futurePageDialog(
+                            context, book, BookReadingStatus.queroLer),
                       ),
                     ),
                   ),
@@ -106,7 +108,8 @@ void _addBookToList(context, BookModel book) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                alreadyReadPageDialog(context, book, BookReadingStatus.lido))
+                                alreadyReadPageDialog(
+                                    context, book, BookReadingStatus.lido))
                       },
                     ),
                   ),
@@ -130,7 +133,8 @@ void _addBookToList(context, BookModel book) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                abandonedPageDialog(context, book, BookReadingStatus.abandonei))
+                                abandonedPageDialog(
+                                    context, book, BookReadingStatus.abandonei))
                       },
                     ),
                   ),

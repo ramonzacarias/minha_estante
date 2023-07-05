@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/models/book_model.dart';
+import 'package:minha_estante/commom/widgets/widgetsDialog/show_success_dialog.dart';
 import 'package:minha_estante/services/user_library_service.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 
@@ -29,7 +30,7 @@ Widget buildPageNumberDialog(
           style: TextStyle(color: AppColors.green),
         ),
         onPressed: () {
-          Navigator.of(context).pop(); // Fecha o diálogo
+          Navigator.of(context).pop(); // Fecha o dialog
         },
       ),
       TextButton(
@@ -40,8 +41,10 @@ Widget buildPageNumberDialog(
         onPressed: () {
           // Aqui você pode usar o número da página selecionado
           print('Número da página: $_numberPag');
-          userLibraryService.updateReading(userId, book, statusLeitura, _numberPag);
-          Navigator.of(context).pop(); // Fecha o diálogo
+          userLibraryService.updateReadingStatus(userId, book, statusLeitura, _numberPag);
+          Navigator.of(context).pop(); // Fecha o dialog
+
+          SuccessDialog.show(context); // Exibe o dialog de sucesso
         },
       ),
     ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/models/book_model.dart';
+import 'package:minha_estante/commom/widgets/widgetsDialog/show_success_dialog.dart';
 import 'package:minha_estante/services/user_library_service.dart';
 
 Widget futurePageDialog(
@@ -31,7 +32,9 @@ Widget futurePageDialog(
         onPressed: () async {
           // Adicionar o livro à biblioteca
           userLibraryService.addBookToLibrary(userId, book, statusLeitura);
-          Navigator.of(context).pop(); // Fechar o diálogo
+          Navigator.of(context).pop(); // Fechar o dialog
+
+          SuccessDialog.show(context); // Exibe o dialog de sucesso
         },
         child: Text(
           'Sim',

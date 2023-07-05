@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/models/book_model.dart';
+import 'package:minha_estante/commom/widgets/widgetsDialog/show_success_dialog.dart';
 import 'package:minha_estante/services/user_library_service.dart';
 
 import 'package:minha_estante/commom/constants/app_colors.dart';
 
-Widget abandonedPageDialog(BuildContext context, BookModel book, String statusLeitura) {
+Widget abandonedPageDialog(
+    BuildContext context, BookModel book, String statusLeitura) {
   int _rating = 0;
   final UserLibraryService userLibraryService = UserLibraryService();
   final String userId = userLibraryService.getUserId();
@@ -34,7 +36,7 @@ Widget abandonedPageDialog(BuildContext context, BookModel book, String statusLe
           style: TextStyle(color: AppColors.green),
         ),
         onPressed: () {
-          Navigator.of(context).pop(); // Fecha o diálogo
+          Navigator.of(context).pop(); // Fecha o dialog
         },
       ),
       TextButton(
@@ -46,7 +48,9 @@ Widget abandonedPageDialog(BuildContext context, BookModel book, String statusLe
           print('Nota: $_rating');
           userLibraryService.updateBookStatus(
               userId, book, statusLeitura, _rating);
-          Navigator.of(context).pop(); // Fecha o diálogo
+          Navigator.of(context).pop(); // Fecha o dialog
+
+          SuccessDialog.show(context); // Exibe o dialog de sucesso
         },
       ),
     ],
