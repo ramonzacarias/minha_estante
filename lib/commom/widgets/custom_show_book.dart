@@ -77,7 +77,7 @@ class _CustomShowBookState extends State<CustomShowBook> {
                     Positioned(
                       top: 130,
                       child: ClipRRect(
-                        //borderRadius: BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(8.0),
                         child: Image.network(
                           widget.book.imageUrl,
                           fit: BoxFit.cover,

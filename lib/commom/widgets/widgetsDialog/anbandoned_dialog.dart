@@ -50,7 +50,7 @@ Widget abandonedPageDialog(
               userId, book, statusLeitura, _rating);
           Navigator.of(context).pop(); // Fecha o dialog
 
-          SuccessDialog.show(context); // Exibe o dialog de sucesso
+          SuccessDialog.show(context, book.id); // Exibe o dialog de sucesso
         },
       ),
     ],
