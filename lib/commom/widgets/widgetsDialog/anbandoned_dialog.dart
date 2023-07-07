@@ -13,7 +13,7 @@ Widget abandonedPageDialog(
 
   return AlertDialog(
     title: Text(
-      'Insira a nota de 1 a 5:',
+      'Insira a nota de 1 a 10:',
       style: TextStyle(
         color: AppColors.green,
         fontSize: 18,
