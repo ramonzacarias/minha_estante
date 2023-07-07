@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/features/book_detail/book_detail.dart';
 
 // Classe para retornar um widget exibindo que o livro foi adicionado com sucesso a biblioteca
 class SuccessDialog {
-  static void show(BuildContext context) {
+  static void show(BuildContext context, String bookId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -22,8 +23,15 @@ class SuccessDialog {
               SizedBox(height: 40),
               OutlinedButton(
                 onPressed: () {
-                  // Ação do botão "OK"
                   Navigator.of(context).pop(); // Fecha o diálogo
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BookDetail(
+                        bookId: bookId, // Passe o bookId novamente
+                      ),
+                    ),
+                  );
                 },
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 35),
@@ -38,7 +46,8 @@ class SuccessDialog {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   side: BorderSide(
-                      color: AppColors.green), // Cor da borda do botão
+                    color: AppColors.green,
+                  ),
                 ),
               ),
             ],

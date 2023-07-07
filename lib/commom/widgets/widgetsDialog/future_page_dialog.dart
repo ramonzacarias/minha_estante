@@ -34,7 +34,7 @@ Widget futurePageDialog(
           userLibraryService.addBookToLibrary(userId, book, statusLeitura);
           Navigator.of(context).pop(); // Fechar o dialog
 
-          SuccessDialog.show(context); // Exibe o dialog de sucesso
+          SuccessDialog.show(context, book.id); // Exibe o dialog de sucesso
         },
         child: Text(
           'Sim',
