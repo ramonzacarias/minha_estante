@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/routes.dart';
+import 'package:minha_estante/commom/themes/my_theme.dart';
 import 'package:minha_estante/features/book_detail/book_detail.dart';
 import 'package:minha_estante/features/edit_profile/profile_edit.dart';
 import 'package:minha_estante/features/profile/profile_page.dart';
@@ -17,6 +18,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: MyThemeData.themeData,
       //theme: defaultTheme,
       initialRoute: NamedRoute.splash,
 
