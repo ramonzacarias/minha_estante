@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:minha_estante/commom/constants/app_colors.dart';
+import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/commom/constants/book_reading_status.dart';
 import 'package:minha_estante/commom/widgets/CustomListOption.dart';
 import 'package:minha_estante/commom/widgets/app_header.dart';
+import 'package:minha_estante/commom/widgets/widget_border_divider.dart';
 import 'package:minha_estante/features/profile/profile_controller.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -25,10 +29,26 @@ class ProfilePage extends StatelessWidget {
                 left: 0,
                 right: 0,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      height: 68,
+                      height: 35,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        buildRichText(context, BookReadingStatus.lendo, "550"),
+                        buildRichText(context, BookReadingStatus.queroLer, "125"),
+                        buildRichText(context, BookReadingStatus.lido, "527"),
+                        buildRichText(context, BookReadingStatus.abandonei, "525"),
+                        buildRichText(context, BookReadingStatus.todos, "520"),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    widgetBorderDivider(),
+                    SizedBox(
+                      height: 35,
                     ),
                     CustomListOption(
                       icon: Icons.edit_outlined,
@@ -69,4 +89,26 @@ class ProfilePage extends StatelessWidget {
           ),
         ),
       );
+}
+
+Widget buildRichText(BuildContext context, String label, String value) {
+  return RichText(
+    text: TextSpan(
+      style: DefaultTextStyle.of(context).style,
+      children: <TextSpan>[
+        TextSpan(
+          text: label + ": ",
+          style: AppTextStyles.boldText.copyWith(
+            color: AppColors.black,
+          ),
+        ),
+        TextSpan(
+          text: value,
+          style: AppTextStyles.boldText.copyWith(
+            color: AppColors.greenTwo,
+          ),
+        ),
+      ],
+    ),
+  );
 }

@@ -60,7 +60,7 @@ class _EditProfileState extends State<EditProfile> {
                   // Botão para voltar a página Home
                   InkWell(
                     onTap: () {
-                      Navigator.popAndPushNamed(context, NamedRoute.profilePage);
+                      Navigator.popAndPushNamed(context, NamedRoute.splash);
                     },
                     child: Row(
                       children: [
