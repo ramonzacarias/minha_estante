@@ -30,7 +30,7 @@ class App extends StatelessWidget {
         NamedRoute.useTherms: (context) => const UseTherms(),
         NamedRoute.bookDetail: (context) => const BookDetail(bookId: '',),
         NamedRoute.profileEdit: (context) => const EditProfile(),
-        NamedRoute.profilePage: (context) => const ProfilePage(),
+        NamedRoute.profilePage: (context) => ProfilePage(),
         NamedRoute.home: (context) => const HomePage(),
       },
     );
