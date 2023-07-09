@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
@@ -10,8 +11,6 @@ import 'package:minha_estante/features/book_detail/book_detail.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
-
-  
 
   @override
   State<Home> createState() => _HomeState();
@@ -123,11 +122,17 @@ class _HomeState extends State<Home> {
                           borderRadius: BorderRadius.circular(8.0),
                           child: AspectRatio(
                             aspectRatio: 0.8,
-                            child: Image.network(
-                              imageUrl,
-                              fit: BoxFit.fill,
-                              width: 128.0,
-                              height: 204.0,
+                            child: Container(
+                              color: Colors.grey[150],
+                              child: Image(
+                                // Utiliza o armazenamento do dispositivo para guardar as imagens em cache
+                                image: CachedNetworkImageProvider(
+                                  imageUrl,
+                                ),
+                                fit: BoxFit.fill,
+                                width: 128.0,
+                                height: 204.0,
+                              ),
                             ),
                           ),
                         ),
