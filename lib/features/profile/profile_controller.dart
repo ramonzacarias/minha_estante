@@ -46,7 +46,7 @@ class ProfileController {
       },
     );
   }
-  
+
   void deleteCurrentUser(BuildContext context) {
     // Obtém a instância do usuário atualmente autenticado
     User? user = FirebaseAuth.instance.currentUser;
