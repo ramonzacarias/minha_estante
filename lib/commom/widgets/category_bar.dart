@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/features/category/category_page.dart';
 
 class CategoryBar extends StatefulWidget {
   final List<String> categories;
@@ -20,6 +21,15 @@ class CategoryBar extends StatefulWidget {
 class _CategoryBarState extends State<CategoryBar> {
   int selectedIndex = 0;
 
+  void _navigateToCategoryPage(String categoryName) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CategoryPage(categoryName: categoryName),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -36,6 +46,7 @@ class _CategoryBarState extends State<CategoryBar> {
                 setState(() {
                   this.selectedIndex = index;
                 });
+                _navigateToCategoryPage(category);
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 10.0),

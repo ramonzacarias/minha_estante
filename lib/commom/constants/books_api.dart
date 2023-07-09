@@ -139,4 +139,78 @@ class BooksApi {
       throw Exception('${BooksApiError.unknownError}: ${response.statusCode}');
     }
   }
+
+  // Buscando as imagens do livro na api com base em seu genero
+  static Future<List<Map<String, dynamic>>> fetchBookImagesCategory(
+      String categoria, int quantidade) async {
+    final encodedCategoria = Uri.encodeQueryComponent(categoria);
+    final url =
+        '$_baseUrl?q=$encodedCategoria&key=$apiKey&printType=books&orderBy=newest&maxResults=$quantidade';
+
+    final String cacheKey = 'book_images_$categoria';
+
+    final String cacheDirectory = (await getTemporaryDirectory()).path;
+    final String cacheDirectoryCategory = '$cacheDirectory/category';
+
+    final cacheFilePath = '$cacheDirectoryCategory/$cacheKey.json';
+
+    final File cacheFile = File(cacheFilePath);
+
+    if (cacheFile.existsSync()) {
+      final String cachedData = await cacheFile.readAsString();
+      final List<Map<String, dynamic>> cachedImages =
+          List<Map<String, dynamic>>.from(jsonDecode(cachedData));
+      return cachedImages;
+    }
+
+    await cacheFile.parent.create(recursive: true);
+
+    final response = await http.get(Uri.parse(url));
+    _handleError(response);
+
+    final body = jsonDecode(response.body);
+    final items = body['items'];
+
+    if (items != null && items.isNotEmpty) {
+      final List<Map<String, dynamic>> bookImages = [];
+      final Set<String> selectedIds = {};
+
+      items.forEach((item) {
+        final volumeInfo = item['volumeInfo'];
+        final id = item['id'];
+
+        if (selectedIds.contains(id)) {
+          return;
+        }
+
+        final imageLinks = volumeInfo['imageLinks'];
+
+        if (imageLinks != null && imageLinks.containsKey('smallThumbnail')) {
+          final thumbnailUrl = imageLinks['smallThumbnail'];
+
+          final bookData = {
+            'thumbnailUrl': thumbnailUrl,
+            'id': id,
+          };
+
+          bookImages.add(bookData);
+          selectedIds.add(id);
+        }
+
+        if (bookImages.length == quantidade) {
+          return;
+        }
+      });
+
+      if (bookImages.isEmpty) {
+        throw Exception(BooksApiError.noBooksFound);
+      }
+
+      cacheFile.writeAsString(jsonEncode(bookImages));
+
+      return bookImages;
+    } else {
+      throw Exception(BooksApiError.noBooksFound);
+    }
+  }
 }
