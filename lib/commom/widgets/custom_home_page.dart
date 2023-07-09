@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _children = [
     const Home(),
     const Library(),
-    const ProfilePage(),
+    ProfilePage(),
   ];
 
   void onTabTapped(int index) {

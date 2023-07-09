@@ -10,7 +10,7 @@ import 'package:minha_estante/commom/utils/validator.dart';
 import 'package:minha_estante/commom/widgets/custom_text_form_field.dart';
 import 'package:minha_estante/commom/widgets/password_form_field.dart';
 import 'package:minha_estante/locator.dart';
-import 'package:minha_estante/features/sign_in/sign_in_contoller.dart';
+import 'package:minha_estante/features/sign_in/sign_in_controller.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -60,7 +60,7 @@ class _EditProfileState extends State<EditProfile> {
                   // Botão para voltar a página Home
                   InkWell(
                     onTap: () {
-                      Navigator.popAndPushNamed(context, NamedRoute.profilePage);
+                      Navigator.popAndPushNamed(context, NamedRoute.splash);
                     },
                     child: Row(
                       children: [

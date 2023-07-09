@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/widgets/custom_bottom_sheet.dart';
-import 'package:minha_estante/features/sign_in/sign_in_contoller.dart';
+import 'package:minha_estante/features/sign_in/sign_in_controller.dart';
 import 'package:minha_estante/features/sign_in/sign_in_state.dart';
 import 'package:minha_estante/locator.dart';
 import 'package:minha_estante/services/firebase_auth_service.dart';

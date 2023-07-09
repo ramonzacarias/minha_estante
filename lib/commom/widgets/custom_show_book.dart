@@ -237,9 +237,7 @@ class _CustomShowBookState extends State<CustomShowBook> {
                               ),
                             ),
                             TextSpan(
-                              text: _nota < 0
-                                  ? " --"
-                                  : _nota.toString(),
+                              text: _nota < 0 ? " --" : _nota.toString(),
                               style: AppTextStyles.boldText.copyWith(
                                 color: AppColors.white,
                               ),

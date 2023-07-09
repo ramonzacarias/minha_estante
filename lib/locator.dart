@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:minha_estante/features/sign_in/sign_in_contoller.dart';
+import 'package:minha_estante/features/sign_in/sign_in_controller.dart';
 import 'package:minha_estante/features/sign_up/sign_up_controller.dart';
 import 'package:minha_estante/features/splash/splash_controller.dart';
 import 'package:minha_estante/services/auth_service.dart';
