@@ -24,7 +24,7 @@ class UserLibraryService {
     try {
       await _firestore
           .collection(_users)
-          .doc()
+          .doc(userId)
           .collection(_biblioteca)
           .doc(_livros)
           .collection(_livros)
