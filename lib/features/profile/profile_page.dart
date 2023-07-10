@@ -1,54 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
-import 'package:minha_estante/commom/constants/book_reading_status.dart';
 import 'package:minha_estante/commom/widgets/CustomListOption.dart';
 import 'package:minha_estante/commom/widgets/app_header.dart';
 import 'package:minha_estante/commom/widgets/widget_border_divider.dart';
 import 'package:minha_estante/features/profile/profile_controller.dart';
-import 'package:minha_estante/services/user_library_service.dart';
-
+import 'package:minha_estante/features/profile/profile_state.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
-  final ProfileController _profileController = const ProfileController();
-  late UserLibraryService _userLibraryService; // Use o mesmo objeto UserLibraryService criado no initState
-  int _booksReadCount = 0;
-  int _booksToReadCount = 0;
-  int _booksAbandonedCount = 0;
-  int _booksBeingReadCount = 0;
-  int _totalBooksCount = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _userLibraryService = UserLibraryService(); // Crie o objeto UserLibraryService aqui
-    loadStatistics(); // Carregue as estatísticas ao iniciar a página
-  }
-
-  Future<void> loadStatistics() async {
-    try {
-      // Obtenha o ID do usuário atual
-      String userId = await _userLibraryService.getUserId();
-
-      // Carregue os valores das estatísticas
-      _booksReadCount = await _userLibraryService.getBooksReadCount(userId);
-      _booksToReadCount = await _userLibraryService.getBooksToReadCount(userId);
-      _booksAbandonedCount = await _userLibraryService.getBooksAbandonedCount(userId);
-      _booksBeingReadCount = await _userLibraryService.getBooksBeingReadCount(userId);
-      _totalBooksCount = await _userLibraryService.getTotalBooksCount(userId);
-
-      // Atualize o estado para refletir as alterações
-      setState(() {});
-    } catch (e) {
-      // Lide com erros adequadamente
-      print('Erro ao carregar as estatísticas: $e');
-    }
-  }
+class _ProfilePageState extends ProfileState<ProfilePage> {
+  final ProfileController _profileController = ProfileController();
 
   @override
   Widget build(BuildContext context) => WillPopScope(
@@ -76,28 +41,28 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: [
                         buildRichText(
                           context,
-                          BookReadingStatus.lendo,
-                          _booksBeingReadCount.toString(),
+                          "Lendo",
+                          booksBeingReadCount,
                         ),
                         buildRichText(
                           context,
-                          BookReadingStatus.queroLer,
-                          _booksToReadCount.toString(),
+                          "Quero Ler",
+                          booksToReadCount,
                         ),
                         buildRichText(
                           context,
-                          BookReadingStatus.lido,
-                          _booksReadCount.toString(),
+                          "Lido",
+                          booksReadCount,
                         ),
                         buildRichText(
                           context,
-                          BookReadingStatus.abandonei,
-                          _booksAbandonedCount.toString(),
+                          "Abandonei",
+                          booksAbandonedCount,
                         ),
                         buildRichText(
                           context,
-                          BookReadingStatus.todos,
-                          _totalBooksCount.toString(),
+                          "Todos",
+                          totalBooksCount,
                         ),
                       ],
                     ),
@@ -148,22 +113,20 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
 
-  Widget buildRichText(BuildContext context, String label, String value) {
+  Widget buildRichText(BuildContext context, String label, int value) {
     return RichText(
       text: TextSpan(
         style: DefaultTextStyle.of(context).style,
         children: <TextSpan>[
           TextSpan(
             text: label + ": ",
-            style: AppTextStyles.boldText.copyWith(
-              color: AppColors.black,
-            ),
+            style:
+                AppTextStyles.boldText.copyWith(color: AppColors.black),
           ),
           TextSpan(
-            text: value,
-            style: AppTextStyles.boldText.copyWith(
-              color: AppColors.greenTwo,
-            ),
+            text: value < 0 ? "" : value.toString(),
+            style:
+                AppTextStyles.boldText.copyWith(color: AppColors.green),
           ),
         ],
       ),
