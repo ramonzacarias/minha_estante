@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:minha_estante/commom/constants/app_colors.dart';
+import 'package:minha_estante/commom/constants/app_text_styles.dart';
 import 'package:minha_estante/commom/widgets/CustomListOption.dart';
 import 'package:minha_estante/commom/widgets/app_header.dart';
 import 'package:minha_estante/commom/widgets/widget_border_divider.dart';
@@ -12,7 +14,6 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends ProfileState<ProfilePage> {
   final ProfileController _profileController = ProfileController();
-  
 
   @override
   Widget build(BuildContext context) => WillPopScope(
@@ -41,27 +42,27 @@ class _ProfilePageState extends ProfileState<ProfilePage> {
                         buildRichText(
                           context,
                           "Lendo",
-                          booksBeingReadCount.toString(),
+                          booksBeingReadCount,
                         ),
                         buildRichText(
                           context,
                           "Quero Ler",
-                          booksToReadCount.toString(),
+                          booksToReadCount,
                         ),
                         buildRichText(
                           context,
                           "Lido",
-                          booksReadCount.toString(),
+                          booksReadCount,
                         ),
                         buildRichText(
                           context,
                           "Abandonei",
-                          booksAbandonedCount.toString(),
+                          booksAbandonedCount,
                         ),
                         buildRichText(
                           context,
                           "Todos",
-                          totalBooksCount.toString(),
+                          totalBooksCount,
                         ),
                       ],
                     ),
@@ -112,24 +113,20 @@ class _ProfilePageState extends ProfileState<ProfilePage> {
         ),
       );
 
-  Widget buildRichText(BuildContext context, String label, String value) {
+  Widget buildRichText(BuildContext context, String label, int value) {
     return RichText(
       text: TextSpan(
         style: DefaultTextStyle.of(context).style,
         children: <TextSpan>[
           TextSpan(
             text: label + ": ",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
+            style:
+                AppTextStyles.boldText.copyWith(color: AppColors.black),
           ),
           TextSpan(
-            text: value,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.green,
-            ),
+            text: value < 0 ? "" : value.toString(),
+            style:
+                AppTextStyles.boldText.copyWith(color: AppColors.green),
           ),
         ],
       ),

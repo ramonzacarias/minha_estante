@@ -23,13 +23,15 @@ class App extends StatelessWidget {
       initialRoute: NamedRoute.splash,
 
       routes: {
-        NamedRoute.initial:(context) => const OnboardingPage(),
-        NamedRoute.splash:(context) => const SplashPage(),
-        NamedRoute.signUp:(context) => const SignUpPage(),
+        NamedRoute.initial: (context) => const OnboardingPage(),
+        NamedRoute.splash: (context) => const SplashPage(),
+        NamedRoute.signUp: (context) => const SignUpPage(),
         NamedRoute.signIn: (context) => const SignInPage(),
         NamedRoute.useTherms: (context) => const UseTherms(),
-        NamedRoute.bookDetail: (context) => const BookDetail(bookId: '',),
-        NamedRoute.profileEdit: (context) => const EditProfile(),
+        NamedRoute.bookDetail: (context) => const BookDetail(
+              bookId: '',
+            ),
+        NamedRoute.profileEdit: (context) => const ProfileEdit(),
         NamedRoute.profilePage: (context) => ProfilePage(),
         NamedRoute.home: (context) => const HomePage(),
       },

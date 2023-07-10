@@ -3,11 +3,11 @@ import 'package:minha_estante/services/user_library_service.dart';
 
 abstract class ProfileState<T extends StatefulWidget> extends State<T> {
   final UserLibraryService _userLibraryService = UserLibraryService();
-  int? booksReadCount;
-  int? booksToReadCount;
-  int? booksAbandonedCount;
-  int? booksBeingReadCount;
-  int? totalBooksCount;
+  int booksReadCount = -1;
+  int booksToReadCount = -1;
+  int booksAbandonedCount = -1;
+  int booksBeingReadCount = -1;
+  int totalBooksCount = -1;
 
   @override
   void initState() {
