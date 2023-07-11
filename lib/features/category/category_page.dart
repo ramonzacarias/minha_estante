@@ -61,60 +61,52 @@ class CategoryPage extends StatelessWidget {
           future: _fetchBookImagesCategory(categoryName, 40),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Container(
-                height: 200,
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
+              return Center(
+                child: CircularProgressIndicator(),
               );
             } else if (snapshot.hasData) {
               final bookDataList = snapshot.data!;
               final displayedBooks = bookDataList.take(30).toList();
 
-              return Padding(
+              return GridView.builder(
                 padding: const EdgeInsets.all(15.0),
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 8.0,
-                    mainAxisSpacing: 20.0,
-                  ),
-                  itemCount: displayedBooks.length,
-                  itemBuilder: (context, index) {
-                    final bookData = displayedBooks[index];
-                    final imageUrl = bookData['thumbnailUrl'] as String;
-                    final bookId = bookData['id'] as String;
-                    return GestureDetector(
-                      onTap: () {
-                        _navigateToBookDetail(bookId);
-                      },
-                      child: Container(
-                        height: 800, // Defina a altura desejada aqui
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(5.0),
-                          child: Container(
-                            color: Colors.grey[200],
-                            child: Image(
-                              image: CachedNetworkImageProvider(
-                                imageUrl,
-                              ),
-                              fit: BoxFit.fill,
-                            ),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 8.0,
+                  mainAxisSpacing: 20.0,
+                ),
+                itemCount: displayedBooks.length,
+                itemBuilder: (context, index) {
+                  final bookData = displayedBooks[index];
+                  final imageUrl = bookData['thumbnailUrl'] as String;
+                  final bookId = bookData['id'] as String;
+                  return GestureDetector(
+                    onTap: () {
+                      _navigateToBookDetail(bookId);
+                    },
+                    child: Container(
+                      height: 800, // Defina a altura desejada aqui
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(5.0),
+                        child: Container(
+                          color: Colors.grey[200],
+                          child: CachedNetworkImage(
+                            imageUrl: imageUrl,
+                            fit: BoxFit.fill,
                           ),
                         ),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               );
             } else if (snapshot.hasError) {
-              return const Text('Erro ao carregar as imagens dos livros');
+              return Center(
+                child: Text('Erro ao carregar as imagens dos livros'),
+              );
             } else {
-              return Container(
-                height: 200,
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
+              return Center(
+                child: CircularProgressIndicator(),
               );
             }
           },
