@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
-import 'package:minha_estante/commom/widgets/CustomListOption.dart';
+import 'package:minha_estante/commom/widgets/custom_list_option.dart';
 import 'package:minha_estante/commom/widgets/app_header.dart';
 import 'package:minha_estante/commom/widgets/widget_border_divider.dart';
 import 'package:minha_estante/features/profile/profile_controller.dart';
@@ -42,27 +42,27 @@ class _ProfilePageState extends ProfileState<ProfilePage> {
                         buildRichText(
                           context,
                           "Lendo",
-                          booksBeingReadCount,
+                          booksBeingReadCountStream,
                         ),
                         buildRichText(
                           context,
                           "Quero Ler",
-                          booksToReadCount,
+                          booksToReadCountStream,
                         ),
                         buildRichText(
                           context,
                           "Lido",
-                          booksReadCount,
+                          booksReadCountStream,
                         ),
                         buildRichText(
                           context,
                           "Abandonei",
-                          booksAbandonedCount,
+                          booksAbandonedCountStream,
                         ),
                         buildRichText(
                           context,
                           "Todos",
-                          totalBooksCount,
+                          totalBooksCountStream,
                         ),
                       ],
                     ),
@@ -80,7 +80,7 @@ class _ProfilePageState extends ProfileState<ProfilePage> {
                           _profileController.navigateToProfileEdit(context),
                     ),
                     SizedBox(
-                      height: 30.0,
+                      height: 25.0,
                     ),
                     CustomListOption(
                       icon: Icons.security_update_warning_outlined,
@@ -89,7 +89,7 @@ class _ProfilePageState extends ProfileState<ProfilePage> {
                           _profileController.navigateToTermsOfUse(context),
                     ),
                     SizedBox(
-                      height: 30.0,
+                      height: 25.0,
                     ),
                     CustomListOption(
                       icon: Icons.delete_outline,
@@ -98,7 +98,7 @@ class _ProfilePageState extends ProfileState<ProfilePage> {
                           _profileController.showDeleteAccountDialog(context),
                     ),
                     SizedBox(
-                      height: 30.0,
+                      height: 25.0,
                     ),
                     CustomListOption(
                       icon: Icons.exit_to_app_outlined,
@@ -113,23 +113,50 @@ class _ProfilePageState extends ProfileState<ProfilePage> {
         ),
       );
 
-  Widget buildRichText(BuildContext context, String label, int value) {
-    return RichText(
-      text: TextSpan(
-        style: DefaultTextStyle.of(context).style,
-        children: <TextSpan>[
-          TextSpan(
-            text: label + ": ",
-            style:
-                AppTextStyles.boldText.copyWith(color: AppColors.black),
-          ),
-          TextSpan(
-            text: value < 0 ? "" : value.toString(),
-            style:
-                AppTextStyles.boldText.copyWith(color: AppColors.green),
-          ),
-        ],
-      ),
+  Widget buildRichText(
+      BuildContext context, String label, Stream<int>? stream) {
+    return StreamBuilder<int>(
+      stream: stream?.asBroadcastStream(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          int value = snapshot.data!;
+          return RichText(
+            text: TextSpan(
+              style: DefaultTextStyle.of(context).style,
+              children: <TextSpan>[
+                TextSpan(
+                  text: label + ": ",
+                  style: AppTextStyles.smallboldText
+                      .copyWith(color: AppColors.black),
+                ),
+                TextSpan(
+                  text: value < 0 ? "" : value.toString(),
+                  style: AppTextStyles.smallboldText
+                      .copyWith(color: AppColors.green),
+                ),
+              ],
+            ),
+          );
+        } else {
+          return RichText(
+            text: TextSpan(
+              style: DefaultTextStyle.of(context).style,
+              children: <TextSpan>[
+                TextSpan(
+                  text: label + ": ",
+                  style: AppTextStyles.smallboldText
+                      .copyWith(color: AppColors.black),
+                ),
+                TextSpan(
+                  text: "",
+                  style: AppTextStyles.smallboldText
+                      .copyWith(color: AppColors.green),
+                ),
+              ],
+            ),
+          );
+        }
+      },
     );
   }
 }
