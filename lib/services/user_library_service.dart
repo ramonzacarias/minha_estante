@@ -242,91 +242,66 @@ class UserLibraryService {
   }
 
   // Retorna a quantidade de livros lidos por um usuário
-  Future<int> getBooksReadCount(String userId) async {
-    try {
-      final QuerySnapshot snapshot = await _firestore
-          .collection(_users)
-          .doc(userId)
-          .collection(_biblioteca)
-          .doc(_livros)
-          .collection(_livros)
-          .where('statusLeitura', isEqualTo: BookReadingStatus.lido)
-          .get();
-
-      return snapshot.size;
-    } catch (e) {
-      throw e;
-    }
+  Stream<int> getBooksReadCountStream(String userId) {
+    return _firestore
+        .collection(_users)
+        .doc(userId)
+        .collection(_biblioteca)
+        .doc(_livros)
+        .collection(_livros)
+        .where('statusLeitura', isEqualTo: BookReadingStatus.lido)
+        .snapshots()
+        .map((snapshot) => snapshot.size);
   }
 
   // Retorna a quantidade de livros que um usuário deseja ler
-  Future<int> getBooksToReadCount(String userId) async {
-    try {
-      final QuerySnapshot snapshot = await _firestore
-          .collection(_users)
-          .doc(userId)
-          .collection(_biblioteca)
-          .doc(_livros)
-          .collection(_livros)
-          .where('statusLeitura', isEqualTo: BookReadingStatus.queroLer)
-          .get();
-
-      return snapshot.size;
-    } catch (e) {
-      throw e;
-    }
+  Stream<int> getBooksToReadCountStream(String userId) {
+    return _firestore
+        .collection(_users)
+        .doc(userId)
+        .collection(_biblioteca)
+        .doc(_livros)
+        .collection(_livros)
+        .where('statusLeitura', isEqualTo: BookReadingStatus.queroLer)
+        .snapshots()
+        .map((snapshot) => snapshot.size);
   }
 
   // Retorna a quantidade de livros abandonados por um usuário
-  Future<int> getBooksAbandonedCount(String userId) async {
-    try {
-      final QuerySnapshot snapshot = await _firestore
-          .collection(_users)
-          .doc(userId)
-          .collection(_biblioteca)
-          .doc(_livros)
-          .collection(_livros)
-          .where('statusLeitura', isEqualTo: BookReadingStatus.abandonei)
-          .get();
-
-      return snapshot.size;
-    } catch (e) {
-      throw e;
-    }
+  Stream<int> getBooksAbandonedCountStream(String userId) {
+    return _firestore
+        .collection(_users)
+        .doc(userId)
+        .collection(_biblioteca)
+        .doc(_livros)
+        .collection(_livros)
+        .where('statusLeitura', isEqualTo: BookReadingStatus.abandonei)
+        .snapshots()
+        .map((snapshot) => snapshot.size);
   }
 
   // Retorna a quantidade de livros sendo lidos por um usuário
-  Future<int> getBooksBeingReadCount(String userId) async {
-    try {
-      final QuerySnapshot snapshot = await _firestore
-          .collection(_users)
-          .doc(userId)
-          .collection(_biblioteca)
-          .doc(_livros)
-          .collection(_livros)
-          .where('statusLeitura', isEqualTo: BookReadingStatus.lendo)
-          .get();
-
-      return snapshot.size;
-    } catch (e) {
-      throw e;
-    }
+  Stream<int> getBooksBeingReadCountStream(String userId) {
+    return _firestore
+        .collection(_users)
+        .doc(userId)
+        .collection(_biblioteca)
+        .doc(_livros)
+        .collection(_livros)
+        .where('statusLeitura', isEqualTo: BookReadingStatus.lendo)
+        .snapshots()
+        .map((snapshot) => snapshot.size);
   }
 
   // Retorna o total de livros na biblioteca de um usuário
-  Future<int> getTotalBooksCount(String userId) async {
-    try {
-      final QuerySnapshot snapshot = await _firestore
-          .collection(_users)
-          .doc(userId)
-          .collection(_biblioteca)
-          .doc(_livros)
-          .collection(_livros)
-          .get();
-
-      return snapshot.size;
-    } catch (e) {
-      throw e;
-    }
+  Stream<int> getTotalBooksCountStream(String userId) {
+    return _firestore
+        .collection(_users)
+        .doc(userId)
+        .collection(_biblioteca)
+        .doc(_livros)
+        .collection(_livros)
+        .snapshots()
+        .map((snapshot) => snapshot.size);
   }
 }

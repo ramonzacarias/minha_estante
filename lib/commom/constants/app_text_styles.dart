@@ -4,6 +4,12 @@ import 'package:minha_estante/commom/constants/app_colors.dart';
 class AppTextStyles {
   AppTextStyles._(); // Chamando as propriedades dentro do construtor AppTextStyle()
 
+  static const TextStyle smallboldText = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 11.0,
+    fontWeight: FontWeight.w700,
+  );
+
   static const TextStyle extraSmallText = TextStyle(
     fontFamily: 'Inter',
     fontSize: 12.0,
