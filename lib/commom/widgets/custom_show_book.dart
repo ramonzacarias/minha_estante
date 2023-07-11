@@ -4,7 +4,7 @@ import 'package:minha_estante/commom/constants/app_text_styles.dart';
 import 'package:minha_estante/commom/constants/routes.dart';
 import 'package:minha_estante/commom/models/book_model.dart';
 import 'package:minha_estante/commom/utils/truncate_text.dart';
-import 'package:minha_estante/commom/widgets/buttomAddBook.dart';
+import 'package:minha_estante/commom/widgets/buttom_add_book.dart';
 import 'package:minha_estante/services/user_library_service.dart';
 
 class CustomShowBook extends StatefulWidget {
