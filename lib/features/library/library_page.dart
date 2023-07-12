@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
-import 'package:minha_estante/commom/constants/app_text_styles.dart';
 import 'package:minha_estante/commom/constants/book_reading_status.dart';
 import 'package:minha_estante/commom/constants/books_api.dart';
 import 'package:minha_estante/commom/constants/firestore_colletions.dart';
@@ -10,6 +9,7 @@ import 'package:minha_estante/commom/constants/firestore_colletions.dart';
 import 'package:minha_estante/commom/constants/routes.dart';
 import 'package:minha_estante/commom/models/book_model.dart';
 import 'package:minha_estante/commom/widgets/custom_search_bar.dart';
+import 'package:minha_estante/commom/widgets/favorite_bar.dart';
 import 'package:minha_estante/commom/widgets/search_result.dart';
 import 'package:minha_estante/features/book_detail/book_detail.dart';
 import 'package:minha_estante/services/user_library_service.dart';
@@ -159,7 +159,7 @@ class _LibraryState extends State<Library> {
                   searchPressed: _searchBooks,
                 ),
                 SearchResults(searchResult: _searchResult),
-                SizedBox(height: 15.0),
+                SizedBox(height: 10.0),
                 FavoriteBar(
                   onStatusSelected: (status) {
                     setState(() {
@@ -179,7 +179,7 @@ class _LibraryState extends State<Library> {
                       );
                     } else if (snapshot.hasData) {
                       final bookList = snapshot.data!;
-                      final displayedBooks = bookList.take(30).toList();
+                      final displayedBooks = bookList.toList();
 
                       return Padding(
                         padding: const EdgeInsets.all(15.0),
@@ -237,69 +237,4 @@ class _LibraryState extends State<Library> {
       );
 }
 
-class FavoriteBar extends StatefulWidget {
-  final void Function(String) onStatusSelected;
 
-  const FavoriteBar({Key? key, required this.onStatusSelected});
-
-  @override
-  State<FavoriteBar> createState() => _FavoriteBarState();
-}
-
-class _FavoriteBarState extends State<FavoriteBar> {
-  late String selectedFavorite = BookReadingStatus.lendo;
-  final List<String> favoriteStatusList = [
-    BookReadingStatus.lendo,
-    BookReadingStatus.queroLer,
-    BookReadingStatus.lido,
-    BookReadingStatus.abandonei,
-    BookReadingStatus.todos,
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return SegmentedButton<String>(
-      showSelectedIcon: false,
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.resolveWith<Color>(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.selected)) {
-              return AppColors.greenTwo;
-            }
-            return Colors.transparent;
-          },
-        ),
-        foregroundColor: MaterialStateProperty.resolveWith<Color>(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.selected)) {
-              return Colors.white;
-            }
-            return AppColors.greenTwo;
-          },
-        ),
-        side: MaterialStateProperty.all<BorderSide>(
-          BorderSide(
-            color: AppColors.greenTwo,
-            width: 1.0,
-          ),
-        ),
-      ),
-      segments: favoriteStatusList.map((status) {
-        return ButtonSegment<String>(
-          value: status,
-          label: Text(
-            status,
-            style: AppTextStyles.extraSmallText,
-          ),
-        );
-      }).toList(),
-      selected: {selectedFavorite},
-      onSelectionChanged: (Set<String> newSelection) {
-        setState(() {
-          selectedFavorite = newSelection.first;
-          widget.onStatusSelected(selectedFavorite);
-        });
-      },
-    );
-  }
-}
