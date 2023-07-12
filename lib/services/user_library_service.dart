@@ -304,4 +304,42 @@ class UserLibraryService {
         .snapshots()
         .map((snapshot) => snapshot.size);
   }
+
+  // Obtém todos os livros com o mesmo status de leitura da biblioteca do usuário
+  Future<List<BookModel>> getBooksByStatus(String userId, String status) async {
+    try {
+      final QuerySnapshot snapshot = await _firestore
+          .collection(_users)
+          .doc(userId)
+          .collection(_biblioteca)
+          .doc(_livros)
+          .collection(_livros)
+          .where('statusLeitura', isEqualTo: status)
+          .get();
+
+      final List<BookModel> books = [];
+
+      for (final DocumentSnapshot doc in snapshot.docs) {
+        final data = doc.data() as Map<String, dynamic>;
+        final book = BookModel(
+          id: data['id'],
+          titulo: data['titulo'],
+          autor: data['autor'],
+          qtdPaginas: data['qtdpaginas'],
+          descricao: data['descricao'],
+          imageUrl: data['imageUrl'],
+          textSnippet: data['textSnippet'],
+          genero: data['genero'],
+          statusLeitura: data['statusLeitura'],
+          pgLidas: data['pgLidas'],
+          nota: data['nota'],
+        );
+        books.add(book);
+      }
+
+      return books;
+    } catch (e) {
+      throw e;
+    }
+  }
 }
