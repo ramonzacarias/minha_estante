@@ -12,7 +12,7 @@ class BookModel {
   final String imageUrl; // URL da imagem do livro
   final String textSnippet; //
   final String genero;
-  final DateTime dataLeitura; // Data de leitura do livro
+  final DateTime? dataLeitura; // Data de leitura do livro
   final String statusLeitura; // Status de leitura do livro
   final int pgLidas;
   final int nota;
@@ -26,7 +26,7 @@ class BookModel {
     required this.imageUrl,
     this.textSnippet = AppError.unavailableSnippet,
     this.genero = AppError.unknownCategory,
-    required this.dataLeitura,
+    this.dataLeitura,
     required this.statusLeitura,
     required this.pgLidas,
     required this.nota,
@@ -43,7 +43,7 @@ class BookModel {
       'imageUrl': imageUrl,
       'textSnippet': textSnippet,
       'genero': genero,
-      'dataLeitura': dataLeitura.toIso8601String(),
+      'dataLeitura': dataLeitura,
       'statusLeitura': statusLeitura,
       'pgLidas': pgLidas,
       'nota': nota,
@@ -71,18 +71,21 @@ class BookModel {
 
     return BookModel(
       id: map['id'],
-      titulo: volumeInfo['title'],
+      titulo: volumeInfo['title'] ?? AppError.unknownTitle,
       autor: getFirstListValue(volumeInfo['authors'], AppError.unknownAuthor),
-      qtdPaginas: volumeInfo['pageCount'],
+      qtdPaginas: volumeInfo['pageCount'] ??
+          AppError.unknownPaginas, // Verifica se é nulo e atribui 0 caso seja
       descricao: sanitizedDescription,
-      imageUrl: volumeInfo['imageLinks']?['thumbnail'],
+      imageUrl: volumeInfo['imageLinks']?['thumbnail'] ??
+          '', // Verifica se é nulo e atribui uma string vazia caso seja
       textSnippet: searchInfo != null
           ? searchInfo['textSnippet']
           : AppError.unavailableSnippet,
       genero:
           getFirstListValue(volumeInfo['categories'], AppError.unknownCategory),
       dataLeitura: DateTime.now(), // Defina a data de leitura do livro aqui
-      statusLeitura: BookReadingStatus.naoLido, // Defina o status de leitura do livro aqui
+      statusLeitura:
+          BookReadingStatus.naoLido, // Defina o status de leitura do livro aqui
       pgLidas: BookReadingStatus.pgLidas,
       nota: BookReadingStatus.nota,
     );
@@ -103,4 +106,5 @@ class AppError {
   static const String unavailableDescription = 'Descrição indisponível';
   static const String unavailableSnippet = 'Trecho indisponível';
   static const String unavailableImageUrl = 'URL da imagem indisponível';
+  static const String unknownPaginas = '0';
 }

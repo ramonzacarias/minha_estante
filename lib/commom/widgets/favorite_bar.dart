@@ -1,9 +1,8 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
 import 'package:minha_estante/commom/constants/book_reading_status.dart';
-
-enum FavoriteStatus { reading, wantToRead, read, abandoned, all }
 
 class FavoriteBar extends StatefulWidget {
   const FavoriteBar({Key? key});
@@ -13,11 +12,18 @@ class FavoriteBar extends StatefulWidget {
 }
 
 class _FavoriteBarState extends State<FavoriteBar> {
-  late FavoriteStatus selectedFavorite = FavoriteStatus.reading;
+  late String selectedFavorite = BookReadingStatus.lendo;
+  final List<String> favoriteStatusList = [
+    BookReadingStatus.lendo,
+    BookReadingStatus.queroLer,
+    BookReadingStatus.lido,
+    BookReadingStatus.abandonei,
+    BookReadingStatus.todos,
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return SegmentedButton<FavoriteStatus>(
+    return SegmentedButton<String>(
       showSelectedIcon: false,
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
@@ -44,45 +50,17 @@ class _FavoriteBarState extends State<FavoriteBar> {
           ),
         ),
       ),
-      segments: const <ButtonSegment<FavoriteStatus>>[
-        ButtonSegment<FavoriteStatus>(
-          value: FavoriteStatus.reading,
+      segments: favoriteStatusList.map((status) {
+        return ButtonSegment<String>(
+          value: status,
           label: Text(
-            BookReadingStatus.lendo,
+            status,
             style: AppTextStyles.extraSmallText,
           ),
-        ),
-        ButtonSegment<FavoriteStatus>(
-          value: FavoriteStatus.wantToRead,
-          label: Text(
-            BookReadingStatus.queroLer,
-            style: AppTextStyles.extraSmallText,
-          ),
-        ),
-        ButtonSegment<FavoriteStatus>(
-          value: FavoriteStatus.read,
-          label: Text(
-            BookReadingStatus.lido,
-            style: AppTextStyles.extraSmallText,
-          ),
-        ),
-        ButtonSegment<FavoriteStatus>(
-          value: FavoriteStatus.abandoned,
-          label: Text(
-            BookReadingStatus.abandonei,
-            style: AppTextStyles.extraSmallText,
-          ),
-        ),
-        ButtonSegment<FavoriteStatus>(
-          value: FavoriteStatus.all,
-          label: Text(
-            BookReadingStatus.todos,
-            style: AppTextStyles.extraSmallText,
-          ),
-        ),
-      ],
+        );
+      }).toList(),
       selected: {selectedFavorite},
-      onSelectionChanged: (Set<FavoriteStatus> newSelection) {
+      onSelectionChanged: (Set<String> newSelection) {
         setState(() {
           selectedFavorite = newSelection.first;
           // Exibir no console qual classe selecionada para auxiliar na construção do widget da lista de livros
@@ -92,3 +70,4 @@ class _FavoriteBarState extends State<FavoriteBar> {
     );
   }
 }
+*/
