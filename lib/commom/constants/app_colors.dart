@@ -16,6 +16,7 @@ class AppColors {
   ];
 
   static const Color white = Color(0xFFFFFFFF);
+  static const Color blue = Color.fromARGB(255, 2, 2, 255);
   static const Color black = Color(0xFF000000);
   static const Color iceWhite = Color(0xFFEEF8F7);
   static const Color flashWhite = Color(0xFFEBF0ED);

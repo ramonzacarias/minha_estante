@@ -17,17 +17,16 @@ abstract class ProfileState<T extends StatefulWidget> extends State<T> {
 
   Future<void> loadStatistics() async {
     try {
-      String userId = await _userLibraryService.getUserId();
       booksReadCountStream =
-          _userLibraryService.getBooksReadCountStream(userId);
+          _userLibraryService.getBooksReadCountStream();
       booksToReadCountStream =
-          _userLibraryService.getBooksToReadCountStream(userId);
+          _userLibraryService.getBooksToReadCountStream();
       booksAbandonedCountStream =
-          _userLibraryService.getBooksAbandonedCountStream(userId);
+          _userLibraryService.getBooksAbandonedCountStream();
       booksBeingReadCountStream =
-          _userLibraryService.getBooksBeingReadCountStream(userId);
+          _userLibraryService.getBooksBeingReadCountStream();
       totalBooksCountStream =
-          _userLibraryService.getTotalBooksCountStream(userId);
+          _userLibraryService.getTotalBooksCountStream();
       setState(() {});
     } catch (e) {
       print('Erro ao carregar as estatísticas: $e');
