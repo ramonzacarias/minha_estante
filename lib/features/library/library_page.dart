@@ -43,15 +43,26 @@ class _LibraryState extends State<Library> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  Future<void> _searchBooks() async {
+  Future<dynamic> _searchBooks() async {
     if (_searchQuery.isEmpty) {
       _showSnackBarMessage();
       return null;
     }
-    final result = await BooksApi.search(_searchQuery);
+    final dynamic result = await BooksApi.search(_searchQuery);
     setState(() {
       _searchResult = result;
     });
+    // Abre a tela de Resultados de Pesquisa
+    if (_searchResult != null) {
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SearchResults(
+                    searchResult: result,
+                    context: context,
+                  )));
+    }
   }
 
   Future<List<BookModel>> getBooksByStatus(String status) async {
@@ -156,9 +167,8 @@ class _LibraryState extends State<Library> {
                       _searchQuery = value;
                     });
                   },
-                  searchPressed: _searchBooks,
+                  searchPressed: _searchBooks
                 ),
-                SearchResults(searchResult: _searchResult),
                 SizedBox(height: 10.0),
                 FavoriteBar(
                   onStatusSelected: (status) {
