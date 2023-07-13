@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
+import 'package:minha_estante/commom/constants/book_reading_status.dart';
 import 'package:minha_estante/commom/constants/routes.dart';
 import 'package:minha_estante/commom/models/book_model.dart';
 import 'package:minha_estante/commom/utils/truncate_text.dart';
 import 'package:minha_estante/commom/widgets/buttom_add_book.dart';
+import 'package:minha_estante/commom/widgets/widgetsDialog/remove_book.dart';
 import 'package:minha_estante/services/user_library_service.dart';
 
 class CustomShowBook extends StatefulWidget {
@@ -17,9 +19,9 @@ class CustomShowBook extends StatefulWidget {
 }
 
 class _CustomShowBookState extends State<CustomShowBook> {
-  String _statusBook = "";
-  int _pgLidas = -1;
-  int _nota = -1;
+  String _statusBook = BookReadingStatus.naoLido;
+  int _pgLidas = BookReadingStatus.pgLidas;
+  int _nota = BookReadingStatus.nota;
 
   @override
   void initState() {
@@ -29,32 +31,50 @@ class _CustomShowBookState extends State<CustomShowBook> {
     getNota();
   }
 
-  void getBookStatus() async {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getBookStatus();
+  }
+
+  void getBookStatus() {
     UserLibraryService libraryService = UserLibraryService();
-    String status = await libraryService.getBookStatus(widget.book);
-    setState(() {
-      _statusBook = status;
+    Stream<String> statusStream = libraryService.getBookStatus(widget.book);
+
+    statusStream.listen((status) {
+      setState(() {
+        _statusBook = status;
+      });
     });
   }
 
-  void getReadingPg() async {
+  void getReadingPg() {
     UserLibraryService libraryService = UserLibraryService();
-    int pgLidas = await libraryService.getReadingPages(widget.book);
-    setState(() {
-      _pgLidas = pgLidas;
+    Stream<int> pgLidasStream = libraryService.getReadingPages(widget.book);
+
+    pgLidasStream.listen((pgLidas) {
+      setState(() {
+        _pgLidas = pgLidas;
+      });
     });
   }
 
-  void getNota() async {
+  void getNota() {
     UserLibraryService libraryService = UserLibraryService();
-    int nota = await libraryService.getRating(widget.book);
-    setState(() {
-      _nota = nota;
+    Stream<int?> notaStream = libraryService.getRating(widget.book);
+
+    notaStream.listen((nota) {
+      setState(() {
+        _nota = nota ?? BookReadingStatus.nota;
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    bool isUnread = _statusBook !=
+        BookReadingStatus.naoLido; // Verifica se o status do livro é "não lido"
+
     return WillPopScope(
       onWillPop: () async {
         Navigator.popAndPushNamed(context, NamedRoute.splash);
@@ -311,8 +331,23 @@ class _CustomShowBookState extends State<CustomShowBook> {
             ),
           ],
         ),
-        floatingActionButton: buttomAddBook(
-          book: widget.book,
+        floatingActionButton: Container(
+          width: MediaQuery.of(context).size.width - 30.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Visibility(
+                visible: isUnread,
+                maintainSize: true,
+                maintainAnimation: true,
+                maintainState: true,
+                child: RemoveBook(book: widget.book),
+              ),
+              buttomAddBook(
+                book: widget.book,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -12,7 +12,6 @@ class BookModel {
   final String imageUrl; // URL da imagem do livro
   final String textSnippet; //
   final String genero;
-  final DateTime? dataLeitura; // Data de leitura do livro
   final String statusLeitura; // Status de leitura do livro
   final int pgLidas;
   final int nota;
@@ -26,7 +25,6 @@ class BookModel {
     required this.imageUrl,
     this.textSnippet = AppError.unavailableSnippet,
     this.genero = AppError.unknownCategory,
-    this.dataLeitura,
     required this.statusLeitura,
     required this.pgLidas,
     required this.nota,
@@ -43,7 +41,6 @@ class BookModel {
       'imageUrl': imageUrl,
       'textSnippet': textSnippet,
       'genero': genero,
-      'dataLeitura': dataLeitura,
       'statusLeitura': statusLeitura,
       'pgLidas': pgLidas,
       'nota': nota,
@@ -83,7 +80,6 @@ class BookModel {
           : AppError.unavailableSnippet,
       genero:
           getFirstListValue(volumeInfo['categories'], AppError.unknownCategory),
-      dataLeitura: DateTime.now(), // Defina a data de leitura do livro aqui
       statusLeitura:
           BookReadingStatus.naoLido, // Defina o status de leitura do livro aqui
       pgLidas: BookReadingStatus.pgLidas,
