@@ -128,12 +128,16 @@ class UserLibraryService {
     final DocumentReference bookRef = _getBookDocumentRef(userId, book.id);
 
     try {
-      await bookRef.set(book.toMap()
-        ..addAll({
-          'statusLeitura': readingStatus,
-          'pgLidas': book.pgLidas,
-          'nota': rating,
-        }));
+      final Map<String, dynamic> bookData = {
+        'statusLeitura': readingStatus,
+        'nota': rating,
+      };
+
+      if (readingStatus != BookReadingStatus.abandonei) {
+        bookData['pgLidas'] = book.pgLidas;
+      }
+
+      await bookRef.set(bookData, SetOptions(merge: true));
     } catch (e) {
       throw e;
     }
