@@ -28,15 +28,19 @@ Widget futurePageDialog(
 
           SuccessDialog.show(context, book.id); // Exibe o dialog de sucesso
         },
-        child: Text('SIM',
-            style: AppTextStyles.smallText.copyWith(color: AppColors.greenOne)),
+        child: Text(
+          'SIM',
+          style: AppTextStyles.smallText.copyWith(color: AppColors.greenOne),
+        ),
       ),
       TextButton(
         onPressed: () {
           Navigator.of(context).pop(); // Fechar o diálogo
         },
         child: Text('NÃO',
-            style: AppTextStyles.smallText.copyWith(color: AppColors.greenOne)),
+            style: AppTextStyles.smallText.copyWith(
+              color: AppColors.greenOne,
+            )),
       ),
     ],
   );

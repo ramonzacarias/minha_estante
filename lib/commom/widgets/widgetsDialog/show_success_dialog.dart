@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
-import 'package:minha_estante/features/book_detail/book_detail.dart';
 
 // Classe para retornar um widget exibindo que o livro foi adicionado com sucesso a biblioteca
 class SuccessDialog {
@@ -24,14 +23,6 @@ class SuccessDialog {
               OutlinedButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Fecha o diálogo
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => BookDetail(
-                        bookId: bookId, // Passe o bookId novamente
-                      ),
-                    ),
-                  );
                 },
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 35),

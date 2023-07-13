@@ -74,17 +74,18 @@ class UserLibraryService {
   }
 
   // Obtém a página atual de leitura de um livro
-  Future<int> getReadingPages(BookModel book) async {
+  Stream<int> getReadingPages(BookModel book) {
     final String userId = getUserId();
-    final DocumentSnapshot doc =
-        await _getBookDocumentRef(userId, book.id).get();
+    final DocumentReference bookRef = _getBookDocumentRef(userId, book.id);
 
-    if (doc.exists) {
-      final data = doc.data() as Map<String, dynamic>;
-      return data['pgLidas'];
-    } else {
-      return book.pgLidas;
-    }
+    return bookRef.snapshots().map((snapshot) {
+      if (snapshot.exists) {
+        final data = snapshot.data() as Map<String, dynamic>;
+        return data['pgLidas'];
+      } else {
+        return book.pgLidas;
+      }
+    });
   }
 
   // Atualiza a nota de um livro
@@ -106,17 +107,18 @@ class UserLibraryService {
   }
 
   // Obtém a nota de um livro
-  Future<int?> getRating(BookModel book) async {
+  Stream<int?> getRating(BookModel book) {
     final String userId = getUserId();
-    final DocumentSnapshot doc =
-        await _getBookDocumentRef(userId, book.id).get();
+    final DocumentReference bookRef = _getBookDocumentRef(userId, book.id);
 
-    if (doc.exists) {
-      final data = doc.data() as Map<String, dynamic>;
-      return data['nota'];
-    } else {
-      return book.nota;
-    }
+    return bookRef.snapshots().map((snapshot) {
+      if (snapshot.exists) {
+        final data = snapshot.data() as Map<String, dynamic>;
+        return data['nota'];
+      } else {
+        return book.nota;
+      }
+    });
   }
 
   // Atualiza o status e a nota de um livro
@@ -138,17 +140,18 @@ class UserLibraryService {
   }
 
   // Obtém o status de um livro na biblioteca do usuário
-  Future<String> getBookStatus(BookModel book) async {
+  Stream<String> getBookStatus(BookModel book) {
     final String userId = getUserId();
-    final DocumentSnapshot doc =
-        await _getBookDocumentRef(userId, book.id).get();
+    final DocumentReference bookRef = _getBookDocumentRef(userId, book.id);
 
-    if (doc.exists) {
-      final data = doc.data() as Map<String, dynamic>;
-      return data['statusLeitura'];
-    } else {
-      return book.statusLeitura;
-    }
+    return bookRef.snapshots().map((snapshot) {
+      if (snapshot.exists) {
+        final data = snapshot.data() as Map<String, dynamic>;
+        return data['statusLeitura'];
+      } else {
+        return book.statusLeitura;
+      }
+    });
   }
 
   // Remove um livro da biblioteca do usuário
