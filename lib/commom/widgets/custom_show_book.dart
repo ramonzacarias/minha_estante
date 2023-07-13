@@ -6,6 +6,7 @@ import 'package:minha_estante/commom/constants/routes.dart';
 import 'package:minha_estante/commom/models/book_model.dart';
 import 'package:minha_estante/commom/utils/truncate_text.dart';
 import 'package:minha_estante/commom/widgets/buttom_add_book.dart';
+import 'package:minha_estante/commom/widgets/widgetsDialog/remove_book.dart';
 import 'package:minha_estante/services/user_library_service.dart';
 
 class CustomShowBook extends StatefulWidget {
@@ -18,7 +19,7 @@ class CustomShowBook extends StatefulWidget {
 }
 
 class _CustomShowBookState extends State<CustomShowBook> {
-  String _statusBook = "";
+  String _statusBook = BookReadingStatus.naoLido;
   int _pgLidas = BookReadingStatus.pgLidas;
   int _nota = BookReadingStatus.nota;
 
@@ -30,7 +31,13 @@ class _CustomShowBookState extends State<CustomShowBook> {
     getNota();
   }
 
-  void getBookStatus() async {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getBookStatus();
+  }
+
+  void getBookStatus() {
     UserLibraryService libraryService = UserLibraryService();
     Stream<String> statusStream = libraryService.getBookStatus(widget.book);
 
@@ -65,6 +72,9 @@ class _CustomShowBookState extends State<CustomShowBook> {
 
   @override
   Widget build(BuildContext context) {
+    bool isUnread = _statusBook !=
+        BookReadingStatus.naoLido; // Verifica se o status do livro é "não lido"
+
     return WillPopScope(
       onWillPop: () async {
         Navigator.popAndPushNamed(context, NamedRoute.splash);
@@ -321,8 +331,23 @@ class _CustomShowBookState extends State<CustomShowBook> {
             ),
           ],
         ),
-        floatingActionButton: buttomAddBook(
-          book: widget.book,
+        floatingActionButton: Container(
+          width: MediaQuery.of(context).size.width - 30.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Visibility(
+                visible: isUnread,
+                maintainSize: true,
+                maintainAnimation: true,
+                maintainState: true,
+                child: RemoveBook(book: widget.book),
+              ),
+              buttomAddBook(
+                book: widget.book,
+              ),
+            ],
+          ),
         ),
       ),
     );
