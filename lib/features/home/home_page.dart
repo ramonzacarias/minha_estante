@@ -4,10 +4,11 @@ import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/app_text_styles.dart';
 import 'package:minha_estante/commom/constants/routes.dart';
 import 'package:minha_estante/commom/widgets/custom_search_bar.dart';
-import 'package:minha_estante/commom/widgets/search_result.dart';
 import 'package:minha_estante/commom/widgets/category_bar.dart';
 import 'package:minha_estante/commom/constants/books_api.dart';
 import 'package:minha_estante/features/book_detail/book_detail.dart';
+
+import '../../commom/widgets/search_result.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -31,15 +32,26 @@ class _HomeState extends State<Home> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  Future<void> _searchBooks(String bookId) async {
-    if (bookId.isEmpty) {
+  Future<dynamic> _searchBooks() async {
+    if (_searchQuery.isEmpty) {
       _showSnackBarMessage();
       return null;
     }
-    final result = await BooksApi.fetchBookDetails(bookId);
+    final result = await BooksApi.search(_searchQuery);
     setState(() {
       _searchResult = result;
     });
+    // Abre a tela de Resultados de Pesquisa
+    if (_searchResult != null) {
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SearchResults(
+                    searchResult: result,
+                    context: context,
+                  )));
+    }
   }
 
   Future<List<Map<String, dynamic>>> _fetchBookImages(
@@ -183,9 +195,7 @@ class _HomeState extends State<Home> {
                       _searchQuery = value;
                     });
                   },
-                  searchPressed: () {
-                    _searchBooks(_searchQuery);
-                  },
+                  searchPressed: _searchBooks,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -211,7 +221,6 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 ...categories.map(buildCategorySection).toList(),
-                SearchResults(searchResult: _searchResult),
               ],
             ),
           ),
