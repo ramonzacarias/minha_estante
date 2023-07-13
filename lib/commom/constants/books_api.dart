@@ -7,7 +7,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 class BooksApi {
-  static const String _baseUrl = 'https://www.googleapis.com/books/v1/volumes';
+  static const String _baseUrl = ApiKeys.baseUrl;
   static const String apiKey = ApiKeys.booksApiKey;
 
   static Future<dynamic> search(String query) async {
