@@ -39,35 +39,40 @@ class UserLibraryService {
         .where('statusLeitura', isEqualTo: status);
   }
 
-  // Adiciona um livro à biblioteca do usuário
+// Adiciona um livro à biblioteca do usuário
   Future<void> addBookToLibrary(BookModel book, String readingStatus) async {
     final String userId = getUserId();
     final DocumentReference bookRef = _getBookDocumentRef(userId, book.id);
 
     try {
-      await bookRef.set(book.toMap()
-        ..addAll({
+      await bookRef.set(
+        {
+          ...book.toMap(),
           'statusLeitura': readingStatus,
           'pgLidas': book.pgLidas,
           'nota': book.nota,
-        }));
+        },
+        SetOptions(merge: true),
+      );
     } catch (e) {
       throw e;
     }
   }
 
-  // Atualiza o status de leitura de um livro com o número de páginas lidas
+// Atualiza o status de leitura de um livro com o número de páginas lidas
   Future<void> updateReadingStatus(
       BookModel book, String readingStatus, int pagesRead) async {
     final String userId = getUserId();
     final DocumentReference bookRef = _getBookDocumentRef(userId, book.id);
 
     try {
-      await bookRef.set(book.toMap()
-        ..addAll({
+      await bookRef.set(
+        {
           'statusLeitura': readingStatus,
           'pgLidas': pagesRead,
-        }));
+        },
+        SetOptions(merge: true),
+      );
     } catch (e) {
       throw e;
     }
@@ -88,19 +93,22 @@ class UserLibraryService {
     });
   }
 
-  // Atualiza a nota de um livro
+// Atualiza a nota de um livro
   Future<void> updateRating(
       BookModel book, String readingStatus, int pagesRead, int rating) async {
     final String userId = getUserId();
     final DocumentReference bookRef = _getBookDocumentRef(userId, book.id);
 
     try {
-      await bookRef.set(book.toMap()
-        ..addAll({
-          'statusLeitura': readingStatus,
-          'pgLidas': pagesRead,
-          'nota': rating,
-        }));
+      await bookRef.set(
+        book.toMap()
+          ..addAll({
+            'statusLeitura': readingStatus,
+            'pgLidas': pagesRead,
+            'nota': rating,
+          }),
+        SetOptions(merge: true), // Adicione esta linha
+      );
     } catch (e) {
       throw e;
     }
@@ -121,7 +129,7 @@ class UserLibraryService {
     });
   }
 
-  // Atualiza o status e a nota de um livro
+// Atualiza o status e a nota de um livro
   Future<void> updateBookStatus(
       BookModel book, String readingStatus, int rating) async {
     final String userId = getUserId();
@@ -137,7 +145,10 @@ class UserLibraryService {
         bookData['pgLidas'] = book.pgLidas;
       }
 
-      await bookRef.set(bookData, SetOptions(merge: true));
+      await bookRef.set(
+        bookData,
+        SetOptions(merge: true), // Adicione esta linha
+      );
     } catch (e) {
       throw e;
     }
@@ -223,5 +234,127 @@ class UserLibraryService {
     }
 
     return books;
+  }
+
+  // Obtém os livros do banco por seu status de leitura
+  Future<List<BookModel>> getBooksByStatusLibrary(String status) async {
+    try {
+      final String userId = getUserId();
+      final QuerySnapshot snapshot = await _getBooksCollection(userId)
+          .where('statusLeitura', isEqualTo: status)
+          .get(
+              GetOptions(source: Source.serverAndCache)); // Adicione esta linha
+
+      final List<BookModel> books = [];
+
+      for (final DocumentSnapshot doc in snapshot.docs) {
+        final data = doc.data() as Map<String, dynamic>;
+        final book = BookModel(
+          id: data['id'],
+          titulo: data['titulo'],
+          autor: data['autor'],
+          qtdPaginas: data['qtdpaginas'] as int? ?? 0,
+          descricao: data['descricao'],
+          imageUrl: data['imageUrl'],
+          textSnippet: data['textSnippet'],
+          genero: data['genero'],
+          statusLeitura: data['statusLeitura'],
+          pgLidas: data['pgLidas'] as int? ?? 0,
+          nota: data['nota'] as int? ?? 0,
+        );
+        books.add(book);
+      }
+
+      return books;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  // Obtém todos os livros do banco
+  Future<List<BookModel>> getAllBooks() async {
+    try {
+      final String userId = getUserId();
+      final QuerySnapshot snapshot = await _getBooksCollection(userId).get(
+          GetOptions(source: Source.serverAndCache)); // Adicione esta linha
+
+      final List<BookModel> books = [];
+
+      for (final DocumentSnapshot doc in snapshot.docs) {
+        final data = doc.data() as Map<String, dynamic>;
+        final book = BookModel(
+          id: data['id'],
+          titulo: data['titulo'],
+          autor: data['autor'],
+          qtdPaginas: data['qtdpaginas'] as int? ?? 0,
+          descricao: data['descricao'],
+          imageUrl: data['imageUrl'],
+          textSnippet: data['textSnippet'],
+          genero: data['genero'],
+          statusLeitura: data['statusLeitura'],
+          pgLidas: data['pgLidas'] as int? ?? 0,
+          nota: data['nota'] as int? ?? 0,
+        );
+        books.add(book);
+      }
+
+      return books;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  // Obtém as informações de um livro com base na ID
+  Future<BookModel?> getBookById(String bookId) async {
+    final String userId = getUserId();
+    final DocumentReference bookRef = _getBookDocumentRef(userId, bookId);
+
+    try {
+      final DocumentSnapshot snapshot =
+          await bookRef.get(GetOptions(source: Source.cache));
+
+      if (snapshot.exists) {
+        final data = snapshot.data() as Map<String, dynamic>;
+        final book = BookModel.fromMap(data);
+        return book;
+      }
+
+      return null;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  // Obtém o nome do usuário atual
+  Future<String> getUserName() async {
+    final String userId = getUserId();
+    final DocumentReference userRef = _firestore.collection(_users).doc(userId);
+    final GetOptions options = GetOptions(source: Source.cache);
+    final DocumentSnapshot snapshot = await userRef.get(options);
+
+    if (snapshot.exists) {
+      final data = snapshot.data() as Map<String, dynamic>;
+      final String name = data['nome'] ?? '';
+      return name;
+    }
+
+    return '';
+  }
+
+  // Obtém o email do usuário atual
+  Future<String> getUserEmail() async {
+    final User? user = _auth.currentUser;
+    final String userId = user?.uid ?? '';
+    final DocumentReference userRef = _firestore.collection(_users).doc(userId);
+    final GetOptions options = GetOptions(source: Source.cache);
+    final DocumentSnapshot snapshot = await userRef.get(options);
+
+    if (snapshot.exists) {
+      final data = snapshot.data() as Map<String, dynamic>;
+      final String email = data['email'] ?? '';
+      return email;
+    }
+
+    return '';
   }
 }

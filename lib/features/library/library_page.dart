@@ -1,10 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 import 'package:minha_estante/commom/constants/book_reading_status.dart';
 import 'package:minha_estante/commom/constants/books_api.dart';
-import 'package:minha_estante/commom/constants/firestore_colletions.dart';
 
 import 'package:minha_estante/commom/constants/routes.dart';
 import 'package:minha_estante/commom/models/book_model.dart';
@@ -22,11 +20,7 @@ class Library extends StatefulWidget {
 }
 
 class _LibraryState extends State<Library> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   UserLibraryService _userLibraryService = UserLibraryService();
-  final String _users = FirestoreCollections.users;
-  final String _biblioteca = FirestoreCollections.biblioteca;
-  final String _livros = FirestoreCollections.livros;
   late String listaAtual = BookReadingStatus.lendo;
 
   String _searchQuery = '';
@@ -54,7 +48,6 @@ class _LibraryState extends State<Library> {
     });
     // Abre a tela de Resultados de Pesquisa
     if (_searchResult != null) {
-
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -62,81 +55,6 @@ class _LibraryState extends State<Library> {
                     searchResult: result,
                     context: context,
                   )));
-    }
-  }
-
-  Future<List<BookModel>> getBooksByStatus(String status) async {
-    try {
-      String userId = await _userLibraryService.getUserId();
-      final QuerySnapshot snapshot = await _firestore
-          .collection(_users)
-          .doc(userId)
-          .collection(_biblioteca)
-          .doc(_livros)
-          .collection(_livros)
-          .where('statusLeitura', isEqualTo: status)
-          .get();
-
-      final List<BookModel> books = [];
-
-      for (final DocumentSnapshot doc in snapshot.docs) {
-        final data = doc.data() as Map<String, dynamic>;
-        final book = BookModel(
-          id: data['id'],
-          titulo: data['titulo'],
-          autor: data['autor'],
-          qtdPaginas: data['qtdpaginas'] as int? ?? 0,
-          descricao: data['descricao'],
-          imageUrl: data['imageUrl'],
-          textSnippet: data['textSnippet'],
-          genero: data['genero'],
-          statusLeitura: data['statusLeitura'],
-          pgLidas: data['pgLidas'] as int? ?? 0,
-          nota: data['nota'] as int? ?? 0,
-        );
-        books.add(book);
-      }
-
-      return books;
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  Future<List<BookModel>> getAllBooks() async {
-    try {
-      String userId = await _userLibraryService.getUserId();
-      final QuerySnapshot snapshot = await _firestore
-          .collection(_users)
-          .doc(userId)
-          .collection(_biblioteca)
-          .doc(_livros)
-          .collection(_livros)
-          .get();
-
-      final List<BookModel> books = [];
-
-      for (final DocumentSnapshot doc in snapshot.docs) {
-        final data = doc.data() as Map<String, dynamic>;
-        final book = BookModel(
-          id: data['id'],
-          titulo: data['titulo'],
-          autor: data['autor'],
-          qtdPaginas: data['qtdpaginas'] as int? ?? 0,
-          descricao: data['descricao'],
-          imageUrl: data['imageUrl'],
-          textSnippet: data['textSnippet'],
-          genero: data['genero'],
-          statusLeitura: data['statusLeitura'],
-          pgLidas: data['pgLidas'] as int? ?? 0,
-          nota: data['nota'] as int? ?? 0,
-        );
-        books.add(book);
-      }
-
-      return books;
-    } catch (e) {
-      throw e;
     }
   }
 
@@ -161,14 +79,13 @@ class _LibraryState extends State<Library> {
               children: [
                 SizedBox(height: 20.0),
                 CustomSearchBar(
-                  controllerText: _controllerSearch,
-                  onTextChanged: (value) {
-                    setState(() {
-                      _searchQuery = value;
-                    });
-                  },
-                  searchPressed: _searchBooks
-                ),
+                    controllerText: _controllerSearch,
+                    onTextChanged: (value) {
+                      setState(() {
+                        _searchQuery = value;
+                      });
+                    },
+                    searchPressed: _searchBooks),
                 SizedBox(height: 10.0),
                 FavoriteBar(
                   onStatusSelected: (status) {
@@ -179,7 +96,9 @@ class _LibraryState extends State<Library> {
                 ),
                 SizedBox(height: 5.0),
                 FutureBuilder<List<BookModel>>(
-                  future: listaAtual == BookReadingStatus.todos ? getAllBooks() : getBooksByStatus(listaAtual),
+                  future: listaAtual == BookReadingStatus.todos
+                      ? _userLibraryService.getAllBooks()
+                      : _userLibraryService.getBooksByStatusLibrary(listaAtual),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Container(
@@ -246,5 +165,3 @@ class _LibraryState extends State<Library> {
         ),
       );
 }
-
-
