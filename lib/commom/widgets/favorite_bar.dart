@@ -14,7 +14,9 @@ class FavoriteBar extends StatefulWidget {
 }
 
 class _FavoriteBarState extends State<FavoriteBar> {
-  late String selectedFavorite = BookReadingStatus.lendo;
+  late String selectedFavorite = BookReadingStatus.lendo; // Status inicial
+  
+  // Lista de favoritos
   final List<String> favoriteStatusList = [
     BookReadingStatus.lendo,
     BookReadingStatus.queroLer,
@@ -63,6 +65,7 @@ class _FavoriteBarState extends State<FavoriteBar> {
       selected: {selectedFavorite},
       onSelectionChanged: (Set<String> newSelection) {
         setState(() {
+          // Atualiza o estado do status favorito selecionado e chama a função de retorno
           selectedFavorite = newSelection.first;
           widget.onStatusSelected(selectedFavorite);
         });

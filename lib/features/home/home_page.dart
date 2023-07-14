@@ -8,7 +8,7 @@ import 'package:minha_estante/commom/widgets/category_bar.dart';
 import 'package:minha_estante/commom/constants/books_api.dart';
 import 'package:minha_estante/features/book_detail/book_detail.dart';
 
-import '../../commom/widgets/search_result.dart';
+import '../search/search_result.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -24,6 +24,7 @@ class _HomeState extends State<Home> {
   int _selectCategoryIndex = -1;
 
   void _showSnackBarMessage() {
+    // Mostra uma mensagem na parte inferior da tela informando que é necessário digitar um título para a pesquisa
     final snackBar = SnackBar(
       content: Text('Digite algum título para ser pesquisado'),
       backgroundColor: AppColors.graffite,
@@ -33,15 +34,17 @@ class _HomeState extends State<Home> {
   }
 
   Future<dynamic> _searchBooks() async {
+    // Verifica se o campo de pesquisa está vazio
     if (_searchQuery.isEmpty) {
       _showSnackBarMessage();
       return null;
     }
+    // Realiza a pesquisa de livros com base na query fornecida
     final result = await BooksApi.search(_searchQuery);
     setState(() {
       _searchResult = result;
     });
-    // Abre a tela de Resultados de Pesquisa
+    // Abre a tela de Resultados de Pesquisa se houver algum resultado
     if (_searchResult != null) {
       Navigator.push(
         context,
@@ -58,6 +61,7 @@ class _HomeState extends State<Home> {
   Future<List<Map<String, dynamic>>> _fetchBookImages(
       String category, int quantity) async {
     try {
+      // Obtém uma lista de imagens de livros para a categoria fornecida
       final bookDataList = await BooksApi.fetchBookImages(category, quantity);
       return bookDataList;
     } catch (e) {
@@ -67,6 +71,7 @@ class _HomeState extends State<Home> {
   }
 
   void _navigateToBookDetail(String bookId) {
+    // Navega para a tela de detalhes do livro com base no ID fornecido
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -99,6 +104,7 @@ class _HomeState extends State<Home> {
           future: _fetchBookImages(category, 15),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
+              // Exibe um indicador de progresso enquanto as imagens dos livros estão sendo carregadas
               return Container(
                 height: 200,
                 child: const Center(
@@ -123,6 +129,7 @@ class _HomeState extends State<Home> {
                     final bookId = bookData['id'] as String;
                     return GestureDetector(
                       onTap: () {
+                        // Navega para a tela de detalhes do livro ao tocar na imagem
                         _navigateToBookDetail(bookId);
                       },
                       child: Padding(
@@ -155,8 +162,10 @@ class _HomeState extends State<Home> {
                 ),
               );
             } else if (snapshot.hasError) {
+              // Exibe uma mensagem de erro caso ocorra algum problema ao carregar as imagens dos livros
               return const Text('Erro ao carregar as imagens dos livros');
             } else {
+              // Exibe um indicador de progresso caso nenhum dado seja recebido
               return Container(
                 height: 200,
                 child: const Center(

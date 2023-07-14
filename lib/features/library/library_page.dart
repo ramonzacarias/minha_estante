@@ -8,7 +8,7 @@ import 'package:minha_estante/commom/constants/routes.dart';
 import 'package:minha_estante/commom/models/book_model.dart';
 import 'package:minha_estante/commom/widgets/custom_search_bar.dart';
 import 'package:minha_estante/commom/widgets/favorite_bar.dart';
-import 'package:minha_estante/commom/widgets/search_result.dart';
+import 'package:minha_estante/features/search/search_result.dart';
 import 'package:minha_estante/features/book_detail/book_detail.dart';
 import 'package:minha_estante/services/user_library_service.dart';
 
@@ -28,7 +28,7 @@ class _LibraryState extends State<Library> {
   TextEditingController _controllerSearch = TextEditingController();
 
   void _showSnackBarMessage() {
-    //aparece uma barra de aviso para digitar algo a ser pesquisado
+    // Exibe uma barra de aviso informando que é necessário digitar um título para pesquisar
     final snackBar = SnackBar(
       content: Text('Digite algum título para que seja pesquisado'),
       backgroundColor: AppColors.graffite,
@@ -38,15 +38,17 @@ class _LibraryState extends State<Library> {
   }
 
   Future<dynamic> _searchBooks() async {
+    // Verifica se o campo de pesquisa está vazio
     if (_searchQuery.isEmpty) {
       _showSnackBarMessage();
       return null;
     }
+    // Realiza a pesquisa de livros com base na query fornecida
     final dynamic result = await BooksApi.search(_searchQuery);
     setState(() {
       _searchResult = result;
     });
-    // Abre a tela de Resultados de Pesquisa
+    // Abre a tela de Resultados de Pesquisa se houver algum resultado
     if (_searchResult != null) {
       Navigator.push(
           context,
@@ -59,6 +61,7 @@ class _LibraryState extends State<Library> {
   }
 
   void _navigateToBookDetail(String bookId) {
+    // Navega para a tela de detalhes do livro com base no ID fornecido
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -70,6 +73,7 @@ class _LibraryState extends State<Library> {
   @override
   Widget build(BuildContext context) => WillPopScope(
         onWillPop: () async {
+          // Ao pressionar o botão de retorno, volta para a página de splash
           Navigator.popAndPushNamed(context, NamedRoute.splash);
           return false;
         },
@@ -90,7 +94,7 @@ class _LibraryState extends State<Library> {
                 FavoriteBar(
                   onStatusSelected: (status) {
                     setState(() {
-                      listaAtual = status;
+                      listaAtual = status; // Passando o novo valor do status de favorito
                     });
                   },
                 ),
@@ -101,6 +105,7 @@ class _LibraryState extends State<Library> {
                       : _userLibraryService.getBooksByStatusLibrary(listaAtual),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
+                      // Exibe um indicador de progresso enquanto os livros estão sendo carregados
                       return Container(
                         child: const Center(
                           child: CircularProgressIndicator(),
@@ -135,6 +140,7 @@ class _LibraryState extends State<Library> {
                                 child: Container(
                                   color: Colors.grey[200],
                                   child: Image(
+                                    // Utiliza o armazenamento em cache para carregar as imagens dos livros
                                     image: CachedNetworkImageProvider(
                                       imageUrl,
                                     ),
@@ -147,9 +153,11 @@ class _LibraryState extends State<Library> {
                         ),
                       );
                     } else if (snapshot.hasError) {
+                      // Exibe uma mensagem de erro caso ocorra algum problema ao carregar as imagens dos livros
                       return const Text(
                           'Erro ao carregar as imagens dos livros');
                     } else {
+                      // Exibe um indicador de progresso enquanto os livros estão sendo carregados
                       return Container(
                         child: const Center(
                           child: CircularProgressIndicator(),

@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 
-import '../../features/book_detail/book_detail.dart';
+import '../book_detail/book_detail.dart';
 
 class SearchResults extends StatelessWidget {
   final dynamic searchResult;
