@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:html/parser.dart' as htmlParser;
+import 'package:minha_estante/commom/constants/app_error.dart';
 import 'package:minha_estante/commom/constants/book_reading_status.dart';
 
 class BookModel {
@@ -93,14 +94,4 @@ class BookModel {
   // Constrói um objeto BookModel a partir de uma string JSON
   factory BookModel.fromJson(String source) =>
       BookModel.fromMap(json.decode(source));
-}
-
-class AppError {
-  static const String unknownTitle = 'Título desconhecido';
-  static const String unknownAuthor = 'Autor desconhecido';
-  static const String unknownCategory = 'Categoria desconhecida';
-  static const String unavailableDescription = 'Descrição indisponível';
-  static const String unavailableSnippet = 'Trecho indisponível';
-  static const String unavailableImageUrl = 'https://www.bookshare.org/cover/UZ/UZbhITiy4AFlizkwPmOPQhop3potKl7otL335XbEfnI-MEDIUM.png';
-  static const String unknownPaginas = '0';
 }
