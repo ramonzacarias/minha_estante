@@ -46,13 +46,13 @@ class UserLibraryService {
 
     try {
       await bookRef.set(
-        book.toMap()
-          ..addAll({
-            'statusLeitura': readingStatus,
-            'pgLidas': book.pgLidas,
-            'nota': book.nota,
-          }),
-        SetOptions(merge: true), // Adicione esta linha
+        {
+          ...book.toMap(),
+          'statusLeitura': readingStatus,
+          'pgLidas': book.pgLidas,
+          'nota': book.nota,
+        },
+        SetOptions(merge: true),
       );
     } catch (e) {
       throw e;
@@ -67,12 +67,11 @@ class UserLibraryService {
 
     try {
       await bookRef.set(
-        book.toMap()
-          ..addAll({
-            'statusLeitura': readingStatus,
-            'pgLidas': pagesRead,
-          }),
-        SetOptions(merge: true), // Adicione esta linha
+        {
+          'statusLeitura': readingStatus,
+          'pgLidas': pagesRead,
+        },
+        SetOptions(merge: true),
       );
     } catch (e) {
       throw e;

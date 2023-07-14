@@ -26,7 +26,25 @@ class BookDetail extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Scaffold(
             body: Center(
-              child: Text('Erro ao carregar os detalhes do livro'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/error.png',
+                    height: 100,
+                    fit: BoxFit.cover,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Desculpe',
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    'Ocorreu um erro ao carregar os detalhes do livro.',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
           );
         } else {
