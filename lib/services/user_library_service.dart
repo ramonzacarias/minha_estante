@@ -325,13 +325,11 @@ class UserLibraryService {
     }
   }
 
-  // Obtém o nome do usuário atual
+// Obtém o nome do usuário atual
   Future<String> getUserName() async {
     final String userId = getUserId();
     final DocumentReference userRef = _firestore.collection(_users).doc(userId);
-    final GetOptions options = GetOptions(source: Source.cache);
-    final DocumentSnapshot snapshot = await userRef.get(options);
-
+    final DocumentSnapshot snapshot = await userRef.get();
     if (snapshot.exists) {
       final data = snapshot.data() as Map<String, dynamic>;
       final String name = data['nome'] ?? '';
@@ -341,13 +339,12 @@ class UserLibraryService {
     return '';
   }
 
-  // Obtém o email do usuário atual
+// Obtém o email do usuário atual
   Future<String> getUserEmail() async {
     final User? user = _auth.currentUser;
     final String userId = user?.uid ?? '';
     final DocumentReference userRef = _firestore.collection(_users).doc(userId);
-    final GetOptions options = GetOptions(source: Source.cache);
-    final DocumentSnapshot snapshot = await userRef.get(options);
+    final DocumentSnapshot snapshot = await userRef.get();
 
     if (snapshot.exists) {
       final data = snapshot.data() as Map<String, dynamic>;
