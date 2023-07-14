@@ -310,14 +310,52 @@ class UserLibraryService {
     final String userId = getUserId();
     final DocumentReference bookRef = _getBookDocumentRef(userId, bookId);
 
-    final DocumentSnapshot snapshot = await bookRef.get();
+    try {
+      final DocumentSnapshot snapshot =
+          await bookRef.get(GetOptions(source: Source.cache));
+
+      if (snapshot.exists) {
+        final data = snapshot.data() as Map<String, dynamic>;
+        final book = BookModel.fromMap(data);
+        return book;
+      }
+
+      return null;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  // Obtém o nome do usuário atual
+  Future<String> getUserName() async {
+    final String userId = getUserId();
+    final DocumentReference userRef = _firestore.collection(_users).doc(userId);
+    final GetOptions options = GetOptions(source: Source.cache);
+    final DocumentSnapshot snapshot = await userRef.get(options);
 
     if (snapshot.exists) {
       final data = snapshot.data() as Map<String, dynamic>;
-      final book = BookModel.fromMap(data);
-      return book;
+      final String name = data['nome'] ?? '';
+      return name;
     }
 
-    return null;
+    return '';
+  }
+
+  // Obtém o email do usuário atual
+  Future<String> getUserEmail() async {
+    final User? user = _auth.currentUser;
+    final String userId = user?.uid ?? '';
+    final DocumentReference userRef = _firestore.collection(_users).doc(userId);
+    final GetOptions options = GetOptions(source: Source.cache);
+    final DocumentSnapshot snapshot = await userRef.get(options);
+
+    if (snapshot.exists) {
+      final data = snapshot.data() as Map<String, dynamic>;
+      final String email = data['email'] ?? '';
+      return email;
+    }
+
+    return '';
   }
 }

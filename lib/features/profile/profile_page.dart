@@ -15,6 +15,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends ProfileState<ProfilePage> {
   final ProfileController _profileController = ProfileController();
 
+
   @override
   Widget build(BuildContext context) => WillPopScope(
         onWillPop: () async {
@@ -24,8 +25,10 @@ class _ProfilePageState extends ProfileState<ProfilePage> {
         child: Scaffold(
           body: Stack(
             children: [
-              const AppHeader(
+              AppHeader(
                 title: "Perfil",
+                userName: userName?.toString() ?? '',
+                email: userEmail?.toString() ?? '',
               ),
               Positioned(
                 top: 300,
