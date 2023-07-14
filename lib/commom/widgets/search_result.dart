@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:minha_estante/commom/constants/app_colors.dart';
 
@@ -7,10 +8,11 @@ class SearchResults extends StatelessWidget {
   final dynamic searchResult;
   final BuildContext context;
 
-  const SearchResults({Key? key, this.searchResult, required this.context}) : super(key: key);
+  const SearchResults({Key? key, this.searchResult, required this.context})
+      : super(key: key);
 
   // Função que navega para a aba de detalhes do livro
-  void _navigateToBookDetail(String bookId) { 
+  void _navigateToBookDetail(String bookId) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -46,23 +48,23 @@ class SearchResults extends StatelessWidget {
             final title = volumeInfo['title'];
             final authors = volumeInfo['authors'];
             final imageLinks = volumeInfo['imageLinks'];
-            final bookId = book['id']; 
+            final bookId = book['id'];
 
-            return GestureDetector( // Abre a tela de detalhes do livro ao clicar sobre o resultado
+            return GestureDetector(
+              // Abre a tela de detalhes do livro ao clicar sobre o resultado
               onTap: () {
-                _navigateToBookDetail(bookId); 
+                _navigateToBookDetail(bookId);
               },
               child: ListTile(
                 leading: Container(
                   width: 56.0,
                   child: imageLinks != null && imageLinks['thumbnail'] != null
-                      ? Image.network(imageLinks['thumbnail'])
-                      : FadeInImage.assetNetwork(
-                          placeholder:
-                              'https://www.pngplay.com/wp-content/uploads/4/Book-Transparent-Free-PNG.png',
-                          image:
-                              'https://www.pngplay.com/wp-content/uploads/4/Book-Transparent-Free-PNG.png',
-                        ),
+                      ? CachedNetworkImage(
+                          imageUrl: imageLinks['thumbnail'],
+                          placeholder: (context, url) =>
+                              Image.asset('assets/images/placeholder.png'),
+                        )
+                      : Image.asset('assets/images/placeholder.png'),
                 ),
                 title: Text(title ?? 'Título desconhecido'),
                 subtitle: Text(authors?.join(', ') ?? 'Autor desconhecido'),

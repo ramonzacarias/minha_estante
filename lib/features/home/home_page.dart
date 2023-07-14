@@ -43,14 +43,15 @@ class _HomeState extends State<Home> {
     });
     // Abre a tela de Resultados de Pesquisa
     if (_searchResult != null) {
-
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => SearchResults(
-                    searchResult: result,
-                    context: context,
-                  )));
+        context,
+        MaterialPageRoute(
+          builder: (context) => SearchResults(
+            searchResult: result,
+            context: context,
+          ),
+        ),
+      );
     }
   }
 

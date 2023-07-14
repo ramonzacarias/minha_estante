@@ -11,8 +11,11 @@ class BooksApi {
   static const String apiKey = ApiKeys.booksApiKey;
 
   static Future<dynamic> search(String query) async {
-    final url = '$_baseUrl?q=$query&key=$apiKey';
+    final encodedQuery = Uri.encodeQueryComponent(query);
+    final url = '$_baseUrl?q=$encodedQuery&key=$apiKey';
     final response = await http.get(Uri.parse(url));
+    _handleError(response);
+
     final body = jsonDecode(response.body);
 
     return body;
