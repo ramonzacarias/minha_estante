@@ -30,9 +30,19 @@ Referência | Descrição
 **RF006** | O aplicativo deve ser portátil e capaz de ser executado em diferentes sistemas operacionais, como Android e iOS.
 **RF007** | O aplicativo deve ser confiável e não falhar ou perder dados importantes do usuário.
 
-## 📑 Diagrama de Entidade e Relacionamento(DER)
-
-![MODELO LOGICO - MINHA ESTANTE](/.github/der.png)
+## 👩‍💻 TECNOLOGIAS UTILIZADAS
+- `Flutter 3.7.8` 
+- `Dart 2.19.5`
+- `cloud_firestore: 4.8.1`
+- `cupertino_icons: 1.0.2`
+- `firebase_auth: 4.4.2`
+- `firebase_core: 2.10.0`
+- `flutter_secure_storage: 8.0.0`
+- `get_it: 7.2.0`
+- `http: 0.13.4`
+- `flutter_html: 2.2.1`
+- `flutter_cache_manager: 3.3.0`
+- `cached_network_image: 3.2.3`
 
 ## 🔖 Layout
 
